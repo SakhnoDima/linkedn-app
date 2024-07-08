@@ -8,15 +8,15 @@ export const POST = async (req, res) => {
   if(!login || !pass || !userId){
     return NextResponse.json({ message: 'Credentials is required' }, { status: 400 });
   }
-  // const isConnected = await fetch('https://qyf4aviui4.execute-api.eu-north-1.amazonaws.com/default/linkedin-crawler', {
-  //   method: 'POST',
-  //   headers:{
-  //     'Content-Type': 'application/json',
-  //   },
-  //   body: JSON.stringify({ password: pass, email: login, id: userId }),
-  // });
+  const isConnected = await fetch('https://qyf4aviui4.execute-api.eu-north-1.amazonaws.com/default/linkedin-crawler', {
+    method: 'POST',
+    headers:{
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ password: pass, email: login, id: userId }),
+  });
   
-  // console.log(isConnected);
+  console.log(isConnected);
 
   // const existingUser = await User.findOne({linkedinLogin : login})
 
