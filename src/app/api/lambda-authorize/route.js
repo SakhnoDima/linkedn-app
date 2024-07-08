@@ -39,3 +39,6 @@ export const POST = async (req, res) => {
     message: 'User was saved and login', 
   });
 };
+
+export const maxDuration = 60; // This function can run for a maximum of 5 seconds
+export const dynamic = 'force-dynamic';
