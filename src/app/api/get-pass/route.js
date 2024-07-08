@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server';
 import User from '@/app/lib/user-model';
+import dbConnect from '@/app/lib/moongose-connect';
 
 export async function POST (req, res) {
+  await dbConnect();
   const { userId } = await req.json();
   let password = null;
 
