@@ -8,7 +8,6 @@ const LoginForm = ({setIsShowPopup, setUserLogin }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-  
     setUserLogin(login);
 
     try {
@@ -25,7 +24,7 @@ const LoginForm = ({setIsShowPopup, setUserLogin }) => {
         throw new Error(errorResponse.message || 'Something went wrong');
       }
       const { userId } = await savingUser.json()
-     
+     console.log("User saved");
       setIsShowPopup(true)
 
       const linkedinAuthorization = await fetch('/api/lambda-authorize', {
