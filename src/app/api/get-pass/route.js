@@ -19,3 +19,6 @@ export async function POST (req, res) {
    console.log(password);
   return NextResponse.json( { password } );
 }
+
+export const maxDuration = 60; // This function can run for a maximum of 5 seconds
+export const dynamic = 'force-dynamic';
