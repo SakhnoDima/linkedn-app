@@ -6,7 +6,7 @@ export async function POST (req, res) {
   await dbConnect();
   const { userId } = await req.json();
   let password = null;
-
+console.log(userId);
   while (!password ) {
     try {
       const user = await User.findById(userId);
