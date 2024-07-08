@@ -9,7 +9,6 @@ export const POST = async (req, res) => {
     return NextResponse.json({ message: 'Credentials is required' }, { status: 400 });
   }
 
-
   // const existingUser = await User.findOne({linkedinLogin : login})
 
   // if(existingUser){

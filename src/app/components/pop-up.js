@@ -15,7 +15,7 @@ const Popup = ({ userLogin }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          
+          pass,
           userLogin,
         }),
       });
