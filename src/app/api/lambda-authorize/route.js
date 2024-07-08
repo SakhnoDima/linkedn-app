@@ -5,9 +5,10 @@ import dbConnect from '@/app/lib/moongose-connect';
 export const POST = async (req, res) => {
   const {login, pass, userId} = await req.json();
 
-  console.log(login);
-  console.log(pass);
-  console.log(userId);
+  if(!login || !pass || !userId){
+    return NextResponse.json({ message: 'Credentials is required' }, { status: 400 });
+  }
+
 
   // const existingUser = await User.findOne({linkedinLogin : login})
 

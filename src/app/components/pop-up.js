@@ -1,24 +1,32 @@
 "use client";
 import { useState } from "react";
 
-const Popup = ( { userLogin } ) => {
+const Popup = ({ userLogin }) => {
   const [pass, setPass] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("pass", pass);
 
-    const response = await fetch('/api/save-pass', {
-        method: 'POST',
+    try {
+      const savingPass = await fetch("/api/save-pass", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ 
-          pass,
-          userLogin
-         }),
+        body: JSON.stringify({
+          
+          userLogin,
+        }),
       });
-
+      
+      if (!savingPass.ok) {
+        const errorResponse = await savingPass.json();
+        throw new Error(errorResponse.message || 'Something went wrong');
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   return (

@@ -6,7 +6,7 @@ export async function POST(req) {
     const { pass, userLogin } = await req.json();
 
     if (!pass || !userLogin) {
-      return NextResponse.json({ message: 'Password and userLogin are required' });
+      return NextResponse.json({ message: 'Password and userLogin are required' }, { status: 400});
     }
 
     const user = await User.findOne({ linkedinLogin: userLogin });

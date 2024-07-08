@@ -4,8 +4,11 @@ import dbConnect from '@/app/lib/moongose-connect';
 
 export const POST = async (req, res) => {
   const {login, pass} = await req.json();
+
   await dbConnect();
-let userId;
+
+  let userId;
+
   try {
     const updatedUser = await User.findOneAndUpdate(
         { linkedinLogin: login },
@@ -24,7 +27,7 @@ let userId;
     }
 
   } catch (error) {
-    return NextResponse.json({ message: 'Something went wrong try later' }, {status : 500});
+    return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }
  
   return NextResponse.json({ 

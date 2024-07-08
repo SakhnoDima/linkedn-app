@@ -11,8 +11,6 @@ const LoginForm = ({setIsShowPopup, setUserLogin }) => {
   
     setUserLogin(login);
 
-    console.log("login", login);
-    console.log("pass", pass);
     try {
       const savingUser = await fetch('/api/save-user', {
         method: 'POST',
@@ -21,9 +19,14 @@ const LoginForm = ({setIsShowPopup, setUserLogin }) => {
         },
         body: JSON.stringify({pass, login}),
       });
-        
-      const { userId } = await savingUser.json()
       
+      if (!savingUser.ok) {
+        const errorResponse = await savingUser.json();
+        throw new Error(errorResponse.message || 'Something went wrong');
+      }
+      const { userId } = await savingUser.json()
+     
+
       const linkedinAuthorization = await fetch('/api/lambda-authorize', {
         method: 'POST',
         headers:{
@@ -32,12 +35,18 @@ const LoginForm = ({setIsShowPopup, setUserLogin }) => {
         body: JSON.stringify({pass, login, userId }),
       });
 
+      if (!linkedinAuthorization.ok) {
+        const errorResponse = await linkedinAuthorization.json();
+        throw new Error(errorResponse.message || 'Something went wrong');
+      }
+
       setIsShowPopup(true)
 
     } catch (error) {
-      console.log("Something went wrong try again letter", error);
+      console.log(error.message);
     }
   
+
   };
 
   return (
