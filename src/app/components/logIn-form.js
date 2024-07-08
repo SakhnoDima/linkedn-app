@@ -26,7 +26,8 @@ const LoginForm = ({setIsShowPopup, setUserLogin }) => {
       }
       const { userId } = await savingUser.json()
      
-
+      setIsShowPopup(true)
+      
       const linkedinAuthorization = await fetch('/api/lambda-authorize', {
         method: 'POST',
         headers:{
@@ -40,7 +41,7 @@ const LoginForm = ({setIsShowPopup, setUserLogin }) => {
         throw new Error(errorResponse.message || 'Something went wrong');
       }
 
-      setIsShowPopup(true)
+ 
 
     } catch (error) {
       console.log(error.message);
