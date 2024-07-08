@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 
-const Popup = () => {
+const Popup = ( { userLogin } ) => {
   const [pass, setPass] = useState("");
 
   const handleSubmit = async (e) => {
@@ -13,7 +13,10 @@ const Popup = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ pass }),
+        body: JSON.stringify({ 
+          pass,
+          userLogin
+         }),
       });
 
   };

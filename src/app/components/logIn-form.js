@@ -1,22 +1,43 @@
 'use client'
 import { useState } from 'react';
 
-const LoginForm = ({setIsShowPopup}) => {
+const LoginForm = ({setIsShowPopup, setUserLogin }) => {
   const [login, setLogin] = useState('');
   const [pass, setPass] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsShowPopup(true)
+    
+  
+    setUserLogin(login);
+
     console.log("login", login);
     console.log("pass", pass);
-    const res = await fetch('/api/lambda-log-in', {
-      method: 'POST',
-      headers:{
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({pass, login}),
-    })
+    try {
+      const savingUser = await fetch('/api/save-user', {
+        method: 'POST',
+        headers:{
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({pass, login}),
+      });
+        
+      const { userId } = await savingUser.json()
+      
+      const linkedinAuthorization = await fetch('/api/lambda-authorize', {
+        method: 'POST',
+        headers:{
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({pass, login, userId }),
+      });
+
+      setIsShowPopup(true)
+
+    } catch (error) {
+      console.log("Something went wrong try again letter", error);
+    }
+  
   };
 
   return (

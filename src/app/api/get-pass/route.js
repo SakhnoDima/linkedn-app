@@ -1,34 +1,21 @@
-import fs from 'fs';
-import path from 'path';
 import { NextResponse } from 'next/server';
+import User from '@/app/lib/user-model';
 
-export async function GET(req) {
-    const filePath = path.join(process.cwd(), "/public/", 'passwords.json');
+export async function POST (req, res) {
+  const { userId } = await req.json();
+  let password = null;
 
-  const readFile = async () => {
-    return new Promise((resolve, reject) => {
-      fs.readFile(filePath, 'utf8', (err, data) => {
-        if (err) {
-          return reject(err);
-        }
-        resolve(data);
-      });
-    });
-  };
-
-  let fileContent;
-
-  while (true) {
+  while (!password ) {
     try {
-      fileContent = await readFile();
-      if (fileContent) {
-        break;
-      }
+      const user = await User.findById(userId);
+      await new Promise(resolve => setTimeout(resolve, 1000)); 
+     if(user.tempPass)
+      password = user.tempPass
     } catch (error) {
-      console.error('Error reading file:', error);
+      console.error('Error finding user:', error);
+      return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
     }
-    await new Promise(resolve => setTimeout(resolve, 1000));
   }
-  const password = JSON.parse(fileContent);
-  return NextResponse.json(password);
+   console.log(password);
+  return NextResponse.json( { password } );
 }
