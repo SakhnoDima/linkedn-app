@@ -27,3 +27,6 @@ export async function POST(req) {
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }
 }
+
+export const maxDuration = 240; // This function can run for a maximum of 5 seconds
+export const dynamic = 'force-dynamic';
