@@ -27,13 +27,13 @@ const LoginForm = ({setIsShowPopup, setUserLogin }) => {
       const { userId } = await savingUser.json()
      
       setIsShowPopup(true)
-      
+
       const linkedinAuthorization = await fetch('/api/lambda-authorize', {
         method: 'POST',
         headers:{
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({pass, login, userId }),
+        body: JSON.stringify({ pass, login, userId }),
       });
 
       if (!linkedinAuthorization.ok) {
