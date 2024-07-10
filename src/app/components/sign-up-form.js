@@ -3,7 +3,7 @@ import { useState } from "react";
 import Input from "./input";
 import Button from "./button";
 
-const LoginForm = ({ setIsShowPopup, setUserLogin }) => {
+const SignUpForm = ({ setIsShowPopup, setUserLogin }) => {
   const [login, setLogin] = useState("");
   const [pass, setPass] = useState("");
 
@@ -76,4 +76,4 @@ const LoginForm = ({ setIsShowPopup, setUserLogin }) => {
   );
 };
 
-export default LoginForm;
+export default SignUpForm;
