@@ -15,12 +15,16 @@ const NavBar = () => {
       <Link className={linkStyle("/")} href="/">
         Home
       </Link>
-      <Link className={linkStyle("/sign-up")} href="/sign-up">
-        Authorization
-      </Link>
       <Link className={linkStyle("/connection")} href="/connection">
         Connection
       </Link>
+      <Link className={linkStyle("/sign-up")} href="/sign-up">
+        Authorization
+      </Link>
+      <Link className={linkStyle("/login")} href="/login">
+        Login
+      </Link>
+   
     </div>
   );
 };

@@ -1,22 +1,22 @@
 "use client";
-import { useState } from "react";
+import { FormEvent } from "react";
+
 import Input from "./input";
 import Button from "./button";
 
 const ConnectionForm = () => {
-  const [connections, setConnections] = useState("");
-  const [keyWords, setKeyWords] = useState("");
-  const [locations, setLocations] = useState("");
-  const [title, setTitle] = useState("");
-  const [language, setLanguage] = useState("");
-
+ 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(connections);
-    console.log(keyWords);
-    console.log(locations.split(","));
-    console.log(title);
-    console.log(language.split(","));
+    const formData = new FormData(e.currentTarget);
+
+    console.log(formData.get("connections"));
+    console.log(formData.get("keyWords"));
+    console.log(formData.get("locations").split(","));
+    console.log(formData.get("title"));
+    console.log(formData.get("locations").split(","));
+
+
   };
 
   return (
@@ -28,8 +28,7 @@ const ConnectionForm = () => {
           name="connections"
           type="number"
           placeholder="Connections"
-          value={connections}
-          setValue={setConnections}
+       
         />
       </label>
 
@@ -40,8 +39,7 @@ const ConnectionForm = () => {
           name="keyWords"
           type="text"
           placeholder="Keywords"
-          value={keyWords}
-          setValue={setKeyWords}
+       
         />
       </label>
       <label className="flex flex-col space-y-2">
@@ -51,8 +49,7 @@ const ConnectionForm = () => {
           name="locations"
           type="text"
           placeholder="Locations"
-          value={locations}
-          setValue={setLocations}
+        
         />
       </label>
       <label className="flex flex-col space-y-2">
@@ -62,8 +59,7 @@ const ConnectionForm = () => {
           name="title"
           type="text"
           placeholder="Title"
-          value={title}
-          setValue={setTitle}
+        
         />
       </label>
       <label className="flex flex-col space-y-2">
@@ -73,8 +69,7 @@ const ConnectionForm = () => {
           name="languages"
           type="text"
           placeholder="Languages"
-          value={language}
-          setValue={setLanguage}
+        
         />
       </label>
       
