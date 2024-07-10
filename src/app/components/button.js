@@ -1,10 +1,13 @@
-import React from 'react'
+import React from 'react';
 
-const Button = ({ type, children, style }) => {
-  return (
-    <button className={`btn ${style}`}
-    type={type}>{children}</button>
-  )
-}
+const Button = React.forwardRef(({ className, children, ...props }, ref) => {
+    return (
+        <button ref={ref} className={`btn ${className}`} {...props}>
+            {children}
+        </button>
+    );
+});
 
-export default Button
+Button.displayName = 'Button';
+
+export default Button;
