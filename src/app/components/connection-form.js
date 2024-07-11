@@ -1,6 +1,6 @@
 'use client';
-import Input from './Input';
-import Button from './Button';
+import Input from './input';
+import Button from './button';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import ArrayInput from "@/app/components/array-input";

@@ -2,8 +2,8 @@
 import { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import Input from './Input';
-import Button from './Button';
+import Input from './input';
+import Button from './button';
 
 const LoginForm = () => {
     const [codeSent, setCodeSent] = useState(false);

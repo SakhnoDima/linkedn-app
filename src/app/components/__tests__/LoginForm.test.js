@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import LoginForm from '../LoginForm';
+import LoginForm from '../login-form';
 
 jest.mock('next/router', () => require('next-router-mock'));
 
