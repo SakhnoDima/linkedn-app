@@ -17,7 +17,7 @@ const SignUpForm = ({ setAuth }) => {
  
         try {
            
-            //openModal(<Popup />)
+            openModal(<Popup />)
 
             // const linkedinAuthorization = await fetch('/api/lambda-authorize', {
             //     method: 'POST',

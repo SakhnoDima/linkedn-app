@@ -41,11 +41,6 @@ export const POST = async (req, res) => {
     );
   }
 
-  console.log("user is auth in linkedin");
-
-  return NextResponse.json({
-    message: "User was saved and login",
-  });
 };
 
 export const maxDuration = 60; // This function can run for a maximum of 5 seconds

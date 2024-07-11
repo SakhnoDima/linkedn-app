@@ -2,13 +2,14 @@
 import { useState } from "react";
 import Input from "./input";
 import Button from "./button";
+import { useModalContext } from "../context/modal-context";
 
 const Popup = () => {
-  const [pass, setPass] = useState("");
+  const [code, setCod] = useState("");
+  const { closeModal} = useModalContext();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("pass", pass);
 
     try {
       const savingPass = await fetch("/api/save-pass", {
@@ -18,7 +19,7 @@ const Popup = () => {
         },
         body: JSON.stringify({
           code,
-          userId,
+          userId: "66900231d298657b51886a85",
         }),
       });
 
@@ -26,6 +27,7 @@ const Popup = () => {
         const errorResponse = await savingPass.json();
         throw new Error(errorResponse.message || "Something went wrong");
       }
+      closeModal()
     } catch (error) {
       console.log(error.message);
     }
@@ -42,8 +44,8 @@ const Popup = () => {
       >
         <Input
           type="text"
-          value={pass}
-          onChange={(e) => setPass(e.target.value)}
+          value={code}
+          onChange={(e) => setCod(e.target.value)}
         />
         <Button className="btn-primary"type="submit">
           <p>Send Pass</p>{" "}
