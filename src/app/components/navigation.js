@@ -15,8 +15,8 @@ const NavBar = () => {
       <Link className={linkStyle("/")} href="/">
         Home
       </Link>
-      <Link className={linkStyle("/connection")} href="/connection">
-        Connection
+      <Link className={linkStyle("/linkedin")} href="/linkedin">
+        Linkedin
       </Link>
       <Link className={linkStyle("/sign-up")} href="/sign-up">
         Authorization

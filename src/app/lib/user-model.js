@@ -1,14 +1,14 @@
 import mongoose from 'mongoose';
 
 const UserSchema = new mongoose.Schema({
-  linkedinLogin:{
+  email:{
     type: String,
-    required: [true, 'Please provide a login'],
-  },  
-  linkedinPass:{
-    type: String,
-    required: [true, 'Please provide a linkedin password'],
+    required: [true, 'Please provide a email'],
   },
+  isLinkedinAuth:{
+    type: Boolean,
+    default: false
+  },  
    tempPass: {
     type: String,
   },

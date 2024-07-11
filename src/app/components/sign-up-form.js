@@ -2,45 +2,36 @@
 import { useState } from 'react';
 import Input from './input';
 import Button from './button';
+import { useModalContext } from '../context/modal-context';
+import Popup from './pop-up';
 
-const SignUpForm = ({ setIsShowPopup, setUserLogin }) => {
+const SignUpForm = ({ setAuth }) => {
     const [login, setLogin] = useState('');
     const [pass, setPass] = useState('');
+    const { openModal } = useModalContext();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        setUserLogin(login);
-
+          
+        //! I SHOULD HAVE USER ID
+ 
         try {
-            const savingUser = await fetch('/api/save-user', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ pass, login }),
-            });
+           
+            //openModal(<Popup />)
 
-            if (!savingUser.ok) {
-                const errorResponse = await savingUser.json();
-                throw new Error(errorResponse.message || 'Something went wrong');
-            }
-            const { userId } = await savingUser.json();
-            console.log('User saved');
-            setIsShowPopup(true);
+            // const linkedinAuthorization = await fetch('/api/lambda-authorize', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify({ pass, login, userId }),
+            // });
 
-            const linkedinAuthorization = await fetch('/api/lambda-authorize', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ pass, login, userId }),
-            });
-
-            if (!linkedinAuthorization.ok) {
-                const errorResponse = await linkedinAuthorization.json();
-                throw new Error(errorResponse.message || 'Something went wrong');
-            }
+            // if (!linkedinAuthorization.ok) {
+            //     const errorResponse = await linkedinAuthorization.json();
+            //     throw new Error(errorResponse.message || 'Something went wrong');
+            // }
+            setAuth(true)
         } catch (error) {
             console.log(error.message);
         }

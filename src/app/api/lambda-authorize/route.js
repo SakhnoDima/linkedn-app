@@ -1,45 +1,52 @@
-import { NextResponse } from 'next/server';
-import User from '@/app/lib/user-model';
-import dbConnect from '@/app/lib/moongose-connect';
+import { NextResponse } from "next/server";
+import User from "@/app/lib/user-model";
+import dbConnect from "@/app/lib/moongose-connect";
 
 export const POST = async (req, res) => {
-    const { login, pass, userId } = await req.json();
+  const { login, pass, userId } = await req.json();
 
-    if (!login || !pass || !userId) {
-        return NextResponse.json({ message: 'Credentials is required' }, { status: 400 });
-    }
-
-    const isConnected = await fetch('https://qyf4aviui4.execute-api.eu-north-1.amazonaws.com/default/linkedin-crawler', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ password: pass, email: login, id: userId }),
-    });
-
-    console.log(isConnected);
-
-    // const existingUser = await User.findOne({linkedinLogin : login})
-
-    // if(existingUser){
-    //   console.log(existingUser);
-    //   return NextResponse.json({ message: 'This email already exist' });
+  if (!login || !pass || !userId) {
+    return NextResponse.json(
+      { message: "Credentials is required" },
+      { status: 400 }
+    );
+  }
+  try {
+    // const isConnected = await fetch('https://qyf4aviui4.execute-api.eu-north-1.amazonaws.com/default/linkedin-crawler', {
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({ password: pass, email: login, id: userId }),
+    // });
+    // if (!isConnected.ok){
+    //     return NextResponse.json({ message: 'User wasn`t authorize in Lambda' }, { status: 500 });
     // }
 
-    // const newUser = await User.create({
-    //   linkedinLogin : login,
-    //   linkedinPass : pass  });
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: userId },
+      { isLinkedinAuth: true },
+      { new: true, upsert: true, runValidators: true }
+    );
 
-    // if (!newUser) {
-    //   return NextResponse.json({ message: 'Something went wrong try later' });
-    // }
+  
+    return NextResponse.json(
+      { message: "User was authorized successful" },
+      { status: 200 }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Internal server error" },
+      { status: 500 }
+    );
+  }
 
-    console.log('Send request to lambda');
+  console.log("user is auth in linkedin");
 
-    return NextResponse.json({
-        message: 'User was saved and login',
-    });
+  return NextResponse.json({
+    message: "User was saved and login",
+  });
 };
 
 export const maxDuration = 60; // This function can run for a maximum of 5 seconds
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
