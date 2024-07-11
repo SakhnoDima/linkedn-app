@@ -1,9 +1,16 @@
-import React from 'react';
-
-const Input = React.forwardRef(({ className, ...props }, ref) => {
-    return <input ref={ref} className={`input ${className}`} {...props} />;
-});
-
-Input.displayName = 'Input';
+const Input = ({ field, form, ...props }) => {
+    return (
+        <input
+            {...field}
+            {...props}
+            className="border border-gray-300 p-2 rounded w-[500px] mt-1"
+        />
+    );
+};
 
 export default Input;
+
+
+
+
+
