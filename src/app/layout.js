@@ -1,7 +1,11 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { getServerSession } from "next-auth";
+
+import { authOptions } from "./api/auth/[...nextauth]/route";
 import NavBar from "./components/navigation";
 import { ModalContextProvider } from "./context/modal-context";
+import UserContextProvider from "@/app/context/user-context"
 import Modal from "./components/modal";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -11,17 +15,22 @@ export const metadata = {
   description: "Linkedin bot",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const session = await getServerSession(authOptions)
   return (
     <html data-theme="light" lang="en">
       <body className={inter.className}>
-        <ModalContextProvider>
-          <div className="px-[50px]">
-            <NavBar />
-            {children}
-          </div>
-          <Modal />
-        </ModalContextProvider>
+       <UserContextProvider>
+       <ModalContextProvider>
+            <div className="px-[50px]">
+              <NavBar />
+              {children}
+            </div>
+            <Modal />
+          </ModalContextProvider>
+       </UserContextProvider>
+         
+  
       </body>
     </html>
   );

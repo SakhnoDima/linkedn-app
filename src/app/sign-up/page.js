@@ -1,10 +1,17 @@
-"use client";
-import { useState } from "react";
-import SignUpForm from "../components/sign-up-form";
-import Popup from "../components/pop-up";
+import SignUpForm from "./sign-up-form";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import { authOptions } from "../api/auth/[...nextauth]/route";
 
-const SignUpPage = () => {
-  return <p>Auth</p>
+
+const SignUpPage = async () => {
+  const session = await getServerSession(authOptions)
+  if (session) {
+    redirect("/")
+  }
+ return(
+  <SignUpForm/>
+ )
 };
 
 export default SignUpPage;

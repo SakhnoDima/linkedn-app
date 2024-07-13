@@ -1,7 +1,8 @@
-"use client";
-import { useEffect, useState } from "react";
+import { getServerSession } from "next-auth";
 import ConnectionForm from "../components/connection-form";
 import LinkedinAuth from "../components/linkedin-auth";
+import { authOptions }  from "../api/auth/[...nextauth]/route";
+
 
 const SendingRequestBlock = () => {
   return (
@@ -18,30 +19,15 @@ const SendingRequestBlock = () => {
   );
 };
 
-const ConnectionPage = () => {
-  const [isAuth, setAuth] = useState(false);
+const ConnectionPage = async() => {
+  const session = await getServerSession(authOptions); 
 
-  useEffect(() => {
-    const isAuth = async () => {
-      const response = await fetch("/api/is-lambda-auth", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId: "669000d2ca3d92b84e73d6c9" }),
-      });
+  return (<>
+   {!session?.user.isLinkedinAuth && <LinkedinAuth />} 
+    <SendingRequestBlock /> 
+  
+  </>
 
-      if (response.ok) {
-        const data = await response.json();
-        setAuth(data.isAuth);
-      }
-    };
-
-    isAuth();
-  }, []);
-
-  return (
-    <>{isAuth ? <SendingRequestBlock /> : <LinkedinAuth setAuth={setAuth} />}</>
   );
 };
 

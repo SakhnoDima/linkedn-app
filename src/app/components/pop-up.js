@@ -6,7 +6,7 @@ import { useModalContext } from "../context/modal-context";
 
 const Popup = () => {
   const [code, setCod] = useState("");
-  const { closeModal} = useModalContext();
+  const { closeModal } = useModalContext();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,7 +19,7 @@ const Popup = () => {
         },
         body: JSON.stringify({
           code,
-          userId: "66900231d298657b51886a85",
+          userId: "66912ddf65ef3fdd9771aab3"
         }),
       });
 

@@ -1,37 +1,40 @@
 'use client';
+
+import axios from 'axios';
 import { useState } from 'react';
+import { useSession } from "next-auth/react";
 import Input from './input';
 import Button from './button';
-import { useModalContext } from '../context/modal-context';
-import Popup from './pop-up';
 
-const SignUpForm = ({ setAuth }) => {
+
+
+
+const LinkedinSignUpForm = () => {
+    const { data: session } = useSession();
     const [login, setLogin] = useState('');
     const [pass, setPass] = useState('');
-    const { openModal } = useModalContext();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
           
-        //! I SHOULD HAVE USER ID
  
         try {
-           
-            openModal(<Popup />)
+            const linkedinAuthorization = await axios.post('/api/lambda-authorize', {
+                pass,
+                login,
+                userId: session.user.id
+              }, {
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                timeout: 600000 
+              });
 
-            // const linkedinAuthorization = await fetch('/api/lambda-authorize', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify({ pass, login, userId }),
-            // });
-
-            // if (!linkedinAuthorization.ok) {
-            //     const errorResponse = await linkedinAuthorization.json();
-            //     throw new Error(errorResponse.message || 'Something went wrong');
-            // }
-            setAuth(true)
+            if (!linkedinAuthorization.ok) {
+                const errorResponse = await linkedinAuthorization.json();
+                throw new Error(errorResponse.message || 'Something went wrong');
+            }
+          
         } catch (error) {
             console.log(error.message);
         }
@@ -48,4 +51,4 @@ const SignUpForm = ({ setAuth }) => {
     );
 };
 
-export default SignUpForm;
+export default LinkedinSignUpForm;

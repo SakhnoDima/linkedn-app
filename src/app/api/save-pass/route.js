@@ -1,12 +1,11 @@
 import { NextResponse } from 'next/server';
 import User from '@/app/lib/user-model';
-import dbConnect from '@/app/lib/moongose-connect';
+
 
 export async function POST(req) {
-    await dbConnect(); //! delete after add in auth path
     try {
         const { code, userId } = await req.json();
-
+        console.log(req.headers);
         if (!code || !userId) {
             return NextResponse.json({ message: 'Password and userId are required' }, { status: 400 });
         }

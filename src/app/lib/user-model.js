@@ -1,9 +1,14 @@
 import mongoose from 'mongoose';
+import dbConnect from './moongose-connect';
 
 const UserSchema = new mongoose.Schema({
   email:{
     type: String,
     required: [true, 'Please provide a email'],
+  },
+  password:{
+    type: String,
+    required: [true, 'Please provide a password'],
   },
   isLinkedinAuth:{
     type: Boolean,
@@ -15,7 +20,9 @@ const UserSchema = new mongoose.Schema({
   
 });
 
-const User = mongoose.models.User || mongoose.model('User', UserSchema);
+await  dbConnect()
+
+const User = mongoose.models.User || mongoose.model('User', UserSchema, "users_collection");
 
 
 export default User;

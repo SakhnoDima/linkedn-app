@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import User from "@/app/lib/user-model";
-import dbConnect from "@/app/lib/moongose-connect";
+import axios from "axios";
 
 export const POST = async (req, res) => {
   const { login, pass, userId } = await req.json();
@@ -12,16 +12,28 @@ export const POST = async (req, res) => {
     );
   }
   try {
-    // const isConnected = await fetch('https://qyf4aviui4.execute-api.eu-north-1.amazonaws.com/default/linkedin-crawler', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({ password: pass, email: login, id: userId }),
-    // });
-    // if (!isConnected.ok){
-    //     return NextResponse.json({ message: 'User wasn`t authorize in Lambda' }, { status: 500 });
-    // }
+    
+    const isConnected = await axios.post(
+      'https://5yd7a3dfj0.execute-api.eu-north-1.amazonaws.com/default/apiTest',
+      {
+        password: pass,
+        email: login,
+        id: userId
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        timeout: 600000 
+      }
+    );
+
+    //TODO шукати причину чого не можемо дочекатися відповіді
+
+    console.log(isConnected.data);
+    if (!isConnected.status === 200){
+        return NextResponse.json({ message: 'User wasn`t authorize in Lambda' }, { status: 500 });
+    }
 
     const updatedUser = await User.findOneAndUpdate(
       { _id: userId },
@@ -35,6 +47,7 @@ export const POST = async (req, res) => {
       { status: 200 }
     );
   } catch (error) {
+    console.error("An error occurred:", error); 
     return NextResponse.json(
       { message: "Internal server error" },
       { status: 500 }
@@ -43,5 +56,5 @@ export const POST = async (req, res) => {
 
 };
 
-export const maxDuration = 60; // This function can run for a maximum of 5 seconds
-export const dynamic = "force-dynamic";
+// export const maxDuration = 60; // This function can run for a maximum of 5 seconds
+// export const dynamic = "force-dynamic";

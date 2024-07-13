@@ -1,9 +1,68 @@
-import { NextResponse } from 'next/server';
+import NextAuth from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { compare } from "bcrypt";
+import User from "@/app/lib/user-model";
 
-export async function POST(req) {
-    return NextResponse.json({ message: 'Nextauth POST request' });
+export const authOptions = {
+  secret: process.env.NEXTAUTH_SECRET,
+  session: {
+    strategy: "jwt",
+  },
+  pages: {
+    signIn: "/login",
+  },
+  providers: [
+    CredentialsProvider({
+      credentials: {
+        email: {},
+        password: { },
+      },
+      async authorize(credentials, req) {
+        const user = await User.findOne({ email: credentials.email });
+
+        if (!user) {
+          return null;
+        }
+
+        const isPasswordCorrect = await compare(
+          credentials.password || " ",
+          user.password
+        );
+
+        if (isPasswordCorrect) {
+          return user;
+        }
+
+        return null;
+      },
+    }),
+  ],
+  callbacks: {
+    async jwt({ token, user, session }) {
+      if(user){
+       return { 
+        ...token,
+        id: user._id,
+        isLinkedinAuth : user.isLinkedinAuth
+       }
+      }
+     
+      return token;
+    },
+    async session({ session, token, user }) {
+     return {
+      ...session,
+      user: {
+        id: token.id,
+        isLinkedinAuth : token.isLinkedinAuth
+      }
+     }
+
+   
+    },
+  },
 }
 
-export async function GET(req) {
-    return NextResponse.json({ message: 'Nextauth GET request' });
-}
+const handler = NextAuth(authOptions)
+
+export { handler as GET, handler as POST };
