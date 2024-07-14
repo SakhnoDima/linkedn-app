@@ -2,6 +2,8 @@ import { getServerSession } from "next-auth";
 import ConnectionForm from "../components/connection-form";
 import LinkedinAuth from "../components/linkedin-auth";
 import { authOptions }  from "../api/auth/[...nextauth]/route";
+import ConnectionSender from "../components/connection-sender";
+import UsersLinkedinFilters from "../components/user-linkedin-filters";
 
 
 const SendingRequestBlock = () => {
@@ -25,7 +27,7 @@ const ConnectionPage = async() => {
   return (<>
    {!session?.user.isLinkedinAuth && <LinkedinAuth />} 
     <SendingRequestBlock /> 
-  
+    <UsersLinkedinFilters/>
   </>
 
   );

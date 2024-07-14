@@ -28,14 +28,14 @@ export const POST = async (req, res) => {
       }
     );
 
-    //TODO шукати причину чого не можемо дочекатися відповіді
+    // //TODO шукати причину чого не можемо дочекатися відповіді
 
     console.log(isConnected.data);
     if (!isConnected.status === 200){
         return NextResponse.json({ message: 'User wasn`t authorize in Lambda' }, { status: 500 });
     }
 
-    const updatedUser = await User.findOneAndUpdate(
+   await User.findOneAndUpdate(
       { _id: userId },
       { isLinkedinAuth: true },
       { new: true, upsert: true, runValidators: true }
@@ -47,7 +47,6 @@ export const POST = async (req, res) => {
       { status: 200 }
     );
   } catch (error) {
-    console.error("An error occurred:", error); 
     return NextResponse.json(
       { message: "Internal server error" },
       { status: 500 }

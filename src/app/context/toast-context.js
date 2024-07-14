@@ -8,7 +8,7 @@ export const ToastContextProvider = ({ children }) => {
   const [toast, setToast] = useState(null);
 
   const showToast = useCallback((message, status) => {
-    setToast({ message, status });
+    setToast({message, status});
     setTimeout(() => {
       setToast(null);
     }, 3000); 

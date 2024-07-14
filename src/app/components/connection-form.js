@@ -49,28 +49,7 @@ const handleConnection = async (values) => {
     });
 }
 
-// const sendFilters = async (filters) => {
-//     const linkedinAuthorization = await axios.post('https://qyf4aviui4.execute-api.eu-north-1.amazonaws.com/default/linkedin-crawler',
-//          {
-//         totalLettersPerDay: filters.connections,
-//         searchTags : filters?.keyWords,
-//         levelOfTarget: 1,
-//         id: '66912ddf65ef3fdd9771aab3',
-//         searchFilters : { 
-//             "Locations": filters.locations, 
-//             "Industry":  filters.industries,
-//           }, 
-        
 
-//       }, {
-//         headers: {
-//           'Content-Type': 'application/json'
-//         },
-//         timeout: 600000 
-//       });
-
-//       console.log(linkedinAuthorization);
-// }
 
 
 const ConnectionForm = () => {
@@ -89,7 +68,7 @@ const ConnectionForm = () => {
         const fetchFilters = async () => {
             const filters = await getFilters();
             // setFiltersData(filters);
-            console.log(filters)
+            // console.log(filters)
             setConnections(filters.connections);
             setTitle(filters.title)
         };
@@ -213,11 +192,12 @@ const ConnectionForm = () => {
                     <Button type="submit"
                             className="mx-auto w-72 bg-indigo-600 hover:bg-indigo-800 rounded-[10px] text-white p-2"
                             disabled={isSubmitting}>
-                        <p>CONNECTING</p>
+                        <p>Save filters</p>
                     </Button>
                 </Form>
             )}
         </Formik>
+        
     );
 };
 
