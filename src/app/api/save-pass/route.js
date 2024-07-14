@@ -5,7 +5,7 @@ import User from '@/app/lib/user-model';
 export async function POST(req) {
     try {
         const { code, userId } = await req.json();
-        console.log(req.headers);
+
         if (!code || !userId) {
             return NextResponse.json({ message: 'Password and userId are required' }, { status: 400 });
         }
@@ -26,5 +26,5 @@ export async function POST(req) {
     }
 }
 
-export const maxDuration = 60; // This function can run for a maximum of 5 seconds
-export const dynamic = 'force-dynamic';
+// export const maxDuration = 60; // This function can run for a maximum of 5 seconds
+// export const dynamic = 'force-dynamic';

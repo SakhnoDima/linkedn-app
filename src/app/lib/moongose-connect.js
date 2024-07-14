@@ -22,12 +22,13 @@ async function dbConnect() {
       bufferCommands: false,
       serverSelectionTimeoutMS: 30000, // 30 seconds
       socketTimeoutMS: 45000, // 45 seconds
-      bufferCommands: false,
-      // useUnifiedTopology: true 
     };
 
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
       return mongoose;
+    }).catch((error) => {
+      console.error('Error connecting to MongoDB:', error);
+      throw error;
     });
   }
   cached.conn = await cached.promise;

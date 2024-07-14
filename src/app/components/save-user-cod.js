@@ -1,35 +1,32 @@
 "use client";
 import { useState } from "react";
+import axios from 'axios';
+import { useSession } from "next-auth/react";
+
 import Input from "./input";
 import Button from "./button";
 import { useModalContext } from "../context/modal-context";
+import { useToastContext } from "../context/toast-context";
 
-const Popup = () => {
+const SaveCodeForm = () => {
+  const { data: session } = useSession();
   const [code, setCod] = useState("");
   const { closeModal } = useModalContext();
-
+  const showToast = useToastContext()
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const savingPass = await fetch("/api/save-pass", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          code,
-          userId: "66912ddf65ef3fdd9771aab3"
-        }),
+      const response = await axios.post("/api/save-pass", {
+        code,
+        userId: session.user.id
       });
 
-      if (!savingPass.ok) {
-        const errorResponse = await savingPass.json();
-        throw new Error(errorResponse.message || "Something went wrong");
-      }
-      closeModal()
+      closeModal();
+      showToast(response?.data.message, "success");
     } catch (error) {
-      console.log(error.message);
+      showToast(error.response?.data.message, "error");
     }
   };
 
@@ -43,16 +40,17 @@ const Popup = () => {
         onSubmit={handleSubmit}
       >
         <Input
+          required
           type="text"
           value={code}
           onChange={(e) => setCod(e.target.value)}
         />
-        <Button className="btn-primary"type="submit">
-          <p>Send Pass</p>{" "}
+        <Button className="btn-primary" type="submit">
+          <p>Send Pass</p>
         </Button>
       </form>
     </div>
   );
 };
 
-export default Popup;
+export default SaveCodeForm;
