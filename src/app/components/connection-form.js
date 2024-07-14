@@ -1,10 +1,14 @@
 'use client';
 import Input from './input';
 import Button from './button';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import {Formik, Form, Field, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
 import ArrayInput from "@/app/components/array-input";
+
+import {useEffect, useState} from "react";
+
 import axios from 'axios';
+
 
 const validationSchema = Yup.object({
     connections: Yup.number().required('Required*'),
@@ -15,6 +19,35 @@ const validationSchema = Yup.object({
     industries: Yup.array().of(Yup.string()),
     serviceCategories: Yup.array().of(Yup.string()),
 });
+
+
+const getFilters = async () => {
+    try {
+        const res = await fetch('/api/linkedin-filters', {
+            method: 'GET',
+            cache: 'no-cache',
+        })
+
+        if (!res.ok) {
+            throw new Error('Failed to fetch filters');
+        }
+
+        return res.json();
+
+    } catch (error) {
+        console.log('Error get filters', error);
+    }
+}
+
+const handleConnection = async (values) => {
+    const response = await fetch('/api/linkedin-filters', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({values}),
+    });
+}
 
 // const sendFilters = async (filters) => {
 //     const linkedinAuthorization = await axios.post('https://qyf4aviui4.execute-api.eu-north-1.amazonaws.com/default/linkedin-crawler',
@@ -39,14 +72,34 @@ const validationSchema = Yup.object({
 //       console.log(linkedinAuthorization);
 // }
 
+
 const ConnectionForm = () => {
     const languageOptions = [
-        { value: 'en', label: 'English' },
-        { value: 'fr', label: 'French' },
-        { value: 'es', label: 'Spanish' },
-        { value: 'ru', label: 'Russian' },
-        { value: 'de', label: 'German' }
+        {value: 'en', label: 'English'},
+        {value: 'fr', label: 'French'},
+        {value: 'es', label: 'Spanish'},
+        {value: 'ru', label: 'Russian'},
+        {value: 'de', label: 'German'}
     ];
+
+    const [connections, setConnections] = useState(0);
+    const [title, setTitle] = useState('');
+
+    useEffect(  () => {
+        const fetchFilters = async () => {
+            const filters = await getFilters();
+            // setFiltersData(filters);
+            console.log(filters)
+            setConnections(filters.connections);
+            setTitle(filters.title)
+        };
+
+        fetchFilters()
+
+    }, []);
+
+
+
     return (
         <Formik
             initialValues={{
@@ -59,9 +112,10 @@ const ConnectionForm = () => {
                 serviceCategories: [],
             }}
             validationSchema={validationSchema}
+
             onSubmit=  {(values, { setSubmitting }) => {
 
-               
+                       handleConnection(values)
                 console.log(values.connections);
                 console.log(values.keyWords);
                 console.log(values.locations);
@@ -70,12 +124,14 @@ const ConnectionForm = () => {
                 console.log(values.industries);
                 console.log(values.serviceCategories);
 
+
                 sendFilters(values);
 
                 setSubmitting(false);
             }}
+
         >
-            {({ isSubmitting }) => (
+            {({isSubmitting}) => (
                 <Form className="flex flex-col space-y-4 p-4">
                     <div className="flex center gap-[30px] mx-auto">
                         <label className="flex flex-col space-y-2 w-[500px]">
