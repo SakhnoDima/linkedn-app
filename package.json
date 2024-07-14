@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@next/swc-win32-x64-msvc": "^14.2.5",
     "axios": "^1.7.2",
     "bcrypt": "^5.1.1",
     "clsx": "^2.1.1",
