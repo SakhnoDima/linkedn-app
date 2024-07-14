@@ -4,17 +4,40 @@ import Button from './button';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import ArrayInput from "@/app/components/array-input";
+import axios from 'axios';
 
 const validationSchema = Yup.object({
     connections: Yup.number().required('Required*'),
-    keyWords: Yup.array().of(Yup.string()).required('Required*'),
-    locations: Yup.array().of(Yup.string()).required('Required*'),
-    title: Yup.string().required('Required*'),
-    languages: Yup.array().of(Yup.string()).required('Required*'),
-    industries: Yup.array().of(Yup.string()).required('Required*'),
-    serviceCategories: Yup.array().of(Yup.string()).required('Required*'),
+    keyWords: Yup.string().required('Required*'),
+    locations: Yup.array().of(Yup.string()),
+    title: Yup.string(),
+    languages: Yup.array().of(Yup.string()),
+    industries: Yup.array().of(Yup.string()),
+    serviceCategories: Yup.array().of(Yup.string()),
 });
 
+// const sendFilters = async (filters) => {
+//     const linkedinAuthorization = await axios.post('https://qyf4aviui4.execute-api.eu-north-1.amazonaws.com/default/linkedin-crawler',
+//          {
+//         totalLettersPerDay: filters.connections,
+//         searchTags : filters?.keyWords,
+//         levelOfTarget: 1,
+//         id: '66912ddf65ef3fdd9771aab3',
+//         searchFilters : { 
+//             "Locations": filters.locations, 
+//             "Industry":  filters.industries,
+//           }, 
+        
+
+//       }, {
+//         headers: {
+//           'Content-Type': 'application/json'
+//         },
+//         timeout: 600000 
+//       });
+
+//       console.log(linkedinAuthorization);
+// }
 
 const ConnectionForm = () => {
     const languageOptions = [
@@ -28,7 +51,7 @@ const ConnectionForm = () => {
         <Formik
             initialValues={{
                 connections: '',
-                keyWords: [],
+                keyWords: '',
                 locations: [],
                 title: '',
                 languages: [],
@@ -36,7 +59,9 @@ const ConnectionForm = () => {
                 serviceCategories: [],
             }}
             validationSchema={validationSchema}
-            onSubmit={(values, { setSubmitting }) => {
+            onSubmit=  {(values, { setSubmitting }) => {
+
+               
                 console.log(values.connections);
                 console.log(values.keyWords);
                 console.log(values.locations);
@@ -44,6 +69,8 @@ const ConnectionForm = () => {
                 console.log(values.languages);
                 console.log(values.industries);
                 console.log(values.serviceCategories);
+
+                sendFilters(values);
 
                 setSubmitting(false);
             }}
@@ -74,7 +101,7 @@ const ConnectionForm = () => {
                         </label>
                         <label className="flex flex-col space-y-2">
                             4. Add keywords
-                            <Field name="keyWords" placeholder="Keywords" component={ArrayInput}/>
+                            <Field name="keyWords" placeholder="Keywords" component={Input}/>
                             <ErrorMessage name="keyWords" component="div" className="text-red-500"/>
                         </label>
                     </div>

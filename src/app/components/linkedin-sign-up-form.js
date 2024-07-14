@@ -1,46 +1,40 @@
 'use client';
+
+import axios from 'axios';
 import { useState } from 'react';
+import { useSession } from "next-auth/react";
 import Input from './input';
 import Button from './button';
 
-const SignUpForm = ({ setIsShowPopup, setUserLogin }) => {
+
+
+
+const LinkedinSignUpForm = () => {
+    const { data: session } = useSession();
     const [login, setLogin] = useState('');
     const [pass, setPass] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        setUserLogin(login);
-
+          
+ 
         try {
-            const savingUser = await fetch('/api/save-user', {
-                method: 'POST',
+            const linkedinAuthorization = await axios.post('/api/lambda-authorize', {
+                pass,
+                login,
+                userId: session.user.id
+              }, {
                 headers: {
-                    'Content-Type': 'application/json',
+                  'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ pass, login }),
-            });
-
-            if (!savingUser.ok) {
-                const errorResponse = await savingUser.json();
-                throw new Error(errorResponse.message || 'Something went wrong');
-            }
-            const { userId } = await savingUser.json();
-            console.log('User saved');
-            setIsShowPopup(true);
-
-            const linkedinAuthorization = await fetch('/api/lambda-authorize', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ pass, login, userId }),
-            });
+                timeout: 600000 
+              });
 
             if (!linkedinAuthorization.ok) {
                 const errorResponse = await linkedinAuthorization.json();
                 throw new Error(errorResponse.message || 'Something went wrong');
             }
+          
         } catch (error) {
             console.log(error.message);
         }
@@ -57,4 +51,4 @@ const SignUpForm = ({ setIsShowPopup, setUserLogin }) => {
     );
 };
 
-export default SignUpForm;
+export default LinkedinSignUpForm;
