@@ -4,9 +4,9 @@ import axios from "axios";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 
+import { useToastContext } from "../context/toast-context";
 import Input from "./input";
 import Button from "./button";
-import { useToastContext } from "../context/toast-context";
 
 
 const LinkedinSignUpForm = ({setIsLinkedinAuth}) => {

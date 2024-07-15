@@ -21,9 +21,6 @@ const NavBar = () => {
       </Link>
       {!session && (
         <>
-          <Link className={linkStyle("/sign-up")} href="/sign-up">
-            Authorization
-          </Link>
           <Link className={linkStyle("/login")} href="/login">
             Login
           </Link>

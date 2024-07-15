@@ -3,7 +3,6 @@ import { useState } from "react";
 import ConnectionForm from "../components/connection-form";
 import UsersLinkedinFilters from "../components/user-linkedin-filters";
 
-
 const FiltersBlock = () => {
     const [filters, setFilters] = useState([])
   return (

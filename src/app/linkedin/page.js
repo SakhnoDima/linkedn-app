@@ -6,6 +6,7 @@ import FiltersBlock from "./filters-block";
 
 
 
+
 const ConnectionPage = async() => {
   const session = await getServerSession(authOptions); 
 
