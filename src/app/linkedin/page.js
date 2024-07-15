@@ -8,9 +8,9 @@ import FiltersBlock from "./filters-block";
 
 const ConnectionPage = async() => {
   const session = await getServerSession(authOptions); 
-console.log(session?.user.isLinkedinAuth);
+
   return (<>
-   {!session?.user.isLinkedinAuth && <LinkedinAuth />} 
+   {!session?.user.isLinkedinAuth && <LinkedinAuth isAuth={session?.user.isLinkedinAuth}/>} 
     <FiltersBlock /> 
   </>
 

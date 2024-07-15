@@ -8,7 +8,7 @@ const Toast = ({ message = "Error", status = "success" }) => {
         </div>
       )}
        {status === "success" && (
-        <div className={`alert alert-error`}>
+        <div className={`alert alert-success`}>
           <span>{message}</span>
         </div>
       )}

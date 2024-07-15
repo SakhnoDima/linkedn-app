@@ -3,12 +3,14 @@
 import axios from "axios";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
+
 import Input from "./input";
 import Button from "./button";
 import { useToastContext } from "../context/toast-context";
 
-const LinkedinSignUpForm = () => {
-  const { data: session } = useSession();
+
+const LinkedinSignUpForm = ({setIsLinkedinAuth}) => {
+  const { data: session, update } = useSession();
   const [login, setLogin] = useState("");
   const [pass, setPass] = useState("");
   const showToast = useToastContext();
@@ -31,9 +33,11 @@ const LinkedinSignUpForm = () => {
           timeout: 600000,
         }
       );
-
-      showToast(linkedinAuthorization.data.message, "successful");
+      showToast(linkedinAuthorization.data.message, "success");
+      setIsLinkedinAuth(true);
+      update({isLinkedinAuth: true})
     } catch (error) {
+      console.log(error);
       showToast(error.response.data.message, "error");
     }
   };

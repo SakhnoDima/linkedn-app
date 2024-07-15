@@ -30,7 +30,6 @@ const UsersLinkedinFilters = ({ filters, setFilters }) => {
     fetchLinkedinFilters();
   }, [session?.user.id]);
 
-console.log(filters);
   return (
     <div className="overflow-x-auto">
       <table className="table">
