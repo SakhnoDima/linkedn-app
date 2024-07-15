@@ -36,7 +36,9 @@ const UserLinkedinFiltersItem = ({ data, index, setFilters }) => {
           id: data._id,
         },
       });
+
       setFilters((prev) => prev.filter((element) => element._id !== data._id));
+      showToast("Filter removed successfully", "success");
     } catch (error) {
       console.log(error?.response.data.message);
       showToast(error?.response.data.message, "error");
