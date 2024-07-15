@@ -21,9 +21,6 @@ const NavBar = () => {
       </Link>
       {!session && (
         <>
-          <Link className={linkStyle("/sign-up")} href="/sign-up">
-            Authorization
-          </Link>
           <Link className={linkStyle("/login")} href="/login">
             Login
           </Link>
@@ -33,6 +30,9 @@ const NavBar = () => {
         <>
           <Link className={linkStyle("/linkedin")} href="/linkedin">
             Linkedin
+          </Link>
+          <Link className={linkStyle("/dashboard")} href="/dashboard">
+            Dashboard
           </Link>
           <LogOut />
         </>

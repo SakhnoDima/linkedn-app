@@ -37,3 +37,23 @@ export const GET = async (req, res) => {
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 };
+
+export const DELETE = async (req, res) => {
+  try {
+    const { id } = await req.json();
+
+    const isDeleted = await linkedinFilters.findOneAndDelete({ _id: id });
+
+    if(!isDeleted){
+      throw new Error("Item not deleted. Please try again. ")
+    }
+
+    return NextResponse.json(
+      { message: "Filter deleted successfully" },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error deleting filter: ", error);
+    return NextResponse.json({ message: error.message }, { status: 500 });
+  }
+};

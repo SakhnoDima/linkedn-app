@@ -15,7 +15,7 @@ export const authOptions = {
     CredentialsProvider({
       credentials: {
         email: {},
-        password: { },
+        password: {},
       },
       async authorize(credentials, req) {
         const user = await User.findOne({ email: credentials.email });
@@ -38,31 +38,34 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user, session }) {
-      if(user){
-       return { 
-        ...token,
-        id: user._id,
-        isLinkedinAuth : user.isLinkedinAuth
-       }
+    async jwt({ token, user, session, trigger }) {
+
+      if (trigger === "update" && session.isLinkedinAuth) {
+        token.isLinkedinAuth = session.isLinkedinAuth;
       }
-     
+
+      if (user) {
+        return {
+          ...token,
+          id: user._id,
+          isLinkedinAuth: user.isLinkedinAuth,
+        };
+      }
+
       return token;
     },
     async session({ session, token, user }) {
-     return {
-      ...session,
-      user: {
-        id: token.id,
-        isLinkedinAuth : token.isLinkedinAuth
-      }
-     }
-
-   
+      return {
+        ...session,
+        user: {
+          id: token.id,
+          isLinkedinAuth: token.isLinkedinAuth,
+        },
+      };
     },
   },
-}
+};
 
-const handler = NextAuth(authOptions)
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };

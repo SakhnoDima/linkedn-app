@@ -15,8 +15,8 @@ const UsersLinkedinFilters = ({ filters, setFilters }) => {
       try {
         const linkedinFilters = await axios.get("/api/linkedin-filters", {
           params: {
-            userId: session?.user.id
-        }
+            userId: session?.user.id,
+          },
         });
         if (session?.user.id) {
           setFilters([...linkedinFilters.data.reverse()]);
@@ -30,7 +30,6 @@ const UsersLinkedinFilters = ({ filters, setFilters }) => {
     fetchLinkedinFilters();
   }, [session?.user.id]);
 
-console.log(filters);
   return (
     <div className="overflow-x-auto">
       <table className="table">
@@ -48,7 +47,13 @@ console.log(filters);
         <tbody>
           {filters.length > 0 ? (
             filters.map((data, index) => (
-              <UserLinkedinFiltersItem key={index} data={data} index={index} />
+              <UserLinkedinFiltersItem
+                key={index}
+                data={data}
+                index={index}
+                filters={filters}
+                setFilters={setFilters}
+              />
             ))
           ) : (
             <tr>
