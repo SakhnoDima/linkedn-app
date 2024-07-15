@@ -6,18 +6,25 @@ import mongoose from "mongoose";
 
 export const POST = async (req, res) => {
   const { values, userId } = await req.json();
-  await dbConnect();
-  await LinkedinFilters.create({
-    userId: new mongoose.Types.ObjectId(userId),
-    connections: values.connections,
-    keyWords: values.keyWords,
-    locations: values.locations,
-    title: values.title,
-    languages: values.languages,
-    industries: values.industries,
-    serviceCategories: values.serviceCategories,
-  });
-  return NextResponse.json({ message: "Add filters" });
+  try {
+    const newFilter = await LinkedinFilters.create({
+      userId: new mongoose.Types.ObjectId(userId),
+      connections: values.connections,
+      keyWords: values.keyWords,
+      locations: values.locations,
+      title: values.title,
+      languages: values.languages,
+      industries: values.industries,
+      serviceCategories: values.serviceCategories,
+    });
+
+    return NextResponse.json(
+      { message: "Add filters", filter: newFilter },
+      { status: 200 }
+    );
+  } catch (error) {
+    return NextResponse.json({ message: error.message }, { status: 500 });
+  }
 };
 
 export const GET = async (req, res) => {
@@ -44,8 +51,8 @@ export const DELETE = async (req, res) => {
 
     const isDeleted = await linkedinFilters.findOneAndDelete({ _id: id });
 
-    if(!isDeleted){
-      throw new Error("Item not deleted. Please try again. ")
+    if (!isDeleted) {
+      throw new Error("Item not deleted. Please try again. ");
     }
 
     return NextResponse.json(
