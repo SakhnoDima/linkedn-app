@@ -1,0 +1,20 @@
+"use client";
+const Toast = ({ message = "Error", status = "success" }) => {
+  return (
+    <div className="toast toast-top toast-start">
+      {status === "error" && (
+        <div className={`alert alert-error`}>
+          <span>{message}</span>
+        </div>
+      )}
+       {status === "success" && (
+        <div className={`alert alert-error`}>
+          <span>{message}</span>
+        </div>
+      )}
+       
+    </div>
+  );
+};
+
+export default Toast;
