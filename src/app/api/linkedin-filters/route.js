@@ -1,27 +1,39 @@
-import { NextResponse } from 'next/server';
-import linkedinFilters from '@/app/lib/linkedin-filters-model';
-import dbConnect from '@/app/lib/moongose-connect';
+import { NextResponse } from "next/server";
+import linkedinFilters from "@/app/lib/linkedin-filters-model";
+import dbConnect from "@/app/lib/moongose-connect";
 import LinkedinFilters from "@/app/lib/linkedin-filters-model";
+import mongoose from "mongoose";
 
 export const POST = async (req, res) => {
-    const {values} = await req.json();
-    console.log(values)
-    await dbConnect();
-    await LinkedinFilters.create({
-        connections: values.connections,
-        keyWords: values. keyWords,
-        locations: values.locations,
-        title: values.title,
-        languages: values.languages,
-        industries: values.industries,
-        serviceCategories: values.serviceCategories,
-    })
-    return NextResponse.json({message: 'Add filters'})
-}
+  const { values, userId } = await req.json();
+  await dbConnect();
+  await LinkedinFilters.create({
+    userId: new mongoose.Types.ObjectId(userId),
+    connections: values.connections,
+    keyWords: values.keyWords,
+    locations: values.locations,
+    title: values.title,
+    languages: values.languages,
+    industries: values.industries,
+    serviceCategories: values.serviceCategories,
+  });
+  return NextResponse.json({ message: "Add filters" });
+};
 
-export const GET = async () => {
-    await dbConnect();
-    const filters = await LinkedinFilters.findById('669113b233f91a3ad9ef7035');
-    // console.log(filters)
+export const GET = async (req, res) => {
+  const { searchParams } = new URL(req.nextUrl);
+  const userId = searchParams.get("userId");
+
+  try {
+    const filters = await LinkedinFilters.find({ userId: userId });
+    if (!filters) {
+      return NextResponse.json(
+        { message: "Something went wrong try letter" },
+        { status: 500 }
+      );
+    }
     return NextResponse.json(filters);
-}
+  } catch (error) {
+    return NextResponse.json({ message: error.message }, { status: 500 });
+  }
+};

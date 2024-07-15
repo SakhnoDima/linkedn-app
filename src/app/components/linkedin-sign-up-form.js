@@ -32,7 +32,7 @@ const LinkedinSignUpForm = () => {
         }
       );
 
-      showToast(linkedinAuthorization.data.message);
+      showToast(linkedinAuthorization.data.message, "successful");
     } catch (error) {
       showToast(error.response.data.message, "error");
     }

@@ -6,27 +6,31 @@ import { useEffect, useState } from "react";
 import ConnectionSender from "./connection-sender";
 import UserLinkedinFiltersItem from "./user-linkedin-filters-item";
 
-const UsersLinkedinFilters = () => {
+const UsersLinkedinFilters = ({ filters, setFilters }) => {
   const { data: session } = useSession();
   const showToast = useToastContext();
-  const [filters, setFilters] = useState([]);
 
   useEffect(() => {
     const fetchLinkedinFilters = async () => {
       try {
-        const linkedinFilters = await axios.get("/api/linkedin-filters");
-
-        setFilters([linkedinFilters.data]);
+        const linkedinFilters = await axios.get("/api/linkedin-filters", {
+          params: {
+            userId: session?.user.id
+        }
+        });
+        if (session?.user.id) {
+          setFilters([...linkedinFilters.data.reverse()]);
+        }
       } catch (error) {
+        console.log(error);
         showToast(error.response.data.message, "error");
       }
     };
 
     fetchLinkedinFilters();
-  }, []);
+  }, [session?.user.id]);
 
-  console.log(filters);
-
+console.log(filters);
   return (
     <div className="overflow-x-auto">
       <table className="table">
@@ -42,9 +46,9 @@ const UsersLinkedinFilters = () => {
           </tr>
         </thead>
         <tbody>
-        {filters.length > 0 ? (
+          {filters.length > 0 ? (
             filters.map((data, index) => (
-           <UserLinkedinFiltersItem data={data} index={index}/>
+              <UserLinkedinFiltersItem key={index} data={data} index={index} />
             ))
           ) : (
             <tr>

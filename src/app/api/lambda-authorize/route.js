@@ -13,27 +13,27 @@ export const POST = async (req, res) => {
   }
   try {
     
-    const isConnected = await axios.post(
-      'https://5yd7a3dfj0.execute-api.eu-north-1.amazonaws.com/default/apiTest',
-      {
-        password: pass,
-        email: login,
-        id: userId
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        timeout: 600000 
-      }
-    );
+    // const isConnected = await axios.post(
+    //   'https://5yd7a3dfj0.execute-api.eu-north-1.amazonaws.com/default/apiTest',
+    //   {
+    //     password: pass,
+    //     email: login,
+    //     id: userId
+    //   },
+    //   {
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     timeout: 600000 
+    //   }
+    // );
 
-    // //TODO шукати причину чого не можемо дочекатися відповіді
+    // // //TODO шукати причину чого не можемо дочекатися відповіді
 
-    console.log(isConnected.data);
-    if (!isConnected.status === 200){
-        return NextResponse.json({ message: 'User wasn`t authorize in Lambda' }, { status: 500 });
-    }
+    // console.log(isConnected.data);
+    // if (!isConnected.status === 200){
+    //     return NextResponse.json({ message: 'User wasn`t authorize in Lambda' }, { status: 500 });
+    // }
 
    await User.findOneAndUpdate(
       { _id: userId },

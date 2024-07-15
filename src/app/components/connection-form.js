@@ -1,13 +1,16 @@
 'use client';
-import Input from './input';
-import Button from './button';
-import {Formik, Form, Field, ErrorMessage} from 'formik';
-import * as Yup from 'yup';
-import ArrayInput from "@/app/components/array-input";
 
 import {useEffect, useState} from "react";
-
 import axios from 'axios';
+import { Formik, Form, Field, ErrorMessage} from 'formik';
+import * as Yup from 'yup';
+import { useSession } from "next-auth/react";
+
+import Input from './input';
+import Button from './button';
+import ArrayInput from "@/app/components/array-input";
+
+
 
 
 const validationSchema = Yup.object({
@@ -21,38 +24,43 @@ const validationSchema = Yup.object({
 });
 
 
-const getFilters = async () => {
-    try {
-        const res = await fetch('/api/linkedin-filters', {
-            method: 'GET',
-            cache: 'no-cache',
-        })
+// const getFilters = async () => {
+//     try {
+//         const res = await fetch('/api/linkedin-filters', {
+//             method: 'GET',
+//             cache: 'no-cache',
+//         })
 
-        if (!res.ok) {
-            throw new Error('Failed to fetch filters');
-        }
+//         if (!res.ok) {
+//             throw new Error('Failed to fetch filters');
+//         }
 
-        return res.json();
+//         return res.json();
 
-    } catch (error) {
-        console.log('Error get filters', error);
-    }
-}
+//     } catch (error) {
+//         console.log('Error get filters', error);
+//     }
+// }
 
-const handleConnection = async (values) => {
+const handleConnection = async (values, userId) => {
+    
     const response = await fetch('/api/linkedin-filters', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({values}),
+        body: JSON.stringify({values, userId}),
     });
 }
 
 
 
 
-const ConnectionForm = () => {
+const ConnectionForm = ({setFilters}) => {
+    const { data: session } = useSession();
+    const [connections, setConnections] = useState(0);
+    const [title, setTitle] = useState('');
+
     const languageOptions = [
         {value: 'en', label: 'English'},
         {value: 'fr', label: 'French'},
@@ -61,16 +69,14 @@ const ConnectionForm = () => {
         {value: 'de', label: 'German'}
     ];
 
-    const [connections, setConnections] = useState(0);
-    const [title, setTitle] = useState('');
 
     useEffect(  () => {
         const fetchFilters = async () => {
-            const filters = await getFilters();
+            // const filters = await getFilters();
             // setFiltersData(filters);
             // console.log(filters)
-            setConnections(filters.connections);
-            setTitle(filters.title)
+            // setConnections(filters.connections);
+            // setTitle(filters.title)
         };
 
         fetchFilters()
@@ -94,7 +100,7 @@ const ConnectionForm = () => {
 
             onSubmit=  {(values, { setSubmitting }) => {
 
-                       handleConnection(values)
+                       handleConnection(values, session.user.id)
                 console.log(values.connections);
                 console.log(values.keyWords);
                 console.log(values.locations);
@@ -103,8 +109,8 @@ const ConnectionForm = () => {
                 console.log(values.industries);
                 console.log(values.serviceCategories);
 
-
-                sendFilters(values);
+                setFilters(prev => [values, ...prev])
+                
 
                 setSubmitting(false);
             }}

@@ -27,15 +27,15 @@ const UserLinkedinFiltersItem = ({ data, index}) => {
     
         }
   return (
-    <tr key={index}>
+    <tr>
     <td>{index + 1}</td>
     <td>{data.connections}</td>
-    <td>{data.keyWords.join(", ")}</td>
+    <td>{data.keyWords}</td>
     <td>{data.locations.join(", ")}</td>
     <td>{data.title}</td>
     <td>{data.industries.join(", ")}</td>
     <td>{data.languages.join(", ")}</td>
-    <td onClick={handleClick} className="">Click to start connections</td>
+    <td onClick={handleClick} className="underline hover:text-blue-600 hover:cursor-pointer" >Click to start connections</td>
     
   </tr>
   )
