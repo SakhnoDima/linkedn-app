@@ -42,9 +42,7 @@ export const DELETE = async (req, res) => {
   try {
     const { id } = await req.json();
 
-    console.log(id);
-
-    const isDeleted = await linkedinFilters.findOneAndDelete({ _is: id });
+    const isDeleted = await linkedinFilters.findOneAndDelete({ _id: id });
 
     if(!isDeleted){
       throw new Error("Item not deleted. Please try again. ")
