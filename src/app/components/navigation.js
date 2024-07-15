@@ -31,6 +31,9 @@ const NavBar = () => {
           <Link className={linkStyle("/linkedin")} href="/linkedin">
             Linkedin
           </Link>
+          <Link className={linkStyle("/dashboard")} href="/dashboard">
+            Dashboard
+          </Link>
           <LogOut />
         </>
       )}
