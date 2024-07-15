@@ -1,11 +1,16 @@
 import mongoose from 'mongoose';
 
 const LinkedinFiltersSchema = new mongoose.Schema({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users_collection',
+        required: true
+    },
     connections: {
         type: Number,
     },
     keyWords: {
-        type: Array,
+        type: String,
     },
     locations: {
         type: Array,

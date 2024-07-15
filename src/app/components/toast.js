@@ -1,12 +1,20 @@
-const Toast = ({ message = "Error", status="error" }) => {
-  console.log(status);
-    return (
-      <div className="toast toast-top toast-start">
-        <div className={`alert alert-${status}`}>
+"use client";
+const Toast = ({ message = "Error", status = "success" }) => {
+  return (
+    <div className="toast toast-top toast-start">
+      {status === "error" && (
+        <div className={`alert alert-error`}>
           <span>{message}</span>
         </div>
-      </div>
-    );
-  };
-  
-  export default Toast;
+      )}
+       {status === "success" && (
+        <div className={`alert alert-error`}>
+          <span>{message}</span>
+        </div>
+      )}
+       
+    </div>
+  );
+};
+
+export default Toast;
