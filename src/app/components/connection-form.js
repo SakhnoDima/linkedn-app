@@ -66,6 +66,7 @@ const ConnectionForm = ({ setFilters }) => {
       </p>
     <Formik
       initialValues={{
+        targetName:"",
         connections: "",
         keyWords: "",
         locations: [],
@@ -77,14 +78,7 @@ const ConnectionForm = ({ setFilters }) => {
       validationSchema={validationSchema}
       onSubmit={(values, { setSubmitting }) => {
         handleConnection(values, session.user.id);
-        console.log(values.connections);
-        console.log(values.keyWords);
-        console.log(values.locations);
-        console.log(values.title);
-        console.log(values.languages);
-        console.log(values.industries);
-        console.log(values.serviceCategories);
-
+        console.log(values);
         setSubmitting(false);
       }}
     >
@@ -92,7 +86,21 @@ const ConnectionForm = ({ setFilters }) => {
         <Form className="flex flex-col space-y-4 p-4">
           <div className="flex center gap-[30px] mx-auto">
             <label className="flex flex-col space-y-2 w-[500px]">
-              1. How many connections would you like to send?
+            <label className="flex flex-col space-y-2 w-[500px]">
+              1. Add Your target filters name.
+              <Field
+                name="targetName"
+                type="string"
+                placeholder="Name"
+                as={Input}
+              />
+              <ErrorMessage
+                name="connections"
+                component="div"
+                className="text-red-500"
+              />
+            </label>
+              2. How many connections would you like to send?
               <Field
                 name="connections"
                 type="number"
@@ -106,7 +114,7 @@ const ConnectionForm = ({ setFilters }) => {
               />
             </label>
             <label className="flex flex-col space-y-2 w-[500px]">
-              2. Add Title
+              3. Add Title
               <Field
                 className="mt-1"
                 name="title"
@@ -126,7 +134,7 @@ const ConnectionForm = ({ setFilters }) => {
           </div>
           <div className="flex center gap-[30px] mx-auto">
             <label className="flex flex-col space-y-2">
-              3. Add Locations
+              4. Add Locations
               <Field
                 name="locations"
                 placeholder="Locations"
@@ -139,7 +147,7 @@ const ConnectionForm = ({ setFilters }) => {
               />
             </label>
             <label className="flex flex-col space-y-2">
-              4. Add keywords
+              5. Add keywords
               <Field name="keyWords" placeholder="Keywords" component={Input} />
               <ErrorMessage
                 name="keyWords"
@@ -150,7 +158,7 @@ const ConnectionForm = ({ setFilters }) => {
           </div>
           <div className="flex center gap-[30px] mx-auto">
             <label className="flex flex-col space-y-2">
-              5. Add service categories
+              6. Add service categories
               <Field
                 name="serviceCategories"
                 placeholder="Service categories"
@@ -163,7 +171,7 @@ const ConnectionForm = ({ setFilters }) => {
               />
             </label>
             <label className="flex flex-col space-y-2 w-[500px]">
-              6. Add industry
+              7. Add industry
               <Field
                 name="industries"
                 type="text"
@@ -179,7 +187,7 @@ const ConnectionForm = ({ setFilters }) => {
           </div>
 
           <label className="flex flex-col mx-auto">
-            <span className="mt-5">7. Add profile language</span>
+            <span className="mt-5">8. Add profile language</span>
             <Field
               name="languages"
               component={({ field, form, ...props }) => (

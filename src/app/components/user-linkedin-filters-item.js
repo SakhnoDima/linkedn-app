@@ -9,7 +9,7 @@ const UserLinkedinFiltersItem = ({ data, setFilters }) => {
       const linkedinAuthorization = await axios.post(
         "/api/connections",
         {
-         data
+          data,
         },
         {
           headers: {
@@ -18,15 +18,12 @@ const UserLinkedinFiltersItem = ({ data, setFilters }) => {
           timeout: 600000,
         }
       );
-  
 
       showToast(linkedinAuthorization.data.message, "success");
     } catch (error) {
       console.log(error);
       showToast(error?.response.data.message || "Server error", "error");
     }
-  
-
   };
 
   const handleDelete = async () => {
@@ -49,6 +46,7 @@ const UserLinkedinFiltersItem = ({ data, setFilters }) => {
   };
   return (
     <tr>
+      <td>{data.targetName}</td>
       <td>{data.connections}</td>
       <td>{data.keyWords}</td>
       <td>{data.locations.join(", ")}</td>

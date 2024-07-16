@@ -8,6 +8,7 @@ export const POST = async (req, res) => {
   const { values, userId } = await req.json();
   try {
     const newFilter = await LinkedinFilters.create({
+      targetName: values.targetName,
       userId: new mongoose.Types.ObjectId(userId),
       connections: values.connections,
       keyWords: values.keyWords,

@@ -12,8 +12,7 @@ const UsersLinkedinFilters = () => {
   const { data: session } = useSession();
   const { openModal } = useModalContext();
   const showToast = useToastContext();
-  const [filters, setFilters] = useState([])
-
+  const [filters, setFilters] = useState([]);
 
   useEffect(() => {
     const fetchLinkedinFilters = async () => {
@@ -49,6 +48,7 @@ const UsersLinkedinFilters = () => {
       <table className="table">
         <thead>
           <tr>
+            <th>Name</th>
             <th>Connections</th>
             <th>Keywords</th>
             <th>Locations</th>
