@@ -10,11 +10,13 @@ import { useToastContext } from "../context/toast-context";
 import axios from "axios";
 import { signIn } from "next-auth/react";
 
+const isProduction = process.env.NEXT_PUBLIC_PRODUCTION || null
+
 const AthForm = () => {
-  const [isAuthorize, setIsAuthorize] = useState(false);
+  const [isAuthorize, setIsAuthorize] = useState(isProduction);
   const showToast = useToastContext();
   const router = useRouter();
-
+console.log("is prod", isProduction);
   const initialValues = {
     email: "",
     password: "",
@@ -110,19 +112,24 @@ const AthForm = () => {
               />
             </div>
             <div>
-              <p className="text-center">
-                {isAuthorize
-                  ? "I haven't authorise yet"
-                  : "I've already authorised"}
-                <span className="ml-2 underline hover:cursor-pointer hover:text-blue-600" onClick={() => setIsAuthorize(!isAuthorize)}>
-                  {isAuthorize ? "Authorise" : "Login"}
-                </span>
-              </p>
+              {!isProduction && (
+                <p className="text-center">
+                  {isAuthorize
+                    ? "I haven't authorise yet"
+                    : "I've already authorised"}
+                  <span
+                    className="ml-2 underline hover:cursor-pointer hover:text-blue-600"
+                    onClick={() => setIsAuthorize(!isAuthorize)}
+                  >
+                    {isAuthorize ? "Authorise" : "Login"}
+                  </span>
+                </p>
+              )}
             </div>
 
             <Button
               type="submit"
-              className="btn-primary"
+              className="btn-primary w-[170px]"
               disabled={isSubmitting}
             >
               <p>{isAuthorize ? "Login" : "Authorise"}</p>
