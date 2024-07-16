@@ -26,7 +26,7 @@ const AthForm = () => {
       .required("Email is required"),
     password: Yup.string().required("Password is required"),
   });
-  const handlerAuthorize = async (values, { setSubmitting, setErrors }) => {
+  const handlerAuthorize = async (values, { setSubmitting }) => {
     try {
       const response = await axios.post("/api/auth/register", {
         email: values.email,
@@ -45,7 +45,7 @@ const AthForm = () => {
     }
   };
 
-  const handlerLogIn = async (values, { setSubmitting, setErrors }) => {
+  const handlerLogIn = async (values, { setSubmitting }) => {
     try {
       const response = await signIn("credentials", {
         email: values.email,
@@ -79,7 +79,7 @@ const AthForm = () => {
         validationSchema={validationSchema}
         onSubmit={isAuthorize ? handlerLogIn : handlerAuthorize}
       >
-        {({ isSubmitting, errors }) => (
+        {({ isSubmitting }) => (
           <Form className="flex flex-col gap-[15px] items-center">
             <div className="flex flex-col gap-2">
               <Field
