@@ -21,30 +21,11 @@ const validationSchema = Yup.object({
   serviceCategories: Yup.array().of(Yup.string()),
 });
 
-// const getFilters = async () => {
-//     try {
-//         const res = await fetch('/api/linkedin-filters', {
-//             method: 'GET',
-//             cache: 'no-cache',
-//         })
-
-//         if (!res.ok) {
-//             throw new Error('Failed to fetch filters');
-//         }
-
-//         return res.json();
-
-//     } catch (error) {
-//         console.log('Error get filters', error);
-//     }
-// }
 
 const ConnectionForm = ({ setFilters }) => {
   const showToast = useToastContext();
   const { data: session } = useSession();
-  const [connections, setConnections] = useState(0);
-  const [title, setTitle] = useState("");
-
+ 
   const languageOptions = [
     { value: "en", label: "English" },
     { value: "fr", label: "French" },
@@ -52,18 +33,6 @@ const ConnectionForm = ({ setFilters }) => {
     { value: "ru", label: "Russian" },
     { value: "de", label: "German" },
   ];
-
-  useEffect(() => {
-    const fetchFilters = async () => {
-      // const filters = await getFilters();
-      // setFiltersData(filters);
-      // console.log(filters)
-      // setConnections(filters.connections);
-      // setTitle(filters.title)
-    };
-
-    fetchFilters();
-  }, []);
 
   const handleConnection = async (values, userId) => {
     try {
@@ -87,6 +56,14 @@ const ConnectionForm = ({ setFilters }) => {
   };
 
   return (
+    <>
+    <h2 className="text-3xl text-center mb-[8px] font-bold ">
+        Target Form
+      </h2>
+      <p className="text-center mb-[12px]">
+        Here you can specify the filters you need for the target and send
+        requests
+      </p>
     <Formik
       initialValues={{
         connections: "",
@@ -252,6 +229,7 @@ const ConnectionForm = ({ setFilters }) => {
         </Form>
       )}
     </Formik>
+    </>
   );
 };
 

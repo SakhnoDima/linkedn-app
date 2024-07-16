@@ -5,10 +5,15 @@ import { useToastContext } from "../context/toast-context";
 import { useEffect, useState } from "react";
 import UserLinkedinFiltersItem from "./user-linkedin-filters-item";
 import Button from "./button";
+import { useModalContext } from "../context/modal-context";
+import ConnectionForm from "./connection-form";
 
-const UsersLinkedinFilters = ({ filters, setFilters }) => {
+const UsersLinkedinFilters = () => {
   const { data: session } = useSession();
+  const { openModal } = useModalContext();
   const showToast = useToastContext();
+  const [filters, setFilters] = useState([])
+
 
   useEffect(() => {
     const fetchLinkedinFilters = async () => {
@@ -30,9 +35,9 @@ const UsersLinkedinFilters = ({ filters, setFilters }) => {
     fetchLinkedinFilters();
   }, [session?.user.id]);
 
-  const handleClick = ()=> {
-console.log();
-  }
+  const handleClick = () => {
+    openModal(<ConnectionForm setFilters={setFilters} />);
+  };
 
   return (
     <div className="overflow-x-auto">
@@ -50,6 +55,7 @@ console.log();
             <th>Title</th>
             <th>Industry</th>
             <th>Language</th>
+            <th>Categories</th>
             <th>Send Connections</th>
           </tr>
         </thead>
