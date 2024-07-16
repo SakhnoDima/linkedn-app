@@ -2,28 +2,28 @@ import axios from "axios";
 import { MdDeleteOutline } from "react-icons/md";
 import { useToastContext } from "../context/toast-context";
 
-const UserLinkedinFiltersItem = ({ data, index, setFilters }) => {
+const UserLinkedinFiltersItem = ({ data, setFilters }) => {
   const showToast = useToastContext();
   const handleClick = async () => {
-    // const linkedinAuthorization = await axios.post('https://qyf4aviui4.execute-api.eu-north-1.amazonaws.com/default/linkedin-crawler',
-    //      {
-    //     totalLettersPerDay: data.connections,
-    //     searchTags : data?.keyWords,
-    //     levelOfTarget: 1,
-    //     id: data._id,//! не вірно
-    //     searchFilters : {
-    //         "Locations": data.locations,
-    //         "Industry":  data.industries,
-    //       },
+    try {
+      const linkedinAuthorization = await axios.post(
+        "/api/connections",
+        {
+          data,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          timeout: 600000,
+        }
+      );
 
-    //   }, {
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     timeout: 600000
-    //   });
-
-    console.log(data);
+      showToast(linkedinAuthorization.data.message, "success");
+    } catch (error) {
+      console.log(error);
+      showToast(error?.response.data.message || "Server error", "error");
+    }
   };
 
   const handleDelete = async () => {
@@ -46,13 +46,14 @@ const UserLinkedinFiltersItem = ({ data, index, setFilters }) => {
   };
   return (
     <tr>
-      <td>{index + 1}</td>
+      <td>{data.targetName}</td>
       <td>{data.connections}</td>
       <td>{data.keyWords}</td>
       <td>{data.locations.join(", ")}</td>
       <td>{data.title}</td>
       <td>{data.industries.join(", ")}</td>
       <td>{data.languages.join(", ")}</td>
+      <td>{data.serviceCategories.join(", ")}</td>
       <td
         onClick={handleClick}
         className="underline hover:text-blue-600 hover:cursor-pointer"

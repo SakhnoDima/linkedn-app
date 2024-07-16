@@ -1,7 +1,6 @@
 "use client";
 
 import axios from "axios";
-import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -10,7 +9,7 @@ import { useToastContext } from "../context/toast-context";
 import Input from "./input";
 import Button from "./button";
 
-const LinkedinSignUpForm = ({ setIsLinkedinAuth }) => {
+const LinkedinSignUpForm = ({ setIsLinkedinAuth, setIsCodeConfirm }) => {
   const showToast = useToastContext();
   const { data: session, update } = useSession();
 
@@ -24,6 +23,7 @@ const LinkedinSignUpForm = ({ setIsLinkedinAuth }) => {
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
+    setIsCodeConfirm(true)
     try {
       const linkedinAuthorization = await axios.post(
         "/api/lambda-authorize",

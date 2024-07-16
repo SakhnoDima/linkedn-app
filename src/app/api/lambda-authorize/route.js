@@ -28,7 +28,6 @@ async function checkTaskStatus(taskId) {
     }
   }, 10000);
 
-  // Очікуємо завершення завдання перед поверненням результату
   while (true) {
     if (isLinkedinAuth !== false) {
       break;

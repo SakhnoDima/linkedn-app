@@ -15,6 +15,7 @@ export const ModalContextProvider = ({ children }) => {
   const closeModal = () => {
     setIsOpen(false);
     setModalContent(null);
+    document.activeElement.blur();
   };
   const handleEscape = (event) => {
     if (event.key === 'Escape') {

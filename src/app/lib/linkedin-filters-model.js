@@ -6,6 +6,9 @@ const LinkedinFiltersSchema = new mongoose.Schema({
         ref: 'users_collection',
         required: true
     },
+    targetName:{
+        type: String,
+    },
     connections: {
         type: Number,
     },

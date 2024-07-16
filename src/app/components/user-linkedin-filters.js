@@ -3,12 +3,16 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useToastContext } from "../context/toast-context";
 import { useEffect, useState } from "react";
-import ConnectionSender from "./connection-sender";
 import UserLinkedinFiltersItem from "./user-linkedin-filters-item";
+import Button from "./button";
+import { useModalContext } from "../context/modal-context";
+import ConnectionForm from "./connection-form";
 
-const UsersLinkedinFilters = ({ filters, setFilters }) => {
+const UsersLinkedinFilters = () => {
   const { data: session } = useSession();
+  const { openModal } = useModalContext();
   const showToast = useToastContext();
+  const [filters, setFilters] = useState([]);
 
   useEffect(() => {
     const fetchLinkedinFilters = async () => {
@@ -30,18 +34,29 @@ const UsersLinkedinFilters = ({ filters, setFilters }) => {
     fetchLinkedinFilters();
   }, [session?.user.id]);
 
+  const handleClick = () => {
+    openModal(<ConnectionForm setFilters={setFilters} />);
+  };
+
   return (
     <div className="overflow-x-auto">
+      <div>
+        <Button onClick={handleClick}>
+          <p>Add Targets</p>
+        </Button>
+      </div>
       <table className="table">
         <thead>
           <tr>
-            <th></th>
+            <th>Name</th>
             <th>Connections</th>
             <th>Keywords</th>
             <th>Locations</th>
             <th>Title</th>
             <th>Industry</th>
             <th>Language</th>
+            <th>Categories</th>
+            <th>Send Connections</th>
           </tr>
         </thead>
         <tbody>
