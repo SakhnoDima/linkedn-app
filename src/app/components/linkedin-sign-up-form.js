@@ -10,7 +10,7 @@ import { useToastContext } from "../context/toast-context";
 import Input from "./input";
 import Button from "./button";
 
-const LinkedinSignUpForm = ({ setIsLinkedinAuth }) => {
+const LinkedinSignUpForm = ({ setIsLinkedinAuth, setIsCodeConfirm }) => {
   const showToast = useToastContext();
   const { data: session, update } = useSession();
 
@@ -24,31 +24,32 @@ const LinkedinSignUpForm = ({ setIsLinkedinAuth }) => {
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    try {
-      const linkedinAuthorization = await axios.post(
-        "/api/lambda-authorize",
-        {
-          pass: values.pass,
-          login: values.login,
-          userId: session.user.id,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          timeout: 600000,
-        }
-      );
+    setIsCodeConfirm(true)
+    // try {
+    //   const linkedinAuthorization = await axios.post(
+    //     "/api/lambda-authorize",
+    //     {
+    //       pass: values.pass,
+    //       login: values.login,
+    //       userId: session.user.id,
+    //     },
+    //     {
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       timeout: 600000,
+    //     }
+    //   );
 
-      showToast(linkedinAuthorization.data.message, "success");
-      setIsLinkedinAuth(true);
-      update({ isLinkedinAuth: true });
-    } catch (error) {
-      console.log(error);
-      showToast(error.response.data.message, "error");
-    } finally {
-      setSubmitting(false);
-    }
+    //   showToast(linkedinAuthorization.data.message, "success");
+    //   setIsLinkedinAuth(true);
+    //   update({ isLinkedinAuth: true });
+    // } catch (error) {
+    //   console.log(error);
+    //   showToast(error.response.data.message, "error");
+    // } finally {
+    //   setSubmitting(false);
+    // }
   };
 
   return (

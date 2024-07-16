@@ -31,12 +31,12 @@ const SaveCodeForm = () => {
   };
 
   return (
-    <div className="w-[700px] p-[50px] flex flex-col gap-[20px]">
+    <div className="w-[100%] flex flex-col gap-[20px] mt-[16px]">
       <p className="text-center">
         Check your email and enter the verification code from LinkedIn
       </p>
       <form
-        className="flex flex-col gap-8 items-center"
+        className="flex flex-row gap-8 items-center"
         onSubmit={handleSubmit}
       >
         <Input
