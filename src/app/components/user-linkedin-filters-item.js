@@ -46,7 +46,6 @@ const UserLinkedinFiltersItem = ({ data, index, setFilters }) => {
   };
   return (
     <tr>
-      <td>{index + 1}</td>
       <td>{data.connections}</td>
       <td>{data.keyWords}</td>
       <td>{data.locations.join(", ")}</td>

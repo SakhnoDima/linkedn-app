@@ -3,8 +3,8 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useToastContext } from "../context/toast-context";
 import { useEffect, useState } from "react";
-import ConnectionSender from "./connection-sender";
 import UserLinkedinFiltersItem from "./user-linkedin-filters-item";
+import Button from "./button";
 
 const UsersLinkedinFilters = ({ filters, setFilters }) => {
   const { data: session } = useSession();
@@ -30,18 +30,27 @@ const UsersLinkedinFilters = ({ filters, setFilters }) => {
     fetchLinkedinFilters();
   }, [session?.user.id]);
 
+  const handleClick = ()=> {
+console.log();
+  }
+
   return (
     <div className="overflow-x-auto">
+      <div>
+        <Button onClick={handleClick}>
+          <p>Add Targets</p>
+        </Button>
+      </div>
       <table className="table">
         <thead>
           <tr>
-            <th></th>
             <th>Connections</th>
             <th>Keywords</th>
             <th>Locations</th>
             <th>Title</th>
             <th>Industry</th>
             <th>Language</th>
+            <th>Send Connections</th>
           </tr>
         </thead>
         <tbody>
