@@ -6,7 +6,6 @@ import LinkedinSignUpForm from "./linkedin-sign-up-form";
 import ShowPopUp from "./show-pop-up";
 
 
-
 const LinkedinAuth = ({isAuth}) => {
 
   const [isLinkedinAuth, setIsLinkedinAuth] = useState(isAuth)

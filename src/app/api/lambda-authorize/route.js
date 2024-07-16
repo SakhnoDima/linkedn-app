@@ -2,6 +2,44 @@ import { NextResponse } from "next/server";
 import User from "@/app/lib/user-model";
 import axios from "axios";
 
+async function checkTaskStatus(taskId) {
+  let isLinkedinAuth = false;
+
+  const interval = setInterval(async () => {
+    try {
+      const statusResponse = await axios.post("https://dim6czm31f.execute-api.eu-north-1.amazonaws.com/default/lambda-check-task-status", {
+        id: taskId
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (statusResponse.data.status === 'completed') {
+        console.log('Task completed:', statusResponse.data.result);
+        let resultObject = JSON.parse(statusResponse.data.result);
+        isLinkedinAuth = resultObject.isLinkedinAuth;
+        clearInterval(interval);
+      } else {
+        console.log('Task is still processing');
+      }
+    } catch (error) {
+      console.error('Error checking task status:', error);
+    }
+  }, 10000);
+
+  // Очікуємо завершення завдання перед поверненням результату
+  while (true) {
+    if (isLinkedinAuth !== false) {
+      break;
+    }
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  }
+
+  return isLinkedinAuth;
+}
+
+
 export const POST = async (req, res) => {
   const { login, pass, userId } = await req.json();
 
@@ -13,31 +51,29 @@ export const POST = async (req, res) => {
   }
   try {
     
-    // const isConnected = await axios.post(
-    //   'https://5yd7a3dfj0.execute-api.eu-north-1.amazonaws.com/default/apiTest',
-    //   {
-    //     password: pass,
-    //     email: login,
-    //     id: userId
-    //   },
-    //   {
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     timeout: 600000 
-    //   }
-    // );
+    const createTaskResponse = await axios.post('https://6ejajjistb.execute-api.eu-north-1.amazonaws.com/default/lambda-create-task', {
+      id: userId,
+      email: login,
+      password: pass
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
 
-    // // //TODO шукати причину чого не можемо дочекатися відповіді
+    const taskId = createTaskResponse.data.taskId;
+    console.log('Task started with ID:', taskId);
+    
+   const isLinkedinAuth = await checkTaskStatus(taskId);
 
-    // console.log(isConnected.data);
-    // if (!isConnected.status === 200){
-    //     return NextResponse.json({ message: 'User wasn`t authorize in Lambda' }, { status: 500 });
-    // }
+    console.log('isLinkedinAuth after f:', isLinkedinAuth);
+
 
    await User.findOneAndUpdate(
-      { _id: userId },
-      { isLinkedinAuth: true },
+      { _id: userId},
+      { isLinkedinAuth: true,
+        tempPass: null
+       },
       { new: true, upsert: true, runValidators: true }
     );
 
