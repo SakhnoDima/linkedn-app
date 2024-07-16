@@ -13,7 +13,7 @@ import { signIn } from "next-auth/react";
 const isProduction = process.env.NEXT_PUBLIC_PRODUCTION || null
 
 const AthForm = () => {
-  const [isAuthorize, setIsAuthorize] = useState(isProduction);
+  const [isAuthorize, setIsAuthorize] = useState(!isProduction);
   const showToast = useToastContext();
   const router = useRouter();
 console.log("is prod", isProduction);
@@ -112,7 +112,7 @@ console.log("is prod", isProduction);
               />
             </div>
             <div>
-              {!isProduction && (
+              {!!isProduction && (
                 <p className="text-center">
                   {isAuthorize
                     ? "I haven't authorise yet"
