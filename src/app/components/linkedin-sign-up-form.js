@@ -1,7 +1,6 @@
 "use client";
 
 import axios from "axios";
-import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -25,31 +24,31 @@ const LinkedinSignUpForm = ({ setIsLinkedinAuth, setIsCodeConfirm }) => {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     setIsCodeConfirm(true)
-    // try {
-    //   const linkedinAuthorization = await axios.post(
-    //     "/api/lambda-authorize",
-    //     {
-    //       pass: values.pass,
-    //       login: values.login,
-    //       userId: session.user.id,
-    //     },
-    //     {
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       timeout: 600000,
-    //     }
-    //   );
+    try {
+      const linkedinAuthorization = await axios.post(
+        "/api/lambda-authorize",
+        {
+          pass: values.pass,
+          login: values.login,
+          userId: session.user.id,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          timeout: 600000,
+        }
+      );
 
-    //   showToast(linkedinAuthorization.data.message, "success");
-    //   setIsLinkedinAuth(true);
-    //   update({ isLinkedinAuth: true });
-    // } catch (error) {
-    //   console.log(error);
-    //   showToast(error.response.data.message, "error");
-    // } finally {
-    //   setSubmitting(false);
-    // }
+      showToast(linkedinAuthorization.data.message, "success");
+      setIsLinkedinAuth(true);
+      update({ isLinkedinAuth: true });
+    } catch (error) {
+      console.log(error);
+      showToast(error.response.data.message, "error");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (

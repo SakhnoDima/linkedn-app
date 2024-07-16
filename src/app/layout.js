@@ -1,8 +1,6 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { getServerSession } from "next-auth";
 
-import { authOptions } from "./api/auth/[...nextauth]/route";
 import NavBar from "./components/navigation";
 import { ModalContextProvider } from "./context/modal-context";
 import UserContextProvider from "@/app/context/user-context";
@@ -17,16 +15,17 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  const session = await getServerSession(authOptions);
   return (
     <html data-theme="light" lang="en">
       <body className={inter.className}>
         <UserContextProvider>
           <ModalContextProvider>
             <ToastContextProvider>
-              <div className="px-[50px]">
-                <NavBar />
-                {children}
+              <div className="flex">
+                <nav className="w-[200px]">
+                  <NavBar />
+                </nav>
+                <main className="flex-1 px-[50px]">{children}</main>
               </div>
               <Modal />
             </ToastContextProvider>

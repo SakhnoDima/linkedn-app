@@ -15,7 +15,7 @@ const NavBar = () => {
       : "btn btn-ghost text-xl";
 
   return (
-    <div className="navbar bg-base-100 justify-center">
+    <div className="navbar bg-base-100 flex-col justify-center">
       <Link className={linkStyle("/")} href="/">
         Home
       </Link>
