@@ -35,7 +35,7 @@ const UsersLinkedinFilters = () => {
 
   return (
     <div className="overflow-x-auto">
-      <div className="flex ga-[8px]">
+      <div className="flex gap-[8px]">
         <TargetActionButton setFilters={setFilters} actions="add" />
         {currentTarget?.length === 1 && (
           <TargetActionButton

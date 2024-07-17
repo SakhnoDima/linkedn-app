@@ -42,7 +42,7 @@ const TargetActionButton = ({
           ids: arrayForDeleted,
         },
       });
-
+      setCurrentTarget([]);
       setFilters((prev) =>
         prev.filter((element) => !arrayForDeleted.includes(element._id))
       );

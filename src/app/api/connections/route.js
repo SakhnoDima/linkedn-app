@@ -49,6 +49,24 @@ export const POST = async (req, res) => {
       { status: 400 }
     );
   }
+
+  const searchFilters = {};
+  if (data.locations.length > 0) {
+    searchFilters.Locations = data.locations;
+  }
+  if (data.languages.length > 0) {
+    searchFilters["Profile language"] = data.languages;
+  }
+  if (data.title) {
+    searchFilters.Keywords = data.title;
+  }
+  if (data.industries.length > 0) {
+    searchFilters.Industry = data.industries;
+  }
+  if (data.serviceCategories.length > 0) {
+    searchFilters["Service categories"] = data.serviceCategories;
+  }
+
   try {
     const createTaskResponse = await axios.post(
       "https://6ejajjistb.execute-api.eu-north-1.amazonaws.com/default/lambda-create-task",
@@ -56,13 +74,7 @@ export const POST = async (req, res) => {
         id: data.userId,
         levelOfTarget: 1,
         searchTags: data.keyWords,
-        searchFilters: {
-          Locations: data.locations,
-          "Profile language": data.languages,
-          Keywords: data.title,
-          Industry: data.industries,
-          "Service categories": data.serviceCategories,
-        },
+        searchFilters,
         totalLettersPerDay: data.connections,
         invitationLetters: [""],
       },
