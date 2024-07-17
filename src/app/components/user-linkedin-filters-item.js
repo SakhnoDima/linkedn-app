@@ -1,10 +1,18 @@
 import axios from "axios";
-import { MdDeleteOutline } from "react-icons/md";
 import { useToastContext } from "../context/toast-context";
 
-const UserLinkedinFiltersItem = ({ data, setFilters }) => {
+const UserLinkedinFiltersItem = ({
+  data,
+  setCurrentTarget,
+  isLoading,
+  setIsLoading,
+}) => {
   const showToast = useToastContext();
+
   const handleClick = async () => {
+    if (isLoading) return;
+
+    setIsLoading(true);
     try {
       const linkedinAuthorization = await axios.post(
         "/api/connections",
@@ -23,29 +31,25 @@ const UserLinkedinFiltersItem = ({ data, setFilters }) => {
     } catch (error) {
       console.log(error);
       showToast(error?.response.data.message || "Server error", "error");
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleDelete = async () => {
-    try {
-      await axios.delete("/api/linkedin-filters", {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: {
-          id: data._id,
-        },
-      });
-
-      setFilters((prev) => prev.filter((element) => element._id !== data._id));
-      showToast("Filter removed successfully", "success");
-    } catch (error) {
-      console.log(error?.response.data.message);
-      showToast(error?.response.data.message, "error");
-    }
+  const handleOnChange = (event) => {
+    const checked = event.target.checked;
+    checked
+      ? setCurrentTarget((prev) => [...prev, data])
+      : setCurrentTarget((prev) =>
+          prev.filter((elements) => elements._id !== data._id)
+        );
   };
+
   return (
     <tr>
+      <td>
+        <input type="checkbox" className="checkbox" onChange={handleOnChange} />
+      </td>
       <td>{data.targetName}</td>
       <td>{data.connections}</td>
       <td>{data.keyWords}</td>
@@ -56,15 +60,13 @@ const UserLinkedinFiltersItem = ({ data, setFilters }) => {
       <td>{data.serviceCategories.join(", ")}</td>
       <td
         onClick={handleClick}
-        className="underline hover:text-blue-600 hover:cursor-pointer"
+        className={`underline ${
+          isLoading
+            ? "text-gray-400 cursor-not-allowed"
+            : "hover:text-blue-600 hover:cursor-pointer"
+        }`}
       >
         Click to start connections
-      </td>
-      <td>
-        <MdDeleteOutline
-          onClick={handleDelete}
-          className="hover:fill-red-700 hover:cursor-pointer hover:scale-125"
-        />
       </td>
     </tr>
   );
