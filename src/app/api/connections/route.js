@@ -80,7 +80,6 @@ export const POST = async (req, res) => {
 
     console.log("Finish:", result);
 
-
     return NextResponse.json(
       { message: "Connections sended succesfully" },
       { status: 200 }
