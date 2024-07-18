@@ -8,6 +8,12 @@ import { useSession } from "next-auth/react";
 import Input from "./input";
 import Button from "./button";
 
+const filtersInputs = [
+  {
+    labelText: "",
+  },
+];
+
 const validationSchema = Yup.object({
   targetName: Yup.string().required("Required*"),
   connections: Yup.number().required("Required*"),
@@ -88,11 +94,8 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
               <label className="flex flex-col space-y-2  relative">
                 <div className="flex items-center space-x-2">
                   <span>1. Add Your target filters name.</span>
-                  <div className="group">
+                  <div className="tooltip" data-tip="Here I can add some text">
                     <AiOutlineQuestionCircle className="hover:cursor-pointer" />
-                    <p className="hidden group-hover:block absolute bottom-[-24px] left-4 w-[100%] p-[4px] bg-slate-100 rounded">
-                      Here I can add some text
-                    </p>
                   </div>
                 </div>
                 <Field
@@ -110,11 +113,8 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
               <label className="flex flex-col space-y-2 relative">
                 <div className="flex items-center space-x-2">
                   <span> 2. How many connections would you like to send?</span>
-                  <div className="group">
+                  <div className="tooltip" data-tip="Here I can add some text">
                     <AiOutlineQuestionCircle className="hover:cursor-pointer" />
-                    <p className="hidden group-hover:block absolute bottom-[-24px] left-4 w-[100%] p-[4px] bg-slate-100 rounded">
-                      Here I can add some text
-                    </p>
                   </div>
                 </div>
 
@@ -133,11 +133,8 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
               <label className="flex flex-col space-y-2 relative">
                 <div className="flex items-center space-x-2">
                   <span> 3. Add keywords</span>
-                  <div className="group">
+                  <div className="tooltip" data-tip="Here I can add some text">
                     <AiOutlineQuestionCircle className="hover:cursor-pointer" />
-                    <p className="hidden group-hover:block absolute bottom-[-24px] left-4 w-[100%] p-[4px] bg-slate-100 rounded">
-                      Here I can add some text
-                    </p>
                   </div>
                 </div>
 
@@ -155,11 +152,8 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
               <label className="flex flex-col space-y-2 relative">
                 <div className="flex items-center space-x-2">
                   <span> 4. Add Title</span>
-                  <div className="group">
+                  <div className="tooltip" data-tip="Here I can add some text">
                     <AiOutlineQuestionCircle className="hover:cursor-pointer" />
-                    <p className="hidden group-hover:block absolute bottom-[-24px] left-4 w-[100%] p-[4px] bg-slate-100 rounded">
-                      Here I can add some text
-                    </p>
                   </div>
                 </div>
 
@@ -179,11 +173,8 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
               <label className="flex flex-col space-y-2 relative">
                 <div className="flex items-center space-x-2">
                   <span> 5. Add Locations</span>
-                  <div className="group">
+                  <div className="tooltip" data-tip="Here I can add some text">
                     <AiOutlineQuestionCircle className="hover:cursor-pointer" />
-                    <p className="hidden group-hover:block absolute bottom-[-24px] left-4 w-[100%] p-[4px] bg-slate-100 rounded">
-                      Here I can add some text
-                    </p>
                   </div>
                 </div>
                 <Field
@@ -200,11 +191,8 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
               <label className="flex flex-col space-y-2 relative">
                 <div className="flex items-center space-x-2">
                   <span> 6. Add service categories</span>
-                  <div className="group">
+                  <div className="tooltip" data-tip="Here I can add some text">
                     <AiOutlineQuestionCircle className="hover:cursor-pointer" />
-                    <p className="hidden group-hover:block absolute bottom-[-24px] left-4 w-[100%] p-[4px] bg-slate-100 rounded">
-                      Here I can add some text
-                    </p>
                   </div>
                 </div>
 
@@ -222,11 +210,8 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
               <label className="flex flex-col space-y-2 relative">
                 <div className="flex items-center space-x-2">
                   <span> 7. Add industry</span>
-                  <div className="group">
+                  <div className="tooltip" data-tip="Here I can add some text">
                     <AiOutlineQuestionCircle className="hover:cursor-pointer" />
-                    <p className="hidden group-hover:block absolute bottom-[-24px] left-4 w-[100%] p-[4px] bg-slate-100 rounded">
-                      Here I can add some text
-                    </p>
                   </div>
                 </div>
 
@@ -243,7 +228,12 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
                 />
               </label>
               <label className="flex flex-col mx-auto">
-                <span className="mt-5">8. Add profile language</span>
+                <div className="flex items-center space-x-2">
+                  <span>8. Add profile language</span>
+                  <div className="tooltip" data-tip="Here I can add some text">
+                    <AiOutlineQuestionCircle className="hover:cursor-pointer" />
+                  </div>
+                </div>
                 <Field
                   name="languages"
                   component={({ field, form, ...props }) => (
