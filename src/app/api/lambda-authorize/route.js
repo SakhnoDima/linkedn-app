@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import User from "@/app/lib/user-model";
 import axios from "axios";
 
-export const maxDuration = 60;
+export const maxDuration = 120;
 export const dynamic = "force-dynamic";
 
 async function checkTaskStatus(taskId) {
