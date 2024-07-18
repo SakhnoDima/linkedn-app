@@ -242,7 +242,6 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
                   className="text-red-500 absolute top-[-4px] right-0"
                 />
               </label>
-
               <label className="flex flex-col mx-auto">
                 <span className="mt-5">8. Add profile language</span>
                 <Field
