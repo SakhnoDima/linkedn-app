@@ -1,9 +1,5 @@
 import { NextResponse } from "next/server";
-import User from "@/app/lib/user-model";
 import axios from "axios";
-
-export const maxDuration = 60;
-export const dynamic = "force-dynamic";
 
 async function checkTaskStatus(taskId) {
   let isLinkedinAuth = false;
@@ -24,8 +20,7 @@ async function checkTaskStatus(taskId) {
 
       if (statusResponse.data.status === "completed") {
         console.log("Task completed:", statusResponse.data.result);
-        let resultObject = JSON.parse(statusResponse.data.result);
-        isLinkedinAuth = resultObject.isLinkedinAuth;
+        isLinkedinAuth = JSON.parse(statusResponse.data.result);
         clearInterval(interval);
       } else {
         console.log("Task is still processing");
@@ -46,21 +41,42 @@ async function checkTaskStatus(taskId) {
 }
 
 export const POST = async (req, res) => {
-  const { login, pass, userId } = await req.json();
+  const { data } = await req.json();
 
-  if (!login || !pass || !userId) {
+  if (!data) {
     return NextResponse.json(
       { message: "Credentials is required" },
       { status: 400 }
     );
   }
+
+  const searchFilters = {};
+  if (data.locations.length > 0) {
+    searchFilters.Locations = data.locations;
+  }
+  if (data.languages.length > 0) {
+    searchFilters["Profile language"] = data.languages;
+  }
+  if (data.title) {
+    searchFilters.Keywords = data.title;
+  }
+  if (data.industries.length > 0) {
+    searchFilters.Industry = data.industries;
+  }
+  if (data.serviceCategories.length > 0) {
+    searchFilters["Service categories"] = data.serviceCategories;
+  }
+
   try {
     const createTaskResponse = await axios.post(
       "https://6ejajjistb.execute-api.eu-north-1.amazonaws.com/default/lambda-create-task",
       {
-        id: userId,
-        email: login,
-        password: pass,
+        id: data.userId,
+        levelOfTarget: 1,
+        searchTags: data.keyWords,
+        searchFilters,
+        totalLettersPerDay: data.connections,
+        invitationLetters: [""],
       },
       {
         headers: {
@@ -72,18 +88,12 @@ export const POST = async (req, res) => {
     const taskId = createTaskResponse.data.taskId;
     console.log("Task started with ID:", taskId);
 
-    const isLinkedinAuth = await checkTaskStatus(taskId);
+    const result = await checkTaskStatus(taskId);
 
-    console.log("isLinkedinAuth after f:", isLinkedinAuth);
-
-    await User.findOneAndUpdate(
-      { _id: userId },
-      { isLinkedinAuth: true, tempPass: null },
-      { new: true, upsert: true, runValidators: true }
-    );
+    console.log("Finish:", result);
 
     return NextResponse.json(
-      { message: "User was authorized successful" },
+      { message: "Connections sended succesfully" },
       { status: 200 }
     );
   } catch (error) {
