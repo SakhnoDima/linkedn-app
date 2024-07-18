@@ -66,7 +66,7 @@ export const POST = async (req, res) => {
   if (data.serviceCategories.length > 0) {
     searchFilters["Service categories"] = data.serviceCategories;
   }
-
+  console.log(data);
   try {
     const createTaskResponse = await axios.post(
       "https://6ejajjistb.execute-api.eu-north-1.amazonaws.com/default/lambda-create-task",

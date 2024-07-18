@@ -1,5 +1,12 @@
 import axios from "axios";
 import { useToastContext } from "../context/toast-context";
+import StatusBadge from "./status-badge";
+
+const statusState = {
+  available: "Available",
+  pending: "Pending",
+  progress: "In Progress ",
+};
 
 const UserLinkedinFiltersItem = ({
   data,
@@ -9,10 +16,11 @@ const UserLinkedinFiltersItem = ({
 }) => {
   const showToast = useToastContext();
 
-  const handleClick = async () => {
+  const handBotInit = async () => {
     if (isLoading) return;
 
-    setIsLoading(true);
+    setIsLoading(data._id);
+
     try {
       const linkedinAuthorization = await axios.post(
         "/api/connections",
@@ -32,7 +40,7 @@ const UserLinkedinFiltersItem = ({
       console.log(error);
       showToast(error?.response.data.message || "Server error", "error");
     } finally {
-      setIsLoading(false);
+      setIsLoading(null);
     }
   };
 
@@ -43,6 +51,22 @@ const UserLinkedinFiltersItem = ({
       : setCurrentTarget((prev) =>
           prev.filter((elements) => elements._id !== data._id)
         );
+  };
+
+  const getStatus = () => {
+    if (isLoading === data._id)
+      return (
+        <StatusBadge className="badge-accent badge-outline">
+          {statusState.progress}
+        </StatusBadge>
+      );
+    if (isLoading && isLoading !== data._id)
+      return (
+        <StatusBadge className="badge-secondary">
+          {statusState.pending}
+        </StatusBadge>
+      );
+    return <StatusBadge>{statusState.available}</StatusBadge>;
   };
 
   return (
@@ -59,7 +83,7 @@ const UserLinkedinFiltersItem = ({
       <td>{data.languages.join(", ")}</td>
       <td>{data.serviceCategories.join(", ")}</td>
       <td
-        onClick={handleClick}
+        onClick={handBotInit}
         className={`underline ${
           isLoading
             ? "text-gray-400 cursor-not-allowed"
@@ -68,6 +92,7 @@ const UserLinkedinFiltersItem = ({
       >
         Click to start connections
       </td>
+      <td>{getStatus()}</td>
     </tr>
   );
 };

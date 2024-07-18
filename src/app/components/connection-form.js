@@ -8,6 +8,51 @@ import { useSession } from "next-auth/react";
 import Input from "./input";
 import Button from "./button";
 
+const filtersInputs = [
+  {
+    labelText: "1. Add Your target filters name.",
+    toolTipText: "Here I can add some text",
+    fieldName: "targetName",
+    fieldType: "string",
+    placeholder: "Name",
+  },
+  {
+    labelText: "2. How many connections would you like to send?",
+    toolTipText: "Here I can add some text",
+    fieldName: "connections",
+    fieldType: "number",
+    placeholder: "Connections",
+  },
+  {
+    labelText: "3. Add keywords",
+    toolTipText: "Here I can add some text",
+    fieldName: "keyWords",
+    fieldType: "string",
+    placeholder: "Keywords",
+  },
+  {
+    labelText: "4. Add Title",
+    toolTipText: "Here I can add some text",
+    fieldName: "title",
+    fieldType: "string",
+    placeholder: "Title",
+  },
+  {
+    labelText: "5. Add Locations",
+    toolTipText: "Here I can add some text",
+    fieldName: "locations",
+    fieldType: "string",
+    placeholder: "Locations",
+  },
+  {
+    labelText: "6. Add service categories",
+    toolTipText: "Here I can add some text",
+    fieldName: "serviceCategories",
+    fieldType: "string",
+    placeholder: "Service categories",
+  },
+];
+
 const validationSchema = Yup.object({
   targetName: Yup.string().required("Required*"),
   connections: Yup.number().required("Required*"),
@@ -73,16 +118,37 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
         }}
       >
         {({ isSubmitting }) => (
-          <Form className="flex flex-col space-y-4 p-4 overflow-y-scroll">
-            <div className="flex flex-col center gap-[30px] mx-auto justify-center items-center w-min">
-              <label className="flex flex-col space-y-2  relative">
+          <Form className="flex flex-col space-y-4 p-4">
+            <div className="flex flex-col center gap-[30px] mx-auto">
+              {filtersInputs.map((data, index) => (
+                <label
+                  key={index}
+                  className="flex flex-col space-y-2  relative"
+                >
+                  <div className="flex items-center space-x-2">
+                    <span>{data.labelText}</span>
+                    <div className="tooltip" data-tip={`${data.toolTipText}`}>
+                      <AiOutlineQuestionCircle className="hover:cursor-pointer" />
+                    </div>
+                  </div>
+                  <Field
+                    name={`${data.fieldName}`}
+                    type={`${data.fieldType}`}
+                    placeholder={`${data.placeholder}`}
+                    as={Input}
+                  />
+                  <ErrorMessage
+                    name="targetName"
+                    component="div"
+                    className="text-red-500 absolute top-[-4px] right-0"
+                  />
+                </label>
+              ))}
+              {/* <label className="flex flex-col space-y-2  relative">
                 <div className="flex items-center space-x-2">
                   <span>1. Add Your target filters name.</span>
-                  <div className="group">
+                  <div className="tooltip" data-tip="Here I can add some text">
                     <AiOutlineQuestionCircle className="hover:cursor-pointer" />
-                    <p className="hidden group-hover:block absolute top-5 p-[4px] bg-slate-100 rounded z-10">
-                      Here I can add some text
-                    </p>
                   </div>
                 </div>
                 <Field
@@ -100,11 +166,8 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
               <label className="flex flex-col space-y-2 relative">
                 <div className="flex items-center space-x-2">
                   <span> 2. How many connections would you like to send?</span>
-                  <div className="group">
+                  <div className="tooltip" data-tip="Here I can add some text">
                     <AiOutlineQuestionCircle className="hover:cursor-pointer" />
-                    <p className="hidden group-hover:block absolute bottom-[-24px] left-4 w-[100%] p-[4px] bg-slate-100 rounded">
-                      Here I can add some text
-                    </p>
                   </div>
                 </div>
 
@@ -123,18 +186,16 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
               <label className="flex flex-col space-y-2 relative">
                 <div className="flex items-center space-x-2">
                   <span> 3. Add keywords</span>
-                  <div className="group">
+                  <div className="tooltip" data-tip="Here I can add some text">
                     <AiOutlineQuestionCircle className="hover:cursor-pointer" />
-                    <p className="hidden group-hover:block absolute bottom-[-24px] left-4 w-[100%] p-[4px] bg-slate-100 rounded">
-                      Here I can add some text
-                    </p>
                   </div>
                 </div>
 
                 <Field
                   name="keyWords"
+                  type="string"
                   placeholder="Keywords"
-                  component={Input}
+                  as={Input}
                 />
                 <ErrorMessage
                   name="keyWords"
@@ -145,18 +206,14 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
               <label className="flex flex-col space-y-2 relative">
                 <div className="flex items-center space-x-2">
                   <span> 4. Add Title</span>
-                  <div className="group">
+                  <div className="tooltip" data-tip="Here I can add some text">
                     <AiOutlineQuestionCircle className="hover:cursor-pointer" />
-                    <p className="hidden group-hover:block absolute bottom-[-24px] left-4 w-[100%] p-[4px] bg-slate-100 rounded">
-                      Here I can add some text
-                    </p>
                   </div>
                 </div>
 
                 <Field
-                  className="mt-1"
                   name="title"
-                  type="text"
+                  type="string"
                   placeholder="Title"
                   as={Input}
                 />
@@ -173,16 +230,14 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
               <label className="flex flex-col space-y-2 relative">
                 <div className="flex items-center space-x-2">
                   <span> 5. Add Locations</span>
-                  <div className="group">
+                  <div className="tooltip" data-tip="Here I can add some text">
                     <AiOutlineQuestionCircle className="hover:cursor-pointer" />
-                    <p className="hidden group-hover:block absolute bottom-[-24px] left-4 w-[100%] p-[4px] bg-slate-100 rounded">
-                      Here I can add some text
-                    </p>
                   </div>
                 </div>
                 <Field
                   name="locations"
                   placeholder="Locations"
+                  type="string"
                   component={Input}
                 />
                 <ErrorMessage
@@ -194,11 +249,8 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
               <label className="flex flex-col space-y-2 relative">
                 <div className="flex items-center space-x-2">
                   <span> 6. Add service categories</span>
-                  <div className="group">
+                  <div className="tooltip" data-tip="Here I can add some text">
                     <AiOutlineQuestionCircle className="hover:cursor-pointer" />
-                    <p className="hidden group-hover:block absolute bottom-[-24px] left-4 w-[100%] p-[4px] bg-slate-100 rounded">
-                      Here I can add some text
-                    </p>
                   </div>
                 </div>
 
@@ -206,6 +258,7 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
                   name="serviceCategories"
                   placeholder="Service categories"
                   component={Input}
+                  type="string"
                 />
                 <ErrorMessage
                   name="serviceCategories"
@@ -216,11 +269,8 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
               <label className="flex flex-col space-y-2 relative">
                 <div className="flex items-center space-x-2">
                   <span> 7. Add industry</span>
-                  <div className="group">
+                  <div className="tooltip" data-tip="Here I can add some text">
                     <AiOutlineQuestionCircle className="hover:cursor-pointer" />
-                    <p className="hidden group-hover:block absolute bottom-[-24px] left-4 w-[100%] p-[4px] bg-slate-100 rounded">
-                      Here I can add some text
-                    </p>
                   </div>
                 </div>
 
@@ -235,9 +285,14 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
                   component="div"
                   className="text-red-500 absolute top-[-4px] right-0"
                 />
-              </label>
-              <label className="flex flex-col space-y-2 relative">
-                <span className="mt-5">8. Add profile language</span>
+              </label> */}
+              <label className="flex flex-col mx-auto">
+                <div className="flex items-center space-x-2">
+                  <span>8. Add profile language</span>
+                  <div className="tooltip" data-tip="Here I can add some text">
+                    <AiOutlineQuestionCircle className="hover:cursor-pointer" />
+                  </div>
+                </div>
                 <Field
                   name="languages"
                   component={({ field, form, ...props }) => (
