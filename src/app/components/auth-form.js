@@ -10,13 +10,13 @@ import { useToastContext } from "../context/toast-context";
 import axios from "axios";
 import { signIn } from "next-auth/react";
 
-const isProduction = process.env.NEXT_PUBLIC_PRODUCTION || null
+const isProduction = process.env.NEXT_PUBLIC_PRODUCTION || null;
 
 const AthForm = () => {
   const [isAuthorize, setIsAuthorize] = useState(!isProduction);
   const showToast = useToastContext();
   const router = useRouter();
-console.log("is prod", isProduction);
+
   const initialValues = {
     email: "",
     password: "",
@@ -60,7 +60,7 @@ console.log("is prod", isProduction);
       }
 
       if (!response?.error) {
-        router.push("/");
+        router.push("/linkedin");
         router.refresh();
       }
     } catch (error) {
