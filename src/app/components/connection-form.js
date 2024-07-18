@@ -86,16 +86,6 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
 
   return (
     <>
-      <h2 className="text-3xl text-center mb-[8px] font-bold ">Target Form</h2>
-      <p className="text-center mb-[12px]">
-        Here you can specify the filters you need for the target and send
-        requests.
-      </p>
-      <p>
-        It is also possible to add several values ​​in fields 5-7, necessarily
-        separating them with a semicolon (";")
-      </p>
-
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -233,6 +223,10 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
                   className="text-red-500 absolute top-[-4px] right-0"
                 />
               </label>
+              <p>
+                  It is also possible to add several values in fields 5-7, necessarily
+                  separating them with a semicolon (";")
+              </p>
               <label className="flex flex-col space-y-2 relative">
                 <div className="flex items-center space-x-2">
                   <span> 5. Add Locations</span>
