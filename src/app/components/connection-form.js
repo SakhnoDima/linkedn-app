@@ -41,16 +41,6 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
 
   return (
     <>
-      <h2 className="text-3xl text-center mb-[8px] font-bold ">Target Form</h2>
-      <p className="text-center mb-[12px]">
-        Here you can specify the filters you need for the target and send
-        requests.
-      </p>
-      <p>
-        It is also possible to add several values ​​in fields 5-7, necessarily
-        separating them with a semicolon (";")
-      </p>
-
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -83,14 +73,14 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
         }}
       >
         {({ isSubmitting }) => (
-          <Form className="flex flex-col space-y-4 p-4">
-            <div className="flex flex-col center gap-[30px] mx-auto">
+          <Form className="flex flex-col space-y-4 p-4 overflow-y-scroll">
+            <div className="flex flex-col center gap-[30px] mx-auto justify-center items-center w-min">
               <label className="flex flex-col space-y-2  relative">
                 <div className="flex items-center space-x-2">
                   <span>1. Add Your target filters name.</span>
                   <div className="group">
                     <AiOutlineQuestionCircle className="hover:cursor-pointer" />
-                    <p className="hidden group-hover:block absolute bottom-[-24px] left-4 w-[100%] p-[4px] bg-slate-100 rounded">
+                    <p className="hidden group-hover:block absolute top-5 p-[4px] bg-slate-100 rounded z-10">
                       Here I can add some text
                     </p>
                   </div>
@@ -176,6 +166,10 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
                   className="text-red-500 absolute top-[-4px] right-0"
                 />
               </label>
+              <p>
+                  It is also possible to add several values in fields 5-7, necessarily
+                  separating them with a semicolon (";")
+              </p>
               <label className="flex flex-col space-y-2 relative">
                 <div className="flex items-center space-x-2">
                   <span> 5. Add Locations</span>
@@ -242,7 +236,7 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
                   className="text-red-500 absolute top-[-4px] right-0"
                 />
               </label>
-              <label className="flex flex-col mx-auto">
+              <label className="flex flex-col space-y-2 relative">
                 <span className="mt-5">8. Add profile language</span>
                 <Field
                   name="languages"
