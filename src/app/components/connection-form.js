@@ -130,9 +130,10 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
         }}
       >
         {({ isSubmitting }) => (
-          <Form className="flex flex-col space-y-4 p-4">
-            <div className="flex flex-col center gap-[30px] mx-auto">
+          <Form className="flex flex-col space-y-4 p-4 pl-6 overflow-y-auto pt-[32px]">
+            <div className="flex flex-col center gap-[30px] mx-auto justify-center items-center w-min">
               {filtersInputs.map((data, index) => (
+                  <>
                 <label
                   key={index}
                   className="flex flex-col space-y-2  relative"
@@ -155,6 +156,13 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
                     className="text-red-500 absolute top-[-4px] right-0"
                   />
                 </label>
+                {index === 3 && (
+                    <p key="additional-info">
+                      It is also possible to add several values in fields 5-7, necessarily
+                      separating them with a semicolon (";")
+                    </p>
+                  )}
+                </>
               ))}
               {/* <label className="flex flex-col space-y-2  relative">
                 <div className="flex items-center space-x-2">
