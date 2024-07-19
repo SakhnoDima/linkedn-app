@@ -56,7 +56,7 @@ const UserLinkedinFiltersItem = ({
   const getStatus = () => {
     if (isLoading === data._id)
       return (
-        <StatusBadge className="badge-accent badge-outline">
+        <StatusBadge className="badge-accent badge-outline ">
           {statusState.progress}
         </StatusBadge>
       );
@@ -77,11 +77,11 @@ const UserLinkedinFiltersItem = ({
       <td>{data.targetName}</td>
       <td>{data.connections}</td>
       <td>{data.keyWords}</td>
-      <td>{data.locations.join(", ")}</td>
+      <td>{data.locations.join("; ")}</td>
       <td>{data.title}</td>
-      <td>{data.industries.join(", ")}</td>
-      <td>{data.languages.join(", ")}</td>
-      <td>{data.serviceCategories.join(", ")}</td>
+      <td>{data.industries.join("; ")}</td>
+      <td>{data.languages.join("; ")}</td>
+      <td>{data.serviceCategories.join("; ")}</td>
       <td
         onClick={handBotInit}
         className={`underline ${

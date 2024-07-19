@@ -11,53 +11,58 @@ import Button from "./button";
 const filtersInputs = [
   {
     labelText: "1. Specify a name for this filter",
-    toolTipText: "Write the name that best fits this target filter",
+    toolTipText: "Write the name that best fits this target filter.",
     fieldName: "targetName",
     fieldType: "string",
     placeholder: "Name",
   },
   {
     labelText: "2. Number of connections to be sent",
-    toolTipText: "Write how many connections you want to send. We recommend a value between 20 and 50",
+    toolTipText:
+      "Write how many connections you want to send. We recommend a value between 10 and 20.",
     fieldName: "connections",
     fieldType: "number",
     placeholder: "Connections",
   },
   {
     labelText: "3. Search tags",
-    toolTipText: "General tags by which accounts will be searched",
+    toolTipText: "General tags by which accounts will be searched.",
     fieldName: "keyWords",
     fieldType: "string",
     placeholder: "Search tags",
   },
   {
     labelText: "4. Account title",
-    toolTipText: "Enter the title of the accounts you want to see in your connections",
+    toolTipText:
+      "Enter the title of the accounts you want to see in your connections.",
     fieldName: "title",
     fieldType: "string",
     placeholder: "Title",
   },
   {
     labelText: "5. Target locations",
-    toolTipText: "Enter the locations in which you want to search for accounts",
+    toolTipText:
+      "Enter the locations in which you want to search for accounts. There may be several options separated - ';'",
     fieldName: "locations",
     fieldType: "string",
     placeholder: "Locations",
   },
   {
     labelText: "6. Target service categories",
-    toolTipText: "Enter the service categories in which you want to search for accounts",
+    toolTipText:
+      "Enter the service categories in which you want to search for accounts. There may be several options separated - ';'",
     fieldName: "serviceCategories",
     fieldType: "string",
     placeholder: "Service categories",
   },
   {
     labelText: "7. Target industry",
-    toolTipText: "Enter the industries in which you want to search for accounts",
+    toolTipText:
+      "Enter the industries in which you want to search for accounts. There may be several options separated - ';'",
     fieldName: "Industries",
     fieldType: "string",
     placeholder: "Industries",
-  }
+  },
 ];
 
 const validationSchema = Yup.object({
@@ -125,10 +130,9 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
         }}
       >
         {({ isSubmitting }) => (
-          <Form className="flex flex-col space-y-4 p-4 pl-6 overflow-y-auto pt-[32px]">
-            <div className="flex flex-col center gap-[30px] mx-auto justify-center items-center w-min">
+          <Form className="flex flex-col space-y-4 p-4">
+            <div className="flex flex-col center gap-[30px] mx-auto">
               {filtersInputs.map((data, index) => (
-                  <>
                 <label
                   key={index}
                   className="flex flex-col space-y-2  relative"
@@ -151,13 +155,6 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
                     className="text-red-500 absolute top-[-4px] right-0"
                   />
                 </label>
-                {index === 3 && (
-                  <p key="additional-info">
-                  It is also possible to add several values in fields 5-7, necessarily
-                  separating them with a semicolon (";")
-                  </p>
-                )}
-                  </>
               ))}
               {/* <label className="flex flex-col space-y-2  relative">
                 <div className="flex items-center space-x-2">
@@ -303,8 +300,11 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
               </label> */}
               <label className="flex flex-col mx-auto">
                 <div className="flex items-center space-x-2">
-                  <span>8. Target profile language</span>
-                  <div className="tooltip" data-tip="Choose the profile language of the accounts you want to see in your connections">
+                  <span>8. Add profile language</span>
+                  <div
+                    className="tooltip"
+                    data-tip="Select preferred user profile language"
+                  >
                     <AiOutlineQuestionCircle className="hover:cursor-pointer" />
                   </div>
                 </div>
