@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
+import User from "@/app/lib/user-model";
 
 async function checkTaskStatus(taskId) {
   let isLinkedinAuth = false;
@@ -50,6 +51,8 @@ export const POST = async (req, res) => {
     );
   }
 
+  const user = await User.findById({ _id: data.userId });
+
   const searchFilters = {};
   if (data.locations.length > 0) {
     searchFilters.Locations = data.locations;
@@ -66,7 +69,7 @@ export const POST = async (req, res) => {
   if (data.serviceCategories.length > 0) {
     searchFilters["Service categories"] = data.serviceCategories;
   }
-  console.log(data);
+
   try {
     const createTaskResponse = await axios.post(
       "https://6ejajjistb.execute-api.eu-north-1.amazonaws.com/default/lambda-create-task",
@@ -77,6 +80,7 @@ export const POST = async (req, res) => {
         searchFilters,
         totalLettersPerDay: data.connections,
         invitationLetters: [""],
+        email: user.email,
       },
       {
         headers: {

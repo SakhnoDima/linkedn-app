@@ -13,7 +13,7 @@ const filtersInputs = [
     labelText: "1. Specify a name for this filter",
     toolTipText: "Write the name that best fits this target filter.",
     fieldName: "targetName",
-    fieldType: "string",
+    fieldType: "text",
     placeholder: "Name",
   },
   {
@@ -28,7 +28,7 @@ const filtersInputs = [
     labelText: "3. Search tags",
     toolTipText: "General tags by which accounts will be searched.",
     fieldName: "keyWords",
-    fieldType: "string",
+    fieldType: "text",
     placeholder: "Search tags",
   },
   {
@@ -36,7 +36,7 @@ const filtersInputs = [
     toolTipText:
       "Enter the title of the accounts you want to see in your connections.",
     fieldName: "title",
-    fieldType: "string",
+    fieldType: "text",
     placeholder: "Title",
   },
   {
@@ -44,7 +44,7 @@ const filtersInputs = [
     toolTipText:
       "Enter the locations in which you want to search for accounts. There may be several options separated - ';'",
     fieldName: "locations",
-    fieldType: "string",
+    fieldType: "text",
     placeholder: "Locations",
   },
   {
@@ -52,15 +52,15 @@ const filtersInputs = [
     toolTipText:
       "Enter the service categories in which you want to search for accounts. There may be several options separated - ';'",
     fieldName: "serviceCategories",
-    fieldType: "string",
+    fieldType: "text",
     placeholder: "Service categories",
   },
   {
     labelText: "7. Target industry",
     toolTipText:
       "Enter the industries in which you want to search for accounts. There may be several options separated - ';'",
-    fieldName: "Industries",
-    fieldType: "string",
+    fieldName: "industries",
+    fieldType: "text",
     placeholder: "Industries",
   },
 ];
@@ -164,148 +164,6 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
                   )}
                 </>
               ))}
-              {/* <label className="flex flex-col space-y-2  relative">
-                <div className="flex items-center space-x-2">
-                  <span>1. Add Your target filters name.</span>
-                  <div className="tooltip" data-tip="Here I can add some text">
-                    <AiOutlineQuestionCircle className="hover:cursor-pointer" />
-                  </div>
-                </div>
-                <Field
-                  name="targetName"
-                  type="string"
-                  placeholder="Name"
-                  as={Input}
-                />
-                <ErrorMessage
-                  name="targetName"
-                  component="div"
-                  className="text-red-500 absolute top-[-4px] right-0"
-                />
-              </label>
-              <label className="flex flex-col space-y-2 relative">
-                <div className="flex items-center space-x-2">
-                  <span> 2. How many connections would you like to send?</span>
-                  <div className="tooltip" data-tip="Here I can add some text">
-                    <AiOutlineQuestionCircle className="hover:cursor-pointer" />
-                  </div>
-                </div>
-
-                <Field
-                  name="connections"
-                  type="number"
-                  placeholder="Connections"
-                  as={Input}
-                />
-                <ErrorMessage
-                  name="connections"
-                  component="div"
-                  className="text-red-500 absolute top-[-4px] right-0"
-                />
-              </label>
-              <label className="flex flex-col space-y-2 relative">
-                <div className="flex items-center space-x-2">
-                  <span> 3. Add keywords</span>
-                  <div className="tooltip" data-tip="Here I can add some text">
-                    <AiOutlineQuestionCircle className="hover:cursor-pointer" />
-                  </div>
-                </div>
-
-                <Field
-                  name="keyWords"
-                  type="string"
-                  placeholder="Keywords"
-                  as={Input}
-                />
-                <ErrorMessage
-                  name="keyWords"
-                  component="div"
-                  className="text-red-500 absolute top-[-4px] right-0"
-                />
-              </label>
-              <label className="flex flex-col space-y-2 relative">
-                <div className="flex items-center space-x-2">
-                  <span> 4. Add Title</span>
-                  <div className="tooltip" data-tip="Here I can add some text">
-                    <AiOutlineQuestionCircle className="hover:cursor-pointer" />
-                  </div>
-                </div>
-
-                <Field
-                  name="title"
-                  type="string"
-                  placeholder="Title"
-                  as={Input}
-                />
-                <ErrorMessage
-                  name="title"
-                  component="div"
-                  className="text-red-500 absolute top-[-4px] right-0"
-                />
-              </label>
-              <p>
-                  It is also possible to add several values in fields 5-7, necessarily
-                  separating them with a semicolon (";")
-              </p>
-              <label className="flex flex-col space-y-2 relative">
-                <div className="flex items-center space-x-2">
-                  <span> 5. Add Locations</span>
-                  <div className="tooltip" data-tip="Here I can add some text">
-                    <AiOutlineQuestionCircle className="hover:cursor-pointer" />
-                  </div>
-                </div>
-                <Field
-                  name="locations"
-                  placeholder="Locations"
-                  type="string"
-                  component={Input}
-                />
-                <ErrorMessage
-                  name="locations"
-                  component="div"
-                  className="text-red-500 absolute top-[-4px] right-0"
-                />
-              </label>
-              <label className="flex flex-col space-y-2 relative">
-                <div className="flex items-center space-x-2">
-                  <span> 6. Add service categories</span>
-                  <div className="tooltip" data-tip="Here I can add some text">
-                    <AiOutlineQuestionCircle className="hover:cursor-pointer" />
-                  </div>
-                </div>
-
-                <Field
-                  name="serviceCategories"
-                  placeholder="Service categories"
-                  component={Input}
-                  type="string"
-                />
-                <ErrorMessage
-                  name="serviceCategories"
-                  component="div"
-                  className="text-red-500 absolute top-[-4px] right-0"
-                />
-              </label>
-              <label className="flex flex-col space-y-2 relative">
-                <div className="flex items-center space-x-2">
-                  <span> 7. Add industry</span>
-                  <div className="tooltip" data-tip="Here I can add some text">
-                    <AiOutlineQuestionCircle className="hover:cursor-pointer" />
-                  </div>
-                </div>
-
-                <Field
-                  name="industries"
-                  type="text"
-                  placeholder="Industries"
-                  component={Input}
-                />
-                <ErrorMessage
-                  name="industries"
-                  component="div"
-                  className="text-red-500 absolute top-[-4px] right-0"
-                />
-              </label> */}
               <label className="flex flex-col mx-auto">
                 <div className="flex items-center space-x-2">
                   <span>8. Add profile language</span>

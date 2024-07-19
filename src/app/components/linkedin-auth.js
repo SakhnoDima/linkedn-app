@@ -16,8 +16,11 @@ const LinkedinAuth = ({ isAuth }) => {
       <h2 className="text-xl mb-[16px]">
         To start work, please authorize your account first
       </h2>
-      <LinkedinSignUpForm setIsCodeConfirm={setIsCodeConfirm} setIsLinkedinAuth={setIsLinkedinAuth} />
-     {!!isCodeConfirm && <SaveCodeForm />}
+      <LinkedinSignUpForm
+        setIsCodeConfirm={setIsCodeConfirm}
+        setIsLinkedinAuth={setIsLinkedinAuth}
+      />
+      {isCodeConfirm && <SaveCodeForm />}
     </div>
   );
 };
