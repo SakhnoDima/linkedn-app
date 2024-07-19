@@ -10,46 +10,58 @@ import Button from "./button";
 
 const filtersInputs = [
   {
-    labelText: "1. Add Your target filters name.",
-    toolTipText: "Here I can add some text",
+    labelText: "1. Specify a name for this filter",
+    toolTipText: "Write the name that best fits this target filter.",
     fieldName: "targetName",
     fieldType: "string",
     placeholder: "Name",
   },
   {
-    labelText: "2. How many connections would you like to send?",
-    toolTipText: "Here I can add some text",
+    labelText: "2. Number of connections to be sent",
+    toolTipText:
+      "Write how many connections you want to send. We recommend a value between 10 and 20.",
     fieldName: "connections",
     fieldType: "number",
     placeholder: "Connections",
   },
   {
-    labelText: "3. Add keywords",
-    toolTipText: "Here I can add some text",
+    labelText: "3. Search tags",
+    toolTipText: "General tags by which accounts will be searched.",
     fieldName: "keyWords",
     fieldType: "string",
-    placeholder: "Keywords",
+    placeholder: "Search tags",
   },
   {
-    labelText: "4. Add Title",
-    toolTipText: "Here I can add some text",
+    labelText: "4. Account title",
+    toolTipText:
+      "Enter the title of the accounts you want to see in your connections.",
     fieldName: "title",
     fieldType: "string",
     placeholder: "Title",
   },
   {
-    labelText: "5. Add Locations",
-    toolTipText: "Here I can add some text",
+    labelText: "5. Target locations",
+    toolTipText:
+      "Enter the locations in which you want to search for accounts. There may be several options separated - ';'",
     fieldName: "locations",
     fieldType: "string",
     placeholder: "Locations",
   },
   {
-    labelText: "6. Add service categories",
-    toolTipText: "Here I can add some text",
+    labelText: "6. Target service categories",
+    toolTipText:
+      "Enter the service categories in which you want to search for accounts. There may be several options separated - ';'",
     fieldName: "serviceCategories",
     fieldType: "string",
     placeholder: "Service categories",
+  },
+  {
+    labelText: "7. Target industry",
+    toolTipText:
+      "Enter the industries in which you want to search for accounts. There may be several options separated - ';'",
+    fieldName: "Industries",
+    fieldType: "string",
+    placeholder: "Industries",
   },
 ];
 
@@ -138,7 +150,7 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
                     as={Input}
                   />
                   <ErrorMessage
-                    name="targetName"
+                    name={`${data.fieldName}`}
                     component="div"
                     className="text-red-500 absolute top-[-4px] right-0"
                   />
@@ -289,7 +301,10 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
               <label className="flex flex-col mx-auto">
                 <div className="flex items-center space-x-2">
                   <span>8. Add profile language</span>
-                  <div className="tooltip" data-tip="Here I can add some text">
+                  <div
+                    className="tooltip"
+                    data-tip="Select preferred user profile language"
+                  >
                     <AiOutlineQuestionCircle className="hover:cursor-pointer" />
                   </div>
                 </div>
