@@ -23,7 +23,7 @@ const LinkedinSignUpForm = ({ setIsLinkedinAuth, setIsCodeConfirm }) => {
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    setIsCodeConfirm(true)
+    setIsCodeConfirm(true);
     try {
       const linkedinAuthorization = await axios.post(
         "/api/lambda-authorize",
