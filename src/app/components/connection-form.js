@@ -146,7 +146,7 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
                     as={Input}
                   />
                   <ErrorMessage
-                    name="targetName"
+                    name={`${data.fieldName}`}
                     component="div"
                     className="text-red-500 absolute top-[-4px] right-0"
                   />
