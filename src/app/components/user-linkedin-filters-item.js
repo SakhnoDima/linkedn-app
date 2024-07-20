@@ -34,10 +34,6 @@ const UserLinkedinFiltersItem = ({
         }
       );
 
-      if (linkedinAuthorization.data.error === null) {
-        showToast(linkedinAuthorization.data.message, "success");
-      }
-
       showToast(linkedinAuthorization.data.message, "success");
     } catch (error) {
       console.log(error);
@@ -59,13 +55,13 @@ const UserLinkedinFiltersItem = ({
   const getStatus = () => {
     if (isLoading === data._id) {
       return (
-        <StatusBadge className="badge-secondary badge-outline">
+        <StatusBadge className="badge-secondary badge-outline w-[60px]">
           {statusState.progress}
         </StatusBadge>
       );
     } else
       return (
-        <StatusBadge className="badge-outline">
+        <StatusBadge className="badge-outline w-[60px]">
           {statusState.pending}
         </StatusBadge>
       );
