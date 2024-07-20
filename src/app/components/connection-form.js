@@ -14,7 +14,7 @@ const filtersInputs = [
     toolTipText: "Write the name that best fits this target filter.",
     fieldName: "targetName",
     fieldType: "text",
-    placeholder: "Name",
+    placeholder: `Ex: "SEO target"`,
   },
   {
     labelText: "2. Number of connections to be sent",
@@ -22,14 +22,14 @@ const filtersInputs = [
       "Write how many connections you want to send. We recommend a value between 10 and 20.",
     fieldName: "connections",
     fieldType: "number",
-    placeholder: "Connections",
+    placeholder: `Ex: "20"`,
   },
   {
     labelText: "3. Search tags",
     toolTipText: "General tags by which accounts will be searched.",
     fieldName: "keyWords",
     fieldType: "text",
-    placeholder: "Search tags",
+    placeholder: `Ex: "SEO"`,
   },
   {
     labelText: "4. Account title",
@@ -37,7 +37,7 @@ const filtersInputs = [
       "Enter the title of the accounts you want to see in your connections.",
     fieldName: "title",
     fieldType: "text",
-    placeholder: "Title",
+    placeholder: `Ex: "CEO"`,
   },
   {
     labelText: "5. Target locations",
@@ -45,7 +45,7 @@ const filtersInputs = [
       "Enter the locations in which you want to search for accounts. There may be several options separated - ';'",
     fieldName: "locations",
     fieldType: "text",
-    placeholder: "Locations",
+    placeholder: `Ex: "Germany; USA"`,
   },
   {
     labelText: "6. Target service categories",
@@ -53,7 +53,7 @@ const filtersInputs = [
       "Enter the service categories in which you want to search for accounts. There may be several options separated - ';'",
     fieldName: "serviceCategories",
     fieldType: "text",
-    placeholder: "Service categories",
+    placeholder: `Ex: "Marketing Services; Technology, Information and Internet"`,
   },
   {
     labelText: "7. Target industry",
@@ -61,7 +61,7 @@ const filtersInputs = [
       "Enter the industries in which you want to search for accounts. There may be several options separated - ';'",
     fieldName: "industries",
     fieldType: "text",
-    placeholder: "Industries",
+    placeholder: `Ex: "Market Research; Social Media Marketing"`,
   },
 ];
 
@@ -140,6 +140,9 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
                 >
                   <div className="flex items-center space-x-2">
                     <span>{data.labelText}</span>
+                    {index <= 2 && (
+                        <span className="text-red-500">*</span>
+                    )}
                     <div className="tooltip" data-tip={`${data.toolTipText}`}>
                       <AiOutlineQuestionCircle className="hover:cursor-pointer" />
                     </div>
