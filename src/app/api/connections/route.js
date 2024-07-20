@@ -107,7 +107,7 @@ export const POST = async (req, res) => {
 
     return NextResponse.json(
       {
-        message: `Connections sended. You did ${linkedinAuthorization.data.totalInvitationSent} from ${linkedinAuthorization.data.totalInvitationPlaned}`,
+        message: `In total, ${result.totalInvitationSent} connection was completed out of ${result.totalLettersPerDay} planned.`,
       },
       { status: 200 }
     );
