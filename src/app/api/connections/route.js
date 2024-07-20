@@ -96,8 +96,19 @@ export const POST = async (req, res) => {
 
     console.log("Finish:", result);
 
+    if (result.error) {
+      return NextResponse.json(
+        {
+          message: result.error,
+        },
+        { status: 500 }
+      );
+    }
+
     return NextResponse.json(
-      { message: "Connections sended succesfully" },
+      {
+        message: `Connections sended. You did ${linkedinAuthorization.data.totalInvitationSent} from ${linkedinAuthorization.data.totalInvitationPlaned}`,
+      },
       { status: 200 }
     );
   } catch (error) {
