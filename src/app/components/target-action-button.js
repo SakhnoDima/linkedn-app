@@ -55,6 +55,7 @@ const TargetActionButton = ({
 
   return (
     <Button
+      whileHover={{ scale: 1.2 }}
       className="btn-sm"
       onClick={actions === "delete" ? handleDelete : handleClick}
     >
