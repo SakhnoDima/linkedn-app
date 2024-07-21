@@ -136,16 +136,15 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
           <Form className="flex flex-col space-y-4 p-4 pl-6 overflow-y-auto pt-[32px]">
             <div className="flex flex-col center gap-[30px] mx-auto justify-center items-center w-min">
               {filtersInputs.map((data, index) => (
-                  <>
-                <label
-                  key={index}
-                  className="flex flex-col space-y-2  relative"
-                >
-                  <div className="flex items-center space-x-2">
-                    <span>{data.labelText}</span>
-                    {index <= 2 && (
-                        <span className="text-red-500">*</span>
-                    )}
+                <>
+                  <label
+                    key={index}
+                    className="flex flex-col space-y-2  relative"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <span>{data.labelText}</span>
+                      {index <= 2 && <span className="text-red-500">*</span>}
+                    </div>
                     <div className="tooltip" data-tip={`${data.toolTipText}`}>
                       <AiOutlineQuestionCircle className="hover:cursor-pointer" />
                     </div>
