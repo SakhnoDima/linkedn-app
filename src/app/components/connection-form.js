@@ -4,6 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import { useSession } from "next-auth/react";
+import { useModalContext } from "../context/modal-context";
 
 import Input from "./input";
 import Button from "./button";
@@ -80,6 +81,7 @@ const languageOptions = [
 
 const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
   const { data: session } = useSession();
+  const { closeModal } = useModalContext();
 
   const initialValues = {
     targetName: currentTarget.targetName || "",
@@ -126,6 +128,7 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
             },
             session.user.id
           );
+          closeModal();
           setSubmitting(false);
         }}
       >
@@ -146,23 +149,22 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
                     <div className="tooltip" data-tip={`${data.toolTipText}`}>
                       <AiOutlineQuestionCircle className="hover:cursor-pointer" />
                     </div>
-                  </div>
-                  <Field
-                    name={`${data.fieldName}`}
-                    type={`${data.fieldType}`}
-                    placeholder={`${data.placeholder}`}
-                    as={Input}
-                  />
-                  <ErrorMessage
-                    name={`${data.fieldName}`}
-                    component="div"
-                    className="text-red-500 absolute top-[-4px] right-0"
-                  />
-                </label>
-                {index === 3 && (
+                    <Field
+                      name={`${data.fieldName}`}
+                      type={`${data.fieldType}`}
+                      placeholder={`${data.placeholder}`}
+                      as={Input}
+                    />
+                    <ErrorMessage
+                      name={`${data.fieldName}`}
+                      component="div"
+                      className="text-red-500 absolute top-[-4px] right-0"
+                    />
+                  </label>
+                  {index === 3 && (
                     <p key="additional-info">
-                      It is also possible to add several values in fields 5-7, necessarily
-                      separating them with a semicolon (";")
+                      It is also possible to add several values in fields 5-7,
+                      necessarily separating them with a semicolon (";")
                     </p>
                   )}
                 </>

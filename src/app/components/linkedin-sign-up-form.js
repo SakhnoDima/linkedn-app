@@ -8,6 +8,7 @@ import * as Yup from "yup";
 import { useToastContext } from "../context/toast-context";
 import Input from "./input";
 import Button from "./button";
+import Loader from "./loader";
 
 const LinkedinSignUpForm = ({ setIsLinkedinAuth, setIsCodeConfirm }) => {
   const showToast = useToastContext();
@@ -89,8 +90,12 @@ const LinkedinSignUpForm = ({ setIsLinkedinAuth, setIsCodeConfirm }) => {
             />
           </div>
 
-          <Button type="submit" className="btn-primary" disabled={isSubmitting}>
-            <p>{isSubmitting ? "Loading" : "Connect to Linkedin"}</p>
+          <Button
+            type="submit"
+            className="btn-primary min-w-[180px]"
+            disabled={isSubmitting}
+          >
+            <p>{isSubmitting ? <Loader /> : "Connect to Linkedin"}</p>
           </Button>
         </Form>
       )}

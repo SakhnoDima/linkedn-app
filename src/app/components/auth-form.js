@@ -9,6 +9,7 @@ import Button from "./button";
 import { useToastContext } from "../context/toast-context";
 import axios from "axios";
 import { signIn } from "next-auth/react";
+import Loader from "./loader";
 
 const isProduction = process.env.NEXT_PUBLIC_PRODUCTION || null;
 
@@ -129,10 +130,14 @@ const AthForm = () => {
 
             <Button
               type="submit"
-              className="btn-primary w-[170px]"
+              className="btn-primary min-w-[180px]"
               disabled={isSubmitting}
             >
-              <p>{isAuthorize ? "Login" : "Authorise"}</p>
+              {isSubmitting ? (
+                <Loader />
+              ) : (
+                <p>{isAuthorize ? "Login" : "Authorise"}</p>
+              )}
             </Button>
           </Form>
         )}

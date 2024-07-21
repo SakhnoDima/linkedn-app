@@ -3,9 +3,8 @@ import { useToastContext } from "../context/toast-context";
 import StatusBadge from "./status-badge";
 
 const statusState = {
-  available: "Available",
-  pending: "Pending",
-  progress: "In Progress ",
+  pending: "Paused",
+  progress: "Active",
 };
 
 const UserLinkedinFiltersItem = ({
@@ -54,19 +53,18 @@ const UserLinkedinFiltersItem = ({
   };
 
   const getStatus = () => {
-    if (isLoading === data._id)
+    if (isLoading === data._id) {
       return (
-        <StatusBadge className="badge-accent badge-outline ">
+        <StatusBadge className="badge-secondary badge-outline w-[60px]">
           {statusState.progress}
         </StatusBadge>
       );
-    if (isLoading && isLoading !== data._id)
+    } else
       return (
-        <StatusBadge className="badge-secondary">
+        <StatusBadge className="badge-outline w-[60px]">
           {statusState.pending}
         </StatusBadge>
       );
-    return <StatusBadge>{statusState.available}</StatusBadge>;
   };
 
   return (
