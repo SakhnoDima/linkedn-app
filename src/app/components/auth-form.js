@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { useRouter } from "next/navigation";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -10,6 +10,7 @@ import { useToastContext } from "../context/toast-context";
 import axios from "axios";
 import { signIn } from "next-auth/react";
 import Loader from "./loader";
+import mixpanel from 'mixpanel-browser';
 
 const isProduction = process.env.NEXT_PUBLIC_PRODUCTION || null;
 
@@ -30,6 +31,9 @@ const AthForm = () => {
     password: Yup.string().required("Password is required"),
   });
   const handlerAuthorize = async (values, { setSubmitting }) => {
+
+
+
     try {
       const response = await axios.post("/api/auth/register", {
         email: values.email,

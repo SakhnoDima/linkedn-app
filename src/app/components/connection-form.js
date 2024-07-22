@@ -9,6 +9,10 @@ import { useModalContext } from "../context/modal-context";
 import Input from "./input";
 import Button from "./button";
 
+import mixpanel from 'mixpanel-browser';
+import {useEffect} from "react";
+
+
 const filtersInputs = [
   {
     labelText: "1. Specify a name for this filter",
@@ -98,6 +102,11 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
       : "",
   };
 
+
+  useEffect(() => {
+    mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_SECRET_KEY, {debug: true});
+  }, []);
+
   return (
     <>
       <Formik
@@ -130,6 +139,10 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
           );
           closeModal();
           setSubmitting(false);
+
+          mixpanel.track('create new target');
+
+          console.log('create new target')
         }}
       >
         {({ isSubmitting }) => (

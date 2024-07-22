@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useToastContext } from "../context/toast-context";
 import StatusBadge from "./status-badge";
+import {useEffect} from "react";
+import mixpanel from "mixpanel-browser";
 
 const statusState = {
   pending: "Paused",
@@ -14,6 +16,10 @@ const UserLinkedinFiltersItem = ({
   setIsLoading,
 }) => {
   const showToast = useToastContext();
+
+    useEffect(() => {
+        mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_SECRET_KEY, {debug: true});
+    }, []);
 
   const handBotInit = async () => {
     if (isLoading) return;
@@ -35,11 +41,14 @@ const UserLinkedinFiltersItem = ({
       );
 
       showToast(linkedinAuthorization.data.message, "success");
+      mixpanel.track('start connections');
+
     } catch (error) {
       console.log(error);
       showToast(error?.response.data.message || "Server error", "error");
     } finally {
       setIsLoading(null);
+
     }
   };
 
