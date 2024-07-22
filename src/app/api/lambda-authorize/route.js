@@ -6,8 +6,8 @@ export const maxDuration = 60;
 export const dynamic = "force-dynamic";
 
 async function checkTaskStatus(taskId) {
-  let isLinkedinAuth = false;
-
+  let isCompleted = false;
+  let isLinkedinAuth;
   const interval = setInterval(async () => {
     try {
       const statusResponse = await axios.post(
@@ -24,19 +24,26 @@ async function checkTaskStatus(taskId) {
 
       if (statusResponse.data.status === "completed") {
         console.log("Task completed:", statusResponse.data.result);
-        let resultObject = JSON.parse(statusResponse.data.result);
-        isLinkedinAuth = resultObject.isLinkedinAuth;
+        isLinkedinAuth = JSON.parse(statusResponse.data.result);
+        isCompleted = true;
         clearInterval(interval);
       } else {
         console.log("Task is still processing");
       }
     } catch (error) {
       console.error("Error checking task status:", error);
+      isCompleted = true;
+      clearInterval(interval);
+      isLinkedinAuth = {
+        isLinkedinAuth: false,
+        message:
+          error.response?.data?.result?.message || "Error checking task status",
+      };
     }
   }, 10000);
 
   while (true) {
-    if (isLinkedinAuth !== false) {
+    if (isCompleted) {
       break;
     }
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -75,6 +82,13 @@ export const POST = async (req, res) => {
     const isLinkedinAuth = await checkTaskStatus(taskId);
 
     console.log("isLinkedinAuth after f:", isLinkedinAuth);
+
+    if (!isLinkedinAuth.isLinkedinAuth) {
+      return NextResponse.json(
+        { message: isLinkedinAuth.message || "Authorization error" },
+        { status: 500 }
+      );
+    }
 
     await User.findOneAndUpdate(
       { _id: userId },
