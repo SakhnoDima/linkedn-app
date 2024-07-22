@@ -104,7 +104,7 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
 
 
   useEffect(() => {
-    mixpanel.init(process.env.NEXT_PUBLIC_SECRET_KEY, {debug: true});
+    mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_SECRET_KEY, {debug: true});
   }, []);
 
   return (

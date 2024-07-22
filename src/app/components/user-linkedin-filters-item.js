@@ -18,7 +18,7 @@ const UserLinkedinFiltersItem = ({
   const showToast = useToastContext();
 
     useEffect(() => {
-        mixpanel.init(process.env.NEXT_PUBLIC_SECRET_KEY, {debug: true});
+        mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_SECRET_KEY, {debug: true});
     }, []);
 
   const handBotInit = async () => {
