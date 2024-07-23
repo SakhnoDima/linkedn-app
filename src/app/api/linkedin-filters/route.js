@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import linkedinFilters from "@/app/lib/linkedin-filters-model";
 import LinkedinFilters from "@/app/lib/linkedin-filters-model";
 import mongoose from "mongoose";
 
@@ -16,6 +15,7 @@ export const POST = async (req, res) => {
       languages: values.languages,
       industries: values.industries,
       serviceCategories: values.serviceCategories,
+      status: values.status,
     });
 
     return NextResponse.json(
@@ -61,6 +61,7 @@ export const PUT = async (req, res) => {
         languages: values.languages,
         industries: values.industries,
         serviceCategories: values.serviceCategories,
+        status: values.status,
       },
       { new: true }
     );

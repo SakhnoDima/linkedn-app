@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
 import User from "@/app/lib/user-model";
+import LinkedinFilters from "@/app/lib/linkedin-filters-model";
 
 async function checkTaskStatus(taskId) {
   let isLinkedinAuth = false;
@@ -118,3 +119,122 @@ export const POST = async (req, res) => {
     );
   }
 };
+
+// export const POST = async (req, res) => {
+//   const { data } = await req.json();
+//   console.log(data);
+
+//   if (!data) {
+//     return NextResponse.json(
+//       { message: "Credentials is required" },
+//       { status: 400 }
+//     );
+//   }
+
+//   const updatedTarget = await LinkedinFilters.findByIdAndUpdate(
+//     { _id: data._id },
+//     {
+//       status: true,
+//     }
+//   );
+
+//   const user = await User.findById({ _id: data.userId });
+
+//   const searchFilters = {};
+//   if (data.locations.length > 0) {
+//     searchFilters.Locations = data.locations;
+//   }
+//   if (data.languages.length > 0) {
+//     searchFilters["Profile language"] = data.languages;
+//   }
+//   if (data.title) {
+//     searchFilters.Keywords = data.title;
+//   }
+//   if (data.industries.length > 0) {
+//     searchFilters.Industry = data.industries;
+//   }
+//   if (data.serviceCategories.length > 0) {
+//     searchFilters["Service categories"] = data.serviceCategories;
+//   }
+
+//   try {
+//     axios
+//       .post(
+//         "https://6ejajjistb.execute-api.eu-north-1.amazonaws.com/default/lambda-create-task",
+//         {
+//           id: data.userId,
+//           levelOfTarget: 1,
+//           searchTags: data.keyWords,
+//           searchFilters,
+//           totalLettersPerDay: data.connections,
+//           invitationLetters: [""],
+//           email: user.email,
+//         },
+//         {
+//           headers: {
+//             "Content-Type": "application/json",
+//           },
+//         }
+//       )
+//       .then((createTaskResponse) => {
+//         const taskId = createTaskResponse.data.taskId;
+//         console.log("Task started with ID:", taskId);
+//         checkTaskStatus(taskId).then((res) => {
+//           console.log(res);
+//           console.log("Save res in db");
+//           LinkedinFilters.findByIdAndUpdate(
+//             { _id: updatedTarget._id },
+//             {
+//               status: false,
+//             }
+//           )
+//             .then((updateRes) => {
+//               console.log("Database updated successfully:", updateRes);
+//             })
+//             .catch((err) => {
+//               console.error("Error updating database:", err);
+//             });
+//         });
+//       });
+
+//     return NextResponse.json(
+//       {
+//         message: `We have started the connection process, please wait for the result`,
+//       },
+//       { status: 200 }
+//     );
+//   } catch (error) {
+//     return NextResponse.json(
+//       { message: "Internal server error" },
+//       { status: 500 }
+//     );
+//   }
+// };
+// export const GET = async (req, res) => {
+//   const { searchParams } = new URL(req.nextUrl);
+//   const targetId = searchParams.get("targetId");
+
+//   if (!targetId) {
+//     return NextResponse.json(
+//       { message: `${targetId} is required` },
+//       { status: 400 }
+//     );
+//   }
+//   try {
+//     const status = await LinkedinFilters.findById({ _id: targetId });
+
+//     console.log(status);
+
+//     return NextResponse.json(
+//       {
+//         message: `Task is finished. You can check all details in MixPanel`,
+//       },
+//       { status: 200 }
+//     );
+//   } catch (error) {
+//     return NextResponse.json(
+//       { message: "Internal server error" },
+//       { status: 500 }
+//     );
+//   }
+// };
