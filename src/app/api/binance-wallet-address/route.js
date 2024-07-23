@@ -1,27 +1,24 @@
 import { Spot } from '@binance/connector';
 import { NextResponse } from "next/server";
+import QRCode from 'qrcode';
 
+
+const apiKey = 'Rp2YiaAnK0S4URGDnu2qRvI8II2Sa03ArDs84Qq4JmuUyA6VeoxOwjIyF8QiYpIu';
+const apiSecret = 'HcpmuJS82lP9FlPJLqInxykjWDtUH1Q23ZLeLTrOyFdTJnrbNCyZoBuAQ4WtaIDY';
+
+const client = new Spot(apiKey, apiSecret);
 
 export const GET = async (req, res) => {
-    const { values, userId } = await req.json();
-
-    const apiKey = process.env.NEXT_PUBLIC_BINANCE_API_KEY;
-    const apiSecret = process.env.NEXT_PUBLIC_BINANCE_SECRET_KEY;
-    console.log(apiKey)
-    console.log(apiSecret)
-    const client = new Spot(apiKey, apiSecret);
-
     try {
-        const response = await client.depositAddress({
-            coin: 'BNB',
-            network: 'BSC' // або інша мережа, якщо потрібно
-        });
-        return NextResponse.json({response}, {status: 200})
+        const response = await client.depositAddress('SOL', {network: 'SOL'});
+        const address = response.data.address;
 
+        // Генерація QR-коду
+        const qrCodeDataURL = await QRCode.toDataURL(address);
+
+        return NextResponse.json({ address, qrCode: qrCodeDataURL }, { status: 200 });
     } catch (error) {
         console.error(error);
-        // res.status(500).json({ message: 'Error fetching deposit address' });
-        return NextResponse.json({status: 500}, {message: error.message})
-
+        return NextResponse.json({ message: 'Internal Server Error', error: error.message }, { status: 500 });
     }
 }
