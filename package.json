@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@binance/connector": "^3.4.0",
     "axios": "^1.7.2",
     "bcrypt": "^5.1.1",
     "clsx": "^2.1.1",
