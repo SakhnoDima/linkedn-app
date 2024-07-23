@@ -36,8 +36,7 @@ async function checkTaskStatus(taskId) {
       clearInterval(interval);
       isLinkedinAuth = {
         isLinkedinAuth: false,
-        message:
-          error.response?.data?.result?.message || "Error checking task status",
+        message: error.response?.data?.result?.message || "Authorization error",
       };
     }
   }, 10000);
