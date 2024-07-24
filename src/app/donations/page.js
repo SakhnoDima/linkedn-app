@@ -2,9 +2,36 @@
 import {useEffect, useState} from "react";
 import axios from 'axios';
 
+
+const CryptPaymentMethod = () => {
+
+    return <>Crypt Payment Method</>
+}
+
+const FiatPaymentMethod = () => {
+
+    return <>Fiat Payment Method</>
+}
+
+const PaymentMethod = ({name}) => {
+
+    return <div>
+        {name}
+    </div>
+}
+
+const ChoicePaymentMethod = () => {
+
+    return <div className='flex'>
+      <PaymentMethod name={'Crypto'}/>
+      <PaymentMethod name={'Fiat'}/>
+    </div>
+}
+
 const Home = () => {
     const [addressQR, setAddressQR] = useState()
     const [walletAddress, setWalletAddress] = useState()
+    const [paymentMethod, setPaymentMethod] = useState('crypt')
 
     useEffect(() => {
         const getWalletAddress = async () => {
@@ -23,10 +50,11 @@ const Home = () => {
 
 
     return (
-        <div>
-            <h1>Donations page</h1>
-            <div>address: {walletAddress}</div>
-            <img src={addressQR} alt={'address QR'}/>
+        <div className="border border-black pt-[10px]">
+            <ChoicePaymentMethod/>
+            <div>
+                {paymentMethod === 'crypt' ? <CryptPaymentMethod/> : <FiatPaymentMethod/>}
+            </div>
         </div>
     );
 };
