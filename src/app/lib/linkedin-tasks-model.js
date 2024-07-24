@@ -1,21 +1,65 @@
 import mongoose from "mongoose";
 
-const LinkedinTasksSchema = new mongoose.Schema({
-  targetsId: {
+const LinkedinCompletedTasksSchema = new mongoose.Schema({
+  targetTaskId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "LinkedinFilters",
     required: true,
   },
-  status: {
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "users_collection",
+    required: true,
+  },
+  error: {
     type: String,
   },
-  message: {
+  date: {
+    type: Date,
+    default: Date.now,
+  },
+  levelOfTarget: {
+    type: Number,
+  },
+  totalClicks: {
+    type: Number,
+  },
+  totalLettersPerDay: {
+    type: Number,
+  },
+  totalInvitationSent: {
+    type: Number,
+  },
+  searchTags: {
     type: String,
+  },
+  searchFilters: {
+    type: String,
+  },
+  userNames: {
+    type: [String],
+  },
+  searchFilters: {
+    Locations: {
+      type: [String],
+    },
+    "Profile language": {
+      type: [String],
+    },
+    Keywords: {
+      type: String,
+    },
+    Industry: {
+      type: [String],
+    },
+    "Service categories": {
+      type: [String],
+    },
   },
 });
 
-const LinkedinTasks =
-  mongoose.models.LinkedinTasks ||
-  mongoose.model("LinkedinTasks", LinkedinTasksSchema);
+const LinkedinCompletedTasks =
+  mongoose.models.LinkedinCompletedTasks ||
+  mongoose.model("LinkedinCompletedTasks", LinkedinCompletedTasksSchema);
 
-export default LinkedinTasks;
+export default LinkedinCompletedTasks;

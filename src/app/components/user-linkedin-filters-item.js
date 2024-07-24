@@ -54,9 +54,8 @@ const UserLinkedinFiltersItem = ({
     ) {
       setIsLoading(checkingStatus.targetId);
       checkStatus(checkingStatus.targetId);
-    } else {
-      console.log("LS is empty, continue");
     }
+
     return () => clearInterval(interval);
   }, []);
 
