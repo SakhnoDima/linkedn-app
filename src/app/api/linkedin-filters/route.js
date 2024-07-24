@@ -85,7 +85,7 @@ export const DELETE = async (req, res) => {
 
     const deletionResults = await Promise.all(
       ids.map(async (id) => {
-        const isDeleted = await linkedinFilters.findByIdAndDelete(id);
+        const isDeleted = await LinkedinFilters.findByIdAndDelete(id);
         return { id, isDeleted };
       })
     );

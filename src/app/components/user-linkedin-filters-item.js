@@ -21,9 +21,52 @@ const UserLinkedinFiltersItem = ({
     mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_SECRET_KEY, { debug: true });
   }, []);
 
+  useEffect(() => {
+    let interval;
+    const checkStatus = async (targetId) => {
+      interval = setInterval(async () => {
+        console.log("in useEffect");
+        console.log("DataId", data._id);
+        console.log("TargetId", targetId);
+        try {
+          const response = await axios.get("/api/connections", {
+            params: {
+              targetId,
+            },
+          });
+
+          if (response.data.status === false) {
+            console.log("Status is true, stopping checks");
+            clearInterval(interval);
+            setIsLoading(null);
+            localStorage.removeItem("checkingStatus"); // remove from LS
+          } else {
+            console.log("Status is still false, continuing checks");
+          }
+        } catch (error) {
+          console.error("Error checking connection status:", error);
+          showToast(error?.response.data.message || "Server error", "error"); //! обробити
+        }
+      }, 10000);
+    };
+
+    const checkingStatus = JSON.parse(localStorage.getItem("checkingStatus"));
+    if (
+      checkingStatus &&
+      checkingStatus.targetId &&
+      checkingStatus.targetId === data._id
+    ) {
+      console.log(checkingStatus.targetId);
+      setIsLoading(checkingStatus.targetId);
+      checkStatus(checkingStatus.targetId);
+    } else {
+      console.log("LS is empty");
+    }
+    return () => clearInterval(interval);
+  }, []);
+
   const handBotInit = async () => {
     if (isLoading) return;
-
     setIsLoading(data._id);
 
     try {
@@ -39,23 +82,42 @@ const UserLinkedinFiltersItem = ({
           timeout: 600000,
         }
       );
-
+      localStorage.setItem(
+        "checkingStatus",
+        JSON.stringify({ targetId: data._id })
+      ); // save task in LS
       showToast(linkedinAuthorization.data.message, "success");
       mixpanel.track("start connections");
+
+      console.log(data._id);
+      const interval = setInterval(async () => {
+        try {
+          const response = await axios.get("/api/connections", {
+            params: {
+              targetId: data._id,
+            },
+          });
+
+          if (response.data.status === false) {
+            console.log("Status is true, stopping checks");
+            clearInterval(interval);
+            setIsLoading(null);
+            localStorage.removeItem("checkingStatus"); // remove from LS
+          } else {
+            console.log("Status is still false, continuing checks");
+          }
+        } catch (error) {
+          localStorage.removeItem("checkingStatus"); // remove from LS
+          setIsLoading(null);
+          console.error("Error checking connection status:", error);
+          showToast(error?.response.data.message || "Server error", "error"); //! обробити
+        }
+      }, 10000);
     } catch (error) {
       console.log(error);
-      showToast(error?.response.data.message || "Server error", "error");
-    } finally {
       setIsLoading(null);
+      showToast(error?.response.data.message || "Server error", "error"); //! обробити
     }
-
-    // const status = await axios.get("/api/connections", {
-    //   params: {
-    //     targetId: data._id,
-    //   },
-    // });
-
-    // console.log(status);
   };
 
   const handleOnChange = (event) => {
