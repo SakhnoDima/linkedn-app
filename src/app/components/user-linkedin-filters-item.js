@@ -25,9 +25,6 @@ const UserLinkedinFiltersItem = ({
     let interval;
     const checkStatus = async (targetId) => {
       interval = setInterval(async () => {
-        console.log("in useEffect");
-        console.log("DataId", data._id);
-        console.log("TargetId", targetId);
         try {
           const response = await axios.get("/api/connections", {
             params: {
@@ -36,7 +33,6 @@ const UserLinkedinFiltersItem = ({
           });
 
           if (response.data.status === false) {
-            console.log("Status is true, stopping checks");
             clearInterval(interval);
             setIsLoading(null);
             localStorage.removeItem("checkingStatus"); // remove from LS
@@ -56,11 +52,10 @@ const UserLinkedinFiltersItem = ({
       checkingStatus.targetId &&
       checkingStatus.targetId === data._id
     ) {
-      console.log(checkingStatus.targetId);
       setIsLoading(checkingStatus.targetId);
       checkStatus(checkingStatus.targetId);
     } else {
-      console.log("LS is empty");
+      console.log("LS is empty, continue");
     }
     return () => clearInterval(interval);
   }, []);

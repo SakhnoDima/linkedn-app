@@ -122,7 +122,6 @@ async function checkTaskStatus(taskId) {
 
 export const POST = async (req, res) => {
   const { data } = await req.json();
-  console.log(data);
 
   if (!data) {
     return NextResponse.json(
@@ -138,8 +137,6 @@ export const POST = async (req, res) => {
     },
     { new: true }
   );
-
-  console.log("Set start task", setFalse);
 
   const user = await User.findById({ _id: data.userId });
 
@@ -183,8 +180,6 @@ export const POST = async (req, res) => {
         const taskId = createTaskResponse.data.taskId;
         console.log("Task started with ID:", taskId);
         checkTaskStatus(taskId).then((res) => {
-          console.log(res);
-          console.log("Save res in db");
           LinkedinFilters.findByIdAndUpdate(
             { _id: data._id },
             {
@@ -226,8 +221,6 @@ export const GET = async (req, res) => {
   }
   try {
     const activeTarget = await LinkedinFilters.findById({ _id: targetId });
-
-    console.log("In GET", activeTarget);
 
     return NextResponse.json(
       {
