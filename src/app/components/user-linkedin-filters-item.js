@@ -97,8 +97,6 @@ const UserLinkedinFiltersItem = ({
             clearInterval(interval);
             setIsLoading(null);
             localStorage.removeItem("checkingStatus"); // remove from LS
-          } else {
-            console.log("Status is still false, continuing checks");
           }
         } catch (error) {
           localStorage.removeItem("checkingStatus"); // remove from LS
