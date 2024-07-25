@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import { useEffect, useState } from "react";
+import LinkedinTasksTableItem from "./linkedin-tasks-table-item";
 
 const LinkedinTasksTable = ({ userId }) => {
   const [tasks, setTasks] = useState([]);
@@ -35,22 +36,15 @@ const LinkedinTasksTable = ({ userId }) => {
           <tr>
             <th>Task Name</th>
             <th>Search Tags</th>
-            <th>Planned connections</th>
-            <th>Connections sent</th>
-            <th>Total Clics on Page</th>
+            <th>Planned Connections</th>
+            <th>Connections Sent</th>
+            <th>Total Clicks</th>
             <th>Date</th>
           </tr>
         </thead>
         <tbody>
           {tasks.map((data) => (
-            <tr key={data._id}>
-              <td>{data.taskName}</td>
-              <td>{data.searchTags}</td>
-              <td>{data.totalLettersPerDay}</td>
-              <td>{data.totalInvitationSent}</td>
-              <td>{data.totalClicks}</td>
-              <td>{data.date}</td>
-            </tr>
+            <LinkedinTasksTableItem task={data} key={data._id} />
           ))}
         </tbody>
       </table>

@@ -25,7 +25,7 @@ export default async function RootLayout({ children }) {
                 <nav className="w-[200px]">
                   <NavBar />
                 </nav>
-                <main className="flex-1 px-[50px]">{children}</main>
+                <main className="flex-1 p-[50px]">{children}</main>
               </div>
               <Modal />
             </ToastContextProvider>
