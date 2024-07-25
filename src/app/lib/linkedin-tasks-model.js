@@ -11,6 +11,9 @@ const LinkedinCompletedTasksSchema = new mongoose.Schema({
     ref: "users_collection",
     required: true,
   },
+  taskName: {
+    type: String,
+  },
   error: {
     type: String,
   },

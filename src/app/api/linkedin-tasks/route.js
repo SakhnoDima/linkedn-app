@@ -7,8 +7,6 @@ export const GET = async (req, res) => {
   try {
     const results = await LinkedinCompletedTasks.find({ userId });
 
-    console.log(results);
-
     return NextResponse.json({ results }, { status: 200 });
   } catch (error) {
     return NextResponse.json(

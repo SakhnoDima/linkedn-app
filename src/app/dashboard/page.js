@@ -1,33 +1,15 @@
-"use client";
-import React from "react";
-import Button from "../components/button";
-import axios from "axios";
-import { useSession } from "next-auth/react";
+import { getServerSession } from "next-auth";
 
-const DashboardPage = () => {
-  const { data: session } = useSession();
+import LinkedinTasksTable from "./components/linkedin-tasks-table";
+import { authOptions } from "../api/auth/[...nextauth]/route";
 
-  const handleClick = async () => {
-    try {
-      if (!session.user.id) {
-        throw new Error("Not active session");
-      }
-      const linkedinFilters = await axios.get("/api/linkedin-tasks", {
-        params: {
-          userId: session?.user.id,
-        },
-      });
-      console.log(linkedinFilters);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+const DashboardPage = async () => {
+  const session = await getServerSession(authOptions);
+
   return (
     <div>
       <h2>DashboardPage</h2>
-      <Button onClick={handleClick}>
-        <p>Get</p>
-      </Button>
+      <LinkedinTasksTable userId={session?.user.id} />
     </div>
   );
 };
