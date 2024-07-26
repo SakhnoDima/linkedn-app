@@ -39,16 +39,15 @@ export const authOptions = {
   ],
   callbacks: {
     async jwt({ token, user, session, trigger }) {
-
       if (trigger === "update" && session.isLinkedinAuth) {
         token.isLinkedinAuth = session.isLinkedinAuth;
       }
-
       if (user) {
         return {
           ...token,
           id: user._id,
           isLinkedinAuth: user.isLinkedinAuth,
+          isUpWorkAuth: user.isUpWorkAuth,
         };
       }
 
@@ -60,6 +59,7 @@ export const authOptions = {
         user: {
           id: token.id,
           isLinkedinAuth: token.isLinkedinAuth,
+          isUpWorkAuth: token.isUpWorkAuth,
         },
       };
     },

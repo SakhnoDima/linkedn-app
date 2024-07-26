@@ -28,6 +28,9 @@ const NavBar = () => {
       )}
       {!!session && (
         <>
+          <Link className={linkStyle("/up-work")} href="/up-work">
+            UpWork
+          </Link>
           <Link className={linkStyle("/linkedin")} href="/linkedin">
             Linkedin
           </Link>
