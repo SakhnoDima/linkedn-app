@@ -9,7 +9,7 @@ import Button from "@/app/components/button";
 import Input from "@/app/components/input";
 import Loader from "@/app/components/loader";
 
-const UpWorkLoginForm = ({ setIsLinkedinAuth, setIsCodeConfirm }) => {
+const UpWorkLoginForm = () => {
   const showToast = useToastContext();
   const { data: session, update } = useSession();
 
@@ -23,10 +23,9 @@ const UpWorkLoginForm = ({ setIsLinkedinAuth, setIsCodeConfirm }) => {
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    setIsCodeConfirm(true);
     try {
-      const linkedinAuthorization = await axios.post(
-        "/api/lambda-authorize",
+      const { data } = await axios.post(
+        "/api/up-work-authorize",
         {
           pass: values.pass,
           login: values.login,
@@ -40,9 +39,9 @@ const UpWorkLoginForm = ({ setIsLinkedinAuth, setIsCodeConfirm }) => {
         }
       );
 
-      showToast(linkedinAuthorization.data.message, "success");
-      setIsLinkedinAuth(true);
-      update({ isLinkedinAuth: true });
+      showToast(data.message, "success");
+
+      //update({ isLinkedinAuth: true });
     } catch (error) {
       console.log(error);
       showToast(error.response.data.message, "error");
