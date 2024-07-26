@@ -48,10 +48,18 @@ const Page = ({ params }) => {
             <span>{new Date(filter.date).toISOString().split("T")[0]}</span>
           </p>
           <p>
-            Filters: <span>{filter.searchTags}</span>
+            Search Tags: <span>{filter.searchTags}</span>
           </p>
-          <p>Total clicks licks {filter.totalClicks}</p>
-          {filter.error ? <p>{filter.error}</p> : <></>}
+          <p>Total clicks licks: {filter.totalClicks}</p>
+          <p>Planed Connections: {filter.totalInvitationSent}</p>
+          <p>Sended Connections: {filter.totalLettersPerDay}</p>
+          <p>Connected Users:</p>
+          <ul className="ml-[8px]">
+            {filter.userNames.map((name, index) => (
+              <li key={index}>- {name}</li>
+            ))}
+          </ul>
+          {filter.error && <p>{filter.error}</p>}
         </>
       )}
     </div>

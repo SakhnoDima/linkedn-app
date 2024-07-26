@@ -184,7 +184,7 @@ export const POST = async (req, res) => {
           .then((res) => {
             console.log("res", res);
             LinkedinCompletedTasks.create({
-              taskName: "Now it's tough!",
+              taskName: data.targetName,
               userId: user._id,
               targetTaskId: data._id,
               date: new Date().toISOString().split("T")[0],
