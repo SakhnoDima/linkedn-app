@@ -1,15 +1,18 @@
 "use client";
 
+import { useState } from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+
 import { useToastContext } from "@/app/context/toast-context";
 import Button from "@/app/components/button";
 import Input from "@/app/components/input";
 import Loader from "@/app/components/loader";
 
-const UpWorkLoginForm = () => {
+const UpWorkLoginForm = ({ setIsUpWorkAut }) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const showToast = useToastContext();
   const { data: session, update } = useSession();
 
@@ -22,7 +25,8 @@ const UpWorkLoginForm = () => {
     pass: Yup.string().required("Password is required"),
   });
 
-  const handleSubmit = async (values, { setSubmitting }) => {
+  const handleSubmit = async (values) => {
+    setIsSubmitting(true);
     try {
       const { data } = await axios.post(
         "/api/up-work-authorize",
@@ -40,13 +44,34 @@ const UpWorkLoginForm = () => {
       );
 
       showToast(data.message, "success");
-
-      //update({ isLinkedinAuth: true });
+      console.log(isSubmitting);
+      const interval = setInterval(async () => {
+        try {
+          const response = await axios.get("/api/up-work-authorize", {
+            params: {
+              targetId: session.user.id,
+            },
+          });
+          if (response.data.status) {
+            console.log(isSubmitting);
+            console.log("Auth successful");
+            setIsUpWorkAut(true);
+            clearInterval(interval);
+            update({ isUpWorkAuth: true });
+            setIsSubmitting(false);
+          } else {
+            console.log("User connecting....");
+          }
+        } catch (error) {
+          console.error("Error checking connection status:", error);
+          showToast(error?.response.data.message || "Server error", "error");
+          setIsSubmitting(false);
+        }
+      }, 10000);
     } catch (error) {
       console.log(error);
       showToast(error.response.data.message, "error");
-    } finally {
-      setSubmitting(false);
+      setIsSubmitting(false);
     }
   };
 
@@ -57,7 +82,7 @@ const UpWorkLoginForm = () => {
       onSubmit={handleSubmit}
       validationSchema={validationSchema}
     >
-      {({ isSubmitting }) => (
+      {({}) => (
         <Form className="flex flex-col gap-[15px] items-center">
           <div className="flex flex-col gap-2">
             <Field

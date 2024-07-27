@@ -1,13 +1,15 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
-import UpWorkLoginForm from "./components/up-work-login-form";
+import UpWorkLogin from "./components/up-work-login";
 
 const page = async () => {
   const session = await getServerSession(authOptions);
-
+  console.log(session?.user.isUpWorkAuth);
   return (
     <div>
-      <UpWorkLoginForm />
+      {!session?.user.isUpWorkAuth && (
+        <UpWorkLogin session={session?.user.isUpWorkAuth} />
+      )}
     </div>
   );
 };

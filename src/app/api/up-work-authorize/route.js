@@ -85,6 +85,13 @@ export const POST = async (req, res) => {
     //       });
     //   });
 
+    await User.findByIdAndUpdate(
+      { _id: userId },
+      {
+        isUpWorkAuth: true,
+      }
+    );
+
     return NextResponse.json(
       {
         message: `Your account is currently being authenticated on the UpWork platform. Wait for it to finish.`,
@@ -111,7 +118,7 @@ export const GET = async (req, res) => {
   }
   try {
     const currentUser = await User.findById({ _id: targetId });
-
+    console.log("User in get", currentUser);
     return NextResponse.json(
       {
         status: currentUser.isUpWorkAuth,
