@@ -19,13 +19,7 @@ const NavBar = () => {
       <Link className={linkStyle("/")} href="/">
         Home
       </Link>
-      {!session && (
-        <>
-          <Link className={linkStyle("/login")} href="/login">
-            Login
-          </Link>
-        </>
-      )}
+
       {!!session && (
         <>
           <Link className={linkStyle("/linkedin")} href="/linkedin">
@@ -34,7 +28,6 @@ const NavBar = () => {
           <Link className={linkStyle("/dashboard")} href="/dashboard">
             Dashboard
           </Link>
-          <LogOut />
         </>
       )}
     </div>
