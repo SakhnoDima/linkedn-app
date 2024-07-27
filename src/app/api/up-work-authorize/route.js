@@ -70,10 +70,10 @@ export const POST = async (req, res) => {
         "https://6ejajjistb.execute-api.eu-north-1.amazonaws.com/default/lambda-create-task",
         {
           id: userId,
-          email: login,
-          password: pass,
-          secret: secret,
-          key: "upWork",
+          // email: login,
+          // password: pass,
+          // secret: secret,
+          // key: "upWork",
         },
         {
           headers: {
@@ -82,6 +82,16 @@ export const POST = async (req, res) => {
         }
       )
       .then((createTaskResponse) => {
+        if (createTaskResponse.data.error) {
+          console.log(createTaskResponse.data.error);
+          return NextResponse.json(
+            {
+              message: createTaskResponse.data.error,
+            },
+            { status: 500 }
+          );
+        }
+
         const taskId = createTaskResponse.data.taskId;
         checkTaskStatus(taskId);
       });
@@ -93,6 +103,7 @@ export const POST = async (req, res) => {
       { status: 200 }
     );
   } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { message: "Internal server error" },
       { status: 500 }
