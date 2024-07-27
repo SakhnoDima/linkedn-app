@@ -18,7 +18,7 @@ const LinkedinTasksTable = ({ userId }) => {
             userId,
           },
         });
-        setTasks([...data.results]);
+        setTasks([...data.results].reverse());
         console.log(data.results);
       } catch (error) {
         console.log(error);

@@ -21,7 +21,6 @@ const Page = ({ params }) => {
           },
         });
 
-        console.log(data.results);
         seFilter(data.results);
       } catch (error) {
         console.log(error);

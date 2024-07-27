@@ -35,6 +35,7 @@ const LinkedinFiltersSchema = new mongoose.Schema({
   },
   status: {
     type: Boolean,
+    default: false,
   },
 });
 
