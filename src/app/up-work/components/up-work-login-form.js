@@ -23,6 +23,7 @@ const UpWorkLoginForm = ({ setIsUpWorkAut }) => {
   const validationSchema = Yup.object({
     login: Yup.string().required("Login is required"),
     pass: Yup.string().required("Password is required"),
+    secret: Yup.string().required("Secret is required"),
   });
 
   const handleSubmit = async (values) => {
@@ -33,6 +34,7 @@ const UpWorkLoginForm = ({ setIsUpWorkAut }) => {
         {
           pass: values.pass,
           login: values.login,
+          secret: values.secret,
           userId: session.user.id,
         },
         {
@@ -44,7 +46,7 @@ const UpWorkLoginForm = ({ setIsUpWorkAut }) => {
       );
 
       showToast(data.message, "success");
-      console.log(isSubmitting);
+
       const interval = setInterval(async () => {
         try {
           const response = await axios.get("/api/up-work-authorize", {
@@ -53,7 +55,7 @@ const UpWorkLoginForm = ({ setIsUpWorkAut }) => {
             },
           });
           if (response.data.status) {
-            console.log(isSubmitting);
+            console.log("Status", response.data.status);
             console.log("Auth successful");
             setIsUpWorkAut(true);
             clearInterval(interval);
@@ -88,7 +90,7 @@ const UpWorkLoginForm = ({ setIsUpWorkAut }) => {
             <Field
               name="login"
               type="text"
-              placeholder="Linkedin Login"
+              placeholder="UpWork Login"
               as={Input}
               className="input-bordered"
             />
@@ -102,12 +104,26 @@ const UpWorkLoginForm = ({ setIsUpWorkAut }) => {
             <Field
               name="pass"
               type="password"
-              placeholder="Linkedin Password"
+              placeholder="UpWork Password"
               as={Input}
               className="input-bordered"
             />
             <ErrorMessage
               name="pass"
+              component="div"
+              className="text-red-500"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Field
+              name="secret"
+              type="text"
+              placeholder="UpWork Secret"
+              as={Input}
+              className="input-bordered"
+            />
+            <ErrorMessage
+              name="secret"
               component="div"
               className="text-red-500"
             />

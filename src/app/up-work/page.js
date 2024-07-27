@@ -4,9 +4,9 @@ import UpWorkLogin from "./components/up-work-login";
 
 const page = async () => {
   const session = await getServerSession(authOptions);
-  console.log(session?.user.isUpWorkAuth);
+
   return (
-    <div>
+    <div className="py-[50px]">
       {!session?.user.isUpWorkAuth && (
         <UpWorkLogin session={session?.user.isUpWorkAuth} />
       )}

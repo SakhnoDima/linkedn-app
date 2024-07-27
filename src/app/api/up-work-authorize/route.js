@@ -8,7 +8,7 @@ async function checkTaskStatus(taskId) {
   const interval = setInterval(async () => {
     try {
       const statusResponse = await axios.post(
-        "додати",
+        "https://dim6czm31f.execute-api.eu-north-1.amazonaws.com/default/lambda-check-task-status",
         {
           id: taskId,
         },
@@ -21,8 +21,20 @@ async function checkTaskStatus(taskId) {
 
       if (statusResponse.data.status === "completed") {
         console.log("Task completed:", statusResponse.data.result);
-        isAuth = JSON.parse(statusResponse.data.result);
-        clearInterval(interval);
+        const response = JSON.parse(statusResponse.data.result);
+        console.log("Res in check status f", response);
+        if (response.isUpWorkAuth) {
+          const newUser = await User.findByIdAndUpdate(
+            { _id: response.id },
+            {
+              isUpWorkAuth: true,
+            },
+            { new: true }
+          );
+          console.log(newUser);
+          isAuth = response.isUpWorkAuth;
+          clearInterval(interval);
+        }
       } else {
         console.log("Task is still processing");
       }
@@ -43,7 +55,7 @@ async function checkTaskStatus(taskId) {
 }
 
 export const POST = async (req, res) => {
-  const { login, pass, userId } = await req.json();
+  const { login, pass, userId, secret } = await req.json();
 
   if (!login || !pass || !userId) {
     return NextResponse.json(
@@ -51,46 +63,28 @@ export const POST = async (req, res) => {
       { status: 400 }
     );
   }
-  console.log({ login, pass, userId });
+  console.log({ login, pass, userId, secret });
   try {
-    // axios
-    //   .post(
-    //     "додати",
-    //     {
-    //       id: userId,
-    //       email: login,
-    //       password: pass,
-    //     },
-    //     {
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //     }
-    //   )
-    //   .then((createTaskResponse) => {
-    //     const taskId = createTaskResponse.data.taskId;
-    //     checkTaskStatus(taskId)
-    //       .then((res) => {
-    //         console.log("res", res); //! перевірити
-    //         User.findByIdAndUpdate(
-    //           { _id: userId },
-    //           {
-    //             isUpWorkAuth: res,
-    //           }
-    //         );
-    //       })
-    //       .catch((err) => {
-    //         console.log(err);
-    //         console.log("in catch after check auth UW status");
-    //       });
-    //   });
-
-    await User.findByIdAndUpdate(
-      { _id: userId },
-      {
-        isUpWorkAuth: true,
-      }
-    );
+    axios
+      .post(
+        "https://6ejajjistb.execute-api.eu-north-1.amazonaws.com/default/lambda-create-task",
+        {
+          id: userId,
+          email: login,
+          password: pass,
+          secret: secret,
+          key: "upWork",
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((createTaskResponse) => {
+        const taskId = createTaskResponse.data.taskId;
+        checkTaskStatus(taskId);
+      });
 
     return NextResponse.json(
       {
@@ -118,6 +112,9 @@ export const GET = async (req, res) => {
   }
   try {
     const currentUser = await User.findById({ _id: targetId });
+
+    console.log(currentUser.isUpWorkAuth);
+
     console.log("User in get", currentUser);
     return NextResponse.json(
       {
