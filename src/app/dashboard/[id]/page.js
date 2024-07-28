@@ -1,7 +1,10 @@
 "use client";
 
+import GoBack from "@/app/components/go-back";
 import axios from "axios";
+
 import { useEffect, useState } from "react";
+import { RiArrowGoBackFill } from "react-icons/ri";
 
 const Page = ({ params }) => {
   const { id } = params;
@@ -35,10 +38,14 @@ const Page = ({ params }) => {
 
   return (
     <div>
+      <GoBack>
+        Go back <RiArrowGoBackFill />
+      </GoBack>
+
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <>
+        <div className="mx-auto">
           <h2>
             Task name: <span>{filter.taskName}</span>
           </h2>
@@ -59,7 +66,7 @@ const Page = ({ params }) => {
             ))}
           </ul>
           {filter.error && <p>{filter.error}</p>}
-        </>
+        </div>
       )}
     </div>
   );
