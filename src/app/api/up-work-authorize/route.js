@@ -2,6 +2,34 @@ import { NextResponse } from "next/server";
 import axios from "axios";
 import User from "@/app/lib/user-model";
 
+export class ErrorList {
+  constructor() {
+    this.errors = [];
+  }
+  addError(id, message) {
+    const index = this.errors.findIndex((obj) => obj.id === id);
+
+    if (index === -1) {
+      this.errors.push({ id, message });
+    } else {
+      this.errors[index].message = message;
+    }
+  }
+  removeError(id) {
+    const index = this.errors.findIndex((obj) => obj.id === id);
+
+    if (index !== -1) {
+      this.errors.splice(index, 1);
+    }
+  }
+  getErrorById(id) {
+    const foundObject = this.errors.find((obj) => obj.id === id);
+
+    return foundObject || false;
+  }
+}
+const errorList = new ErrorList();
+
 async function checkTaskStatus(taskId) {
   let isAuth = false;
 
@@ -70,10 +98,10 @@ export const POST = async (req, res) => {
         "https://6ejajjistb.execute-api.eu-north-1.amazonaws.com/default/lambda-create-task",
         {
           id: userId,
-          // email: login,
-          // password: pass,
-          // secret: secret,
-          // key: "upWork",
+          email: login,
+          password: pass,
+          secret: secret,
+          key: "upWork",
         },
         {
           headers: {
@@ -83,16 +111,13 @@ export const POST = async (req, res) => {
       )
       .then((createTaskResponse) => {
         if (createTaskResponse.data.error) {
-          console.log(createTaskResponse.data.error);
-          return NextResponse.json(
-            {
-              message: createTaskResponse.data.error,
-            },
-            { status: 500 }
-          );
+          console.log("in Post", createTaskResponse.data.error);
+          errorList.addError(userId, createTaskResponse.data.error);
+          return;
         }
-
         const taskId = createTaskResponse.data.taskId;
+        errorList.removeError(userId);
+
         checkTaskStatus(taskId);
       });
 
@@ -122,6 +147,11 @@ export const GET = async (req, res) => {
     );
   }
   try {
+    const isError = errorList.getErrorById(targetId);
+    if (isError) {
+      return NextResponse.json({ message: isError.message }, { status: 500 });
+    }
+
     const currentUser = await User.findById({ _id: targetId });
 
     console.log(currentUser.isUpWorkAuth);

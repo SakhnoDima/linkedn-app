@@ -68,6 +68,7 @@ const UpWorkLoginForm = ({ setIsUpWorkAut }) => {
           console.error("Error checking connection status:", error);
           showToast(error?.response.data.message || "Server error", "error");
           setIsSubmitting(false);
+          clearInterval(interval);
         }
       }, 10000);
     } catch (error) {
