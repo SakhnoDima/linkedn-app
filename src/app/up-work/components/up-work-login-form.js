@@ -11,6 +11,24 @@ import Button from "@/app/components/button";
 import Input from "@/app/components/input";
 import Loader from "@/app/components/loader";
 
+const filtersInputsUpWork = [
+  {
+    fieldName: "login",
+    fieldType: "text",
+    placeholder: "UpWork Login",
+  },
+  {
+    fieldName: "pass",
+    fieldType: "password",
+    placeholder: "UpWork Password",
+  },
+  {
+    fieldName: "secret",
+    fieldType: "text",
+    placeholder: "UpWork Secret",
+  },
+];
+
 const UpWorkLoginForm = ({ setIsUpWorkAut }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const showToast = useToastContext();
@@ -87,48 +105,22 @@ const UpWorkLoginForm = ({ setIsUpWorkAut }) => {
     >
       {({}) => (
         <Form className="flex flex-col gap-[15px] items-center">
-          <div className="flex flex-col gap-2">
-            <Field
-              name="login"
-              type="text"
-              placeholder="UpWork Login"
-              as={Input}
-              className="input-bordered"
-            />
-            <ErrorMessage
-              name="login"
-              component="div"
-              className="text-red-500"
-            />
-          </div>
-          <div className="flex flex-col gap-2">
-            <Field
-              name="pass"
-              type="password"
-              placeholder="UpWork Password"
-              as={Input}
-              className="input-bordered"
-            />
-            <ErrorMessage
-              name="pass"
-              component="div"
-              className="text-red-500"
-            />
-          </div>
-          <div className="flex flex-col gap-2">
-            <Field
-              name="secret"
-              type="text"
-              placeholder="UpWork Secret"
-              as={Input}
-              className="input-bordered"
-            />
-            <ErrorMessage
-              name="secret"
-              component="div"
-              className="text-red-500"
-            />
-          </div>
+          {filtersInputsUpWork.map((item) => (
+            <div className="flex flex-col gap-2">
+              <Field
+                name={item.fieldName}
+                type={item.fieldType}
+                placeholder={item.placeholder}
+                as={Input}
+                className="input-bordered"
+              />
+              <ErrorMessage
+                name={item.fieldName}
+                component="div"
+                className="text-red-500"
+              />
+            </div>
+          ))}
 
           <Button
             type="submit"
