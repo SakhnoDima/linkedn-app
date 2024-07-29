@@ -35,7 +35,6 @@ const NavBar = () => {
           <Link className={linkStyle("/donations")} href="/donations">
             Donations
           </Link>
-          <LogOut />
         </>
       )}
     </div>

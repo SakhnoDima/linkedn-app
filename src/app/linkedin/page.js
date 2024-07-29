@@ -8,7 +8,7 @@ const ConnectionPage = async () => {
   const session = await getServerSession(authOptions);
 
   return (
-    <div className="py-[50px]">
+    <div>
       {!session?.user.isLinkedinAuth && (
         <LinkedinAuth isAuth={session?.user.isLinkedinAuth} />
       )}

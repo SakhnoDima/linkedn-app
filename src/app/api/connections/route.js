@@ -3,7 +3,7 @@ import axios from "axios";
 import User from "@/app/lib/user-model";
 import LinkedinFilters from "@/app/lib/linkedin-filters-model";
 
-//import LinkedinCompletedTasks from "@/app/lib/linkedin-tasks-model";
+import LinkedinCompletedTasks from "@/app/lib/linkedin-tasks-model";
 
 async function checkTaskStatus(taskId) {
   let isLinkedinAuth = false;
@@ -106,38 +106,38 @@ export const POST = async (req, res) => {
         checkTaskStatus(taskId)
           .then((res) => {
             console.log("res", res);
-            // LinkedinCompletedTasks.create({
-            //   taskName: data.targetName,
-            //   userId: user._id,
-            //   targetTaskId: data._id,
-            //   date: new Date().toISOString().split("T")[0],
-            //   error: res.error,
-            //   levelOfTarget: res.levelOfTarget,
-            //   totalClicks: res.totalClicks,
-            //   totalLettersPerDay: res.totalLettersPerDay,
-            //   totalInvitationSent: res.totalInvitationSent,
-            //   searchTags: res.searchTags,
-            //   userNames: [...res.userNames],
-            //   searchFilters: {
-            //     Locations: Array.isArray(res.searchFilters?.Locations)
-            //       ? [...res.searchFilters.Locations]
-            //       : [],
-            //     "Profile language": Array.isArray(
-            //       res.searchFilters?.["Profile language"]
-            //     )
-            //       ? [...res.searchFilters["Profile language"]]
-            //       : [],
-            //     Keywords: res.searchFilters?.Keywords || "",
-            //     Industry: Array.isArray(res.searchFilters?.Industry)
-            //       ? [...res.searchFilters.Industry]
-            //       : [],
-            //     "Service categories": Array.isArray(
-            //       res.searchFilters?.["Service categories"]
-            //     )
-            //       ? [...res.searchFilters["Service categories"]]
-            //       : [],
-            //   },
-            // });
+            LinkedinCompletedTasks.create({
+              taskName: data.targetName,
+              userId: user._id,
+              targetTaskId: data._id,
+              date: new Date().toISOString().split("T")[0],
+              error: res.error,
+              levelOfTarget: res.levelOfTarget,
+              totalClicks: res.totalClicks,
+              totalLettersPerDay: res.totalLettersPerDay,
+              totalInvitationSent: res.totalInvitationSent,
+              searchTags: res.searchTags,
+              userNames: [...res.userNames],
+              searchFilters: {
+                Locations: Array.isArray(res.searchFilters?.Locations)
+                  ? [...res.searchFilters.Locations]
+                  : [],
+                "Profile language": Array.isArray(
+                  res.searchFilters?.["Profile language"]
+                )
+                  ? [...res.searchFilters["Profile language"]]
+                  : [],
+                Keywords: res.searchFilters?.Keywords || "",
+                Industry: Array.isArray(res.searchFilters?.Industry)
+                  ? [...res.searchFilters.Industry]
+                  : [],
+                "Service categories": Array.isArray(
+                  res.searchFilters?.["Service categories"]
+                )
+                  ? [...res.searchFilters["Service categories"]]
+                  : [],
+              },
+            });
 
             LinkedinFilters.findByIdAndUpdate(
               { _id: data._id },

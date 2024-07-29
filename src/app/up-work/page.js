@@ -6,7 +6,7 @@ const page = async () => {
   const session = await getServerSession(authOptions);
 
   return (
-    <div className="py-[50px]">
+    <div>
       {!session?.user.isUpWorkAuth && (
         <UpWorkLogin session={session?.user.isUpWorkAuth} />
       )}
