@@ -2,6 +2,7 @@
 
 import GoBack from "@/app/components/go-back";
 import axios from "axios";
+import Link from "next/link";
 
 import { useEffect, useState } from "react";
 import { RiArrowGoBackFill } from "react-icons/ri";
@@ -62,7 +63,14 @@ const Page = ({ params }) => {
           <p>Connected Users:</p>
           <ul className="ml-[8px]">
             {filter.userNames.map((name, index) => (
-              <li key={index}>- {name}</li>
+              <li key={index}>
+                <Link
+                  className="underline hover:text-blue-600"
+                  href={name?.url}
+                >
+                  {name.name}
+                </Link>
+              </li>
             ))}
           </ul>
           {filter.error && <p>{filter.error}</p>}
