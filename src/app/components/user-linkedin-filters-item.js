@@ -79,7 +79,8 @@ const UserLinkedinFiltersItem = ({
       localStorage.setItem(
         "checkingStatus",
         JSON.stringify({ targetId: data._id })
-      ); // save task in LS
+      );
+
       showToast(linkedinAuthorization.data.message, "success");
       mixpanel.track("start connections");
 
@@ -96,10 +97,10 @@ const UserLinkedinFiltersItem = ({
             console.log("Status is true, stopping checks");
             clearInterval(interval);
             setIsLoading(null);
-            localStorage.removeItem("checkingStatus"); // remove from LS
+            localStorage.removeItem("checkingStatus");
           }
         } catch (error) {
-          localStorage.removeItem("checkingStatus"); // remove from LS
+          localStorage.removeItem("checkingStatus");
           setIsLoading(null);
           console.error("Error checking connection status:", error);
           showToast(error?.response.data.message || "Server error", "error"); //! обробити

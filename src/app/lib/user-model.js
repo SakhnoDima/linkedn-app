@@ -1,28 +1,32 @@
-import mongoose from 'mongoose';
-import dbConnect from './moongose-connect';
+import mongoose from "mongoose";
+import dbConnect from "./moongose-connect";
 
 const UserSchema = new mongoose.Schema({
-  email:{
+  email: {
     type: String,
-    required: [true, 'Please provide a email'],
+    required: [true, "Please provide a email"],
   },
-  password:{
+  password: {
     type: String,
-    required: [true, 'Please provide a password'],
+    required: [true, "Please provide a password"],
   },
-  isLinkedinAuth:{
+  isLinkedinAuth: {
     type: Boolean,
-    default: false
-  },  
-   tempPass: {
+    default: false,
+  },
+  isUpWorkAuth: {
+    type: Boolean,
+    default: false,
+  },
+  tempPass: {
     type: String,
   },
-  
 });
 
-await  dbConnect()
+await dbConnect();
 
-const User = mongoose.models.User || mongoose.model('User', UserSchema, "users_collection");
-
+const User =
+  mongoose.models.User ||
+  mongoose.model("User", UserSchema, "users_collection");
 
 export default User;

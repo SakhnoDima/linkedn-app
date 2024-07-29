@@ -22,12 +22,20 @@ const NavBar = () => {
 
       {!!session && (
         <>
+          <Link className={linkStyle("/up-work")} href="/up-work">
+            UpWork
+          </Link>
           <Link className={linkStyle("/linkedin")} href="/linkedin">
             Linkedin
           </Link>
           <Link className={linkStyle("/dashboard")} href="/dashboard">
             Dashboard
           </Link>
+
+          <Link className={linkStyle("/donations")} href="/donations">
+            Donations
+          </Link>
+          <LogOut />
         </>
       )}
     </div>
