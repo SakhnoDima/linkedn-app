@@ -6,6 +6,7 @@ import { ModalContextProvider } from "./context/modal-context";
 import UserContextProvider from "@/app/context/user-context";
 import Modal from "./components/modal";
 import { ToastContextProvider } from "./context/toast-context";
+import Header from "./components/header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,12 +22,13 @@ export default async function RootLayout({ children }) {
         <UserContextProvider>
           <ModalContextProvider>
             <ToastContextProvider>
-              <div className="flex">
+              <Header />
+              <main className="flex">
                 <nav className="w-[200px]">
                   <NavBar />
                 </nav>
-                <main className="flex-1 px-[50px]">{children}</main>
-              </div>
+                <div className="flex-1 p-[50px]">{children}</div>
+              </main>
               <Modal />
             </ToastContextProvider>
           </ModalContextProvider>

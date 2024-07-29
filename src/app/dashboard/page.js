@@ -1,34 +1,17 @@
-"use client"
-import React from 'react'
-import Button from '../components/button'
+import { getServerSession } from "next-auth";
 
-const DashboardPage = () => {
-    const handleClick  = async() =>{
+import LinkedinTasksTable from "./components/linkedin-tasks-table";
+import { authOptions } from "../api/auth/[...nextauth]/route";
 
-        try {
-          const response = await fetch("/api/mix-panel-info", {
-              method: "GET",
-            });
-          
-            const data = await response.json();
-      
-            console.log(data);
-          
-            if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`);
-            }
-        } catch (error) {
-          
-        }
-    }
+const DashboardPage = async () => {
+  const session = await getServerSession(authOptions);
+
   return (
     <div>
-        <h2>DashboardPage</h2>
-        <Button onClick={handleClick}>
-            <p>Get</p>
-        </Button>
+      <h2>DashboardPage</h2>
+      <LinkedinTasksTable userId={session?.user.id} />
     </div>
-  )
-}
+  );
+};
 
-export default DashboardPage
+export default DashboardPage;
