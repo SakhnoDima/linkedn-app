@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
 import User from "@/app/lib/user-model";
+import LinkedinFilters from "@/app/lib/linkedin-filters-model";
 
 async function checkTaskStatus(taskId) {
   let isLinkedinAuth = false;
@@ -51,6 +52,14 @@ export const POST = async (req, res) => {
     );
   }
 
+  const setFalse = await LinkedinFilters.findByIdAndUpdate(
+    { _id: data._id },
+    {
+      status: true,
+    },
+    { new: true }
+  );
+
   const user = await User.findById({ _id: data.userId });
 
   const searchFilters = {};
@@ -71,43 +80,87 @@ export const POST = async (req, res) => {
   }
 
   try {
-    const createTaskResponse = await axios.post(
-      "https://6ejajjistb.execute-api.eu-north-1.amazonaws.com/default/lambda-create-task",
-      {
-        id: data.userId,
-        levelOfTarget: 1,
-        searchTags: data.keyWords,
-        searchFilters,
-        totalLettersPerDay: data.connections,
-        invitationLetters: [""],
-        email: user.email,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    const taskId = createTaskResponse.data.taskId;
-    console.log("Task started with ID:", taskId);
-
-    const result = await checkTaskStatus(taskId);
-
-    console.log("Finish:", result);
-
-    if (result.error) {
-      return NextResponse.json(
+    axios
+      .post(
+        "https://6ejajjistb.execute-api.eu-north-1.amazonaws.com/default/lambda-create-task",
         {
-          message: result.error,
+          id: data.userId,
+          levelOfTarget: 1,
+          searchTags: data.keyWords,
+          searchFilters,
+          totalLettersPerDay: data.connections,
+          invitationLetters: [""],
+          email: user.email,
         },
-        { status: 500 }
-      );
-    }
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((createTaskResponse) => {
+        const taskId = createTaskResponse.data.taskId;
+        console.log("Task started with ID:", taskId);
+        checkTaskStatus(taskId)
+          .then((res) => {
+            console.log("res", res);
+
+            LinkedinFilters.findByIdAndUpdate(
+              { _id: data._id },
+              {
+                status: false,
+              },
+              { new: true }
+            )
+              .then((updateRes) => {
+                console.log("Database updated successfully:", updateRes);
+              })
+              .catch((err) => {
+                console.error("Error updating database:", err);
+              });
+          })
+          .catch((err) => {
+            console.log(err);
+            console.log("in catch after check task status");
+            LinkedinFilters.findByIdAndUpdate(
+              { _id: data._id },
+              {
+                status: false,
+              },
+              { new: true }
+            );
+          });
+      });
 
     return NextResponse.json(
       {
-        message: `In total, ${result.totalInvitationSent} connection was completed out of ${result.totalLettersPerDay} planned.`,
+        message: `We have started the connection process, please wait for the result`,
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Internal server error" },
+      { status: 500 }
+    );
+  }
+};
+export const GET = async (req, res) => {
+  const { searchParams } = new URL(req.nextUrl);
+  const targetId = searchParams.get("targetId");
+
+  if (!targetId) {
+    return NextResponse.json(
+      { message: `${targetId} is required` },
+      { status: 400 }
+    );
+  }
+  try {
+    const activeTarget = await LinkedinFilters.findById({ _id: targetId });
+
+    return NextResponse.json(
+      {
+        status: activeTarget.status,
       },
       { status: 200 }
     );

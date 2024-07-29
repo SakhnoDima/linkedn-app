@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import axios from "axios";
-import { useSession } from "next-auth/react";
+
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
@@ -10,6 +9,7 @@ import { useToastContext } from "@/app/context/toast-context";
 import Button from "@/app/components/button";
 import Input from "@/app/components/input";
 import Loader from "@/app/components/loader";
+import { useSession } from "next-auth/react";
 
 const filtersInputsUpWork = [
   {
@@ -29,10 +29,14 @@ const filtersInputsUpWork = [
   },
 ];
 
-const UpWorkLoginForm = ({ setIsUpWorkAut }) => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+const UpWorkLoginForm = ({
+  setIsUpWorkAut,
+  isSubmitting,
+  setIsSubmitting,
+  userId,
+}) => {
+  const { update } = useSession();
   const showToast = useToastContext();
-  const { data: session, update } = useSession();
 
   const initialValues = {
     login: "",
@@ -53,7 +57,7 @@ const UpWorkLoginForm = ({ setIsUpWorkAut }) => {
           pass: values.pass,
           login: values.login,
           secret: values.secret,
-          userId: session.user.id,
+          userId: userId,
         },
         {
           headers: {
@@ -69,7 +73,7 @@ const UpWorkLoginForm = ({ setIsUpWorkAut }) => {
         try {
           const response = await axios.get("/api/up-work-authorize", {
             params: {
-              targetId: session.user.id,
+              targetId: userId,
             },
           });
           if (response.data.status) {
