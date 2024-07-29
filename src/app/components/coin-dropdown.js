@@ -22,7 +22,7 @@ export const CoinDropdown = ({selectedCoin, setSelectedCoin, setSelectedNetwork}
             <div
                 className={'absolute z-10 top-[110%] left-0 p-4 bg-white shadow-[3px_3px_16px_6px_rgba(0,0,0,0.06)] font-medium text-gray-800 w-full'}>
                 {coins.map(coin => (
-                    <div className={'p-2 cursor-pointer transition-all duration-200 hover:bg-gray-200'}
+                    <div className={'p-2 cursor-pointer hover:bg-gray-200'}
                          key={coin.id}
                          onClick={() => {
                              setSelectedCoin(coin.name)
@@ -57,7 +57,7 @@ export const NetworkDropdown = ({coinNetworks, selectedNetwork, setSelectedNetwo
             <div
                 className={'absolute z-10 top-[110%] left-0 p-4 max-h-[340px] overflow-y-scroll bg-white shadow-[3px_3px_16px_6px_rgba(0,0,0,0.06)] font-medium text-gray-800 w-full'}>
                 {coinNetworks.map((network, index) => (
-                    <div className={'p-2 cursor-pointer transition-all duration-200 hover:bg-gray-200'}
+                    <div className={'p-2 cursor-pointer hover:bg-gray-200'}
                          key={index}
                          onClick={() => {
                              setSelectedNetwork(network.network)
