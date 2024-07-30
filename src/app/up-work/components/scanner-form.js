@@ -14,90 +14,126 @@ import Checkbox from "@/app/components/checkbox";
 
 const filtersInputs = [
   {
-    labelText: "1. Specify target words",
-    toolTipText: "Here you can add target wards",
-    fieldName: "targetWards",
+    labelText: "1. All of these words",
+    toolTipText: "Here you can add target wards and we will use all off them",
+    fieldName: "searchWords.allOfTheseWords",
     fieldType: "text",
     placeholder: `Ex: WP | developer`,
   },
   {
-    labelText: "2. Specify exception words",
+    labelText: "2.Any of these words",
+    toolTipText: "Here you can add target wards and we will use any off them",
+    fieldName: "searchWords.anyOfTheseWords",
+    fieldType: "text",
+    placeholder: `Ex: WP | developer`,
+  },
+  {
+    labelText: "3. None of these words",
     toolTipText: "Here you can add exception words",
-    fieldName: "exceptWords",
+    fieldName: "searchWords.noneOfTheseWord",
     fieldType: "text",
     placeholder: `Ex: js | debag`,
   },
   {
-    labelText: "3. Specify category you want",
+    labelText: "4. The exact phrase",
+    toolTipText: "Here you can add exact phrase",
+    fieldName: "searchWords.theExactPhrase",
+    fieldType: "text",
+    placeholder: `Ex: wordpress developer`,
+  },
+  {
+    labelText: "5. Specify category you want",
     toolTipText: "Here you can add category, separate each category by ' | ' ",
-    fieldName: "category",
+    fieldName: "searchFilters.category",
     fieldType: "text",
     placeholder: `Ex: Web & Mobile Design`,
   },
 ];
 const validationSchema = Yup.object({
-  targetWards: Yup.string().required("Required*"),
-  exceptWords: Yup.string(),
-  category: Yup.string(),
-  experienceLevel: Yup.object().shape({
-    1: Yup.boolean(),
-    2: Yup.boolean(),
-    3: Yup.boolean(),
+  searchWords: Yup.object().shape({
+    allOfTheseWords: Yup.string(),
+    anyOfTheseWords: Yup.string(),
+    noneOfTheseWord: Yup.string(),
+    theExactPhrase: Yup.string(),
   }),
-  jobType: Yup.object().shape({
-    hourlyJobType: Yup.object().shape({
-      enabled: Yup.boolean(),
-      range: Yup.object().shape({
-        min: Yup.number().nullable(),
-        max: Yup.number().nullable(),
+  searchFilters: Yup.object({
+    category: Yup.string(),
+    experienceLevel: Yup.object().shape({
+      1: Yup.boolean(),
+      2: Yup.boolean(),
+      3: Yup.boolean(),
+    }),
+    jobType: Yup.object().shape({
+      hourlyJobType: Yup.object().shape({
+        enabled: Yup.boolean(),
+        range: Yup.object().shape({
+          min: Yup.number().nullable(),
+          max: Yup.number().nullable(),
+        }),
+      }),
+      fixedJobType: Yup.object().shape({
+        enabled: Yup.boolean(),
+        range: Yup.object().shape({
+          min: Yup.number().nullable(),
+          max: Yup.number().nullable(),
+        }),
       }),
     }),
-    fixedJobType: Yup.object().shape({
-      enabled: Yup.boolean(),
-      range: Yup.object().shape({
-        min: Yup.number().nullable(),
-        max: Yup.number().nullable(),
-      }),
-    }),
   }),
+
   projectLength: Yup.object().shape({
     week: Yup.boolean(),
     month: Yup.boolean(),
     semester: Yup.boolean(),
     ongoing: Yup.boolean(),
   }),
+  hoursPerWeek: Yup.object().shape({
+    as_needed: Yup.boolean(),
+    full_time: Yup.boolean(),
+  }),
 });
 
 const initialValues = {
-  targetWards: "",
-  exceptWords: "",
-  category: "",
-  experienceLevel: {
-    1: false,
-    2: false,
-    3: false,
+  searchWords: {
+    allOfTheseWords: "",
+    anyOfTheseWords: "",
+    noneOfTheseWord: "",
+    theExactPhrase: "",
   },
-  jobType: {
-    hourlyJobType: {
-      enabled: false,
-      range: {
-        min: null,
-        max: null,
+  searchFilters: {
+    category: "",
+    experienceLevel: {
+      1: false,
+      2: false,
+      3: false,
+    },
+    jobType: {
+      hourlyJobType: {
+        enabled: false,
+        range: {
+          min: null,
+          max: null,
+        },
+      },
+      fixedJobType: {
+        enabled: false,
+        range: {
+          min: null,
+          max: null,
+        },
       },
     },
-    fixedJobType: {
-      enabled: false,
-      range: {
-        min: null,
-        max: null,
-      },
-    },
   },
+
   projectLength: {
     week: false,
     month: false,
     semester: false,
     ongoing: false,
+  },
+  hoursPerWeek: {
+    as_needed: false,
+    full_time: false,
   },
 };
 
@@ -144,13 +180,13 @@ const ExperienceLevel = ({ values, setFieldValue }) => {
           >
             <Field
               id={item.label}
-              name={`experienceLevel.${item.name}`}
+              name={`searchFilters.experienceLevel.${item.name}`}
               type="checkbox"
-              checked={values.experienceLevel[item.name]}
+              checked={values.searchFilters.experienceLevel[item.name]}
               onChange={() =>
                 setFieldValue(
-                  `experienceLevel.${item.name}`,
-                  !values.experienceLevel[item.name]
+                  `searchFilters.experienceLevel.${item.name}`,
+                  !values.searchFilters.experienceLevel[item.name]
                 )
               }
               as={Checkbox}
@@ -175,17 +211,23 @@ const JobType = ({ values, setFieldValue }) => {
           >
             <Field
               id="hourlyJobType"
-              name="jobType.hourlyJobType.enabled"
+              name="searchFilters.jobType.hourlyJobType.enabled"
               type="checkbox"
-              checked={values.jobType.hourlyJobType.enabled}
+              checked={values.searchFilters.jobType.hourlyJobType.enabled}
               onChange={() => {
                 setFieldValue(
-                  "jobType.hourlyJobType.enabled",
-                  !values.jobType.hourlyJobType.enabled
+                  "searchFilters.jobType.hourlyJobType.enabled",
+                  !values.searchFilters.jobType.hourlyJobType.enabled
                 );
-                if (values.jobType.hourlyJobType.enabled) {
-                  setFieldValue("jobType.hourlyJobType.range.min", null);
-                  setFieldValue("jobType.hourlyJobType.range.max", null);
+                if (values.searchFilters.jobType.hourlyJobType.enabled) {
+                  setFieldValue(
+                    "searchFilters.jobType.hourlyJobType.range.min",
+                    null
+                  );
+                  setFieldValue(
+                    "searchFilters.jobType.hourlyJobType.range.max",
+                    null
+                  );
                 }
               }}
               as={Checkbox}
@@ -196,14 +238,16 @@ const JobType = ({ values, setFieldValue }) => {
             <div className="flex gap-2 items-center relative">
               <BsCurrencyDollar className="absolute top-[5px] left-1 w-[20px] h-[20px]" />
               <Field
-                name="jobType.hourlyJobType.range.min"
+                name="searchFilters.jobType.hourlyJobType.range.min"
                 type="number"
                 placeholder="Min"
                 className="w-[158px] py-[4px] pl-[22px]"
-                value={values.jobType.hourlyJobType.range.min || ""}
+                value={
+                  values.searchFilters.jobType.hourlyJobType.range.min || ""
+                }
               />
               <ErrorMessage
-                name="jobType.hourlyJobType.range.min"
+                name="searchFilters.jobType.hourlyJobType.range.min"
                 component="div"
                 className="text-red-500 absolute top-[-4px] right-0"
               />
@@ -212,14 +256,16 @@ const JobType = ({ values, setFieldValue }) => {
             <div className="flex gap-2 items-center relative">
               <BsCurrencyDollar className="absolute top-[5px] left-1 w-[20px] h-[20px]" />
               <Field
-                name="jobType.hourlyJobType.range.max"
+                name="searchFilters.jobType.hourlyJobType.range.max"
                 type="number"
                 placeholder="Max"
                 className="w-[158px] py-[4px] pl-[22px]"
-                value={values.jobType.hourlyJobType.range.max || ""}
+                value={
+                  values.searchFilters.jobType.hourlyJobType.range.max || ""
+                }
               />
               <ErrorMessage
-                name="jobType.hourlyJobType.range.max"
+                name="searchFilters.jobType.hourlyJobType.range.max"
                 component="div"
                 className="text-red-500 absolute top-[-4px] right-0"
               />
@@ -234,17 +280,23 @@ const JobType = ({ values, setFieldValue }) => {
           >
             <Field
               id="fixedJobType"
-              name="jobType.fixedJobType.enabled"
+              name="searchFilters.jobType.fixedJobType.enabled"
               type="checkbox"
-              checked={values.jobType.fixedJobType.enabled}
+              checked={values.searchFilters.jobType.fixedJobType.enabled}
               onChange={() => {
                 setFieldValue(
-                  "jobType.fixedJobType.enabled",
-                  !values.jobType.fixedJobType.enabled
+                  "searchFilters.jobType.fixedJobType.enabled",
+                  !values.searchFilters.jobType.fixedJobType.enabled
                 );
-                if (values.jobType.hourlyJobType.enabled) {
-                  setFieldValue("jobType.fixedJobType.range.min", null);
-                  setFieldValue("jobType.fixedJobType.range.max", null);
+                if (values.searchFilters.jobType.hourlyJobType.enabled) {
+                  setFieldValue(
+                    "searchFilters.jobType.fixedJobType.range.min",
+                    null
+                  );
+                  setFieldValue(
+                    "searchFilters.jobType.fixedJobType.range.max",
+                    null
+                  );
                 }
               }}
               as={Checkbox}
@@ -255,22 +307,26 @@ const JobType = ({ values, setFieldValue }) => {
             <div className="flex gap-2 items-center relative">
               <BsCurrencyDollar className="absolute top-[5px] left-1 w-[20px] h-[20px]" />
               <Field
-                name="jobType.fixedJobType.range.min"
+                name="searchFilters.jobType.fixedJobType.range.min"
                 type="number"
                 placeholder="Min"
                 className="w-[158px] py-[4px] pl-[22px]"
-                value={values.jobType.fixedJobType.range.min || ""}
+                value={
+                  values.searchFilters.jobType.fixedJobType.range.min || ""
+                }
               />
               <p>/hr</p>
             </div>
             <div className="flex gap-2 items-center relative">
               <BsCurrencyDollar className="absolute top-[5px] left-1 w-[20px] h-[20px]" />
               <Field
-                name="jobType.fixedJobType.range.max"
+                name="searchFilters.jobType.fixedJobType.range.max"
                 type="number"
                 placeholder="Max"
                 className="w-[158px] py-[4px] pl-[22px]"
-                value={values.jobType.fixedJobType.range.max || ""}
+                value={
+                  values.searchFilters.jobType.fixedJobType.range.max || ""
+                }
               />
               <p>/hr</p>
             </div>
@@ -303,11 +359,47 @@ const ProjectLength = ({ values, setFieldValue }) => {
               id={item.label}
               name={`projectLength.${item.name}`}
               type="checkbox"
-              checked={values.experienceLevel[item.name]}
+              checked={values.projectLength[item.name]}
               onChange={() =>
                 setFieldValue(
                   `projectLength.${item.name}`,
                   !values.projectLength[item.name]
+                )
+              }
+              as={Checkbox}
+            />
+            <p>{item.label}</p>
+          </label>
+        ))}
+      </div>
+    </div>
+  );
+};
+const HoursPerWeek = ({ values, setFieldValue }) => {
+  const hoursPerWeek = [
+    { name: "as_needed", label: "Less than 30 hrs/week", value: true },
+    { name: "full_time", label: "More than 30 hrs/week", value: true },
+  ];
+
+  return (
+    <div>
+      <p className="mb-2">7. Hours per week</p>
+      <div className="flex  flex-row gap-4 justify-around bg-indigo-50 p-2">
+        {hoursPerWeek.map((item, indx) => (
+          <label
+            key={indx}
+            htmlFor={item.label}
+            className="flex gap-2 items-center hover:cursor-pointer"
+          >
+            <Field
+              id={item.label}
+              name={`hoursPerWeek.${item.name}`}
+              type="checkbox"
+              checked={values.hoursPerWeek[item.name]}
+              onChange={() =>
+                setFieldValue(
+                  `hoursPerWeek.${item.name}`,
+                  !values.hoursPerWeek[item.name]
                 )
               }
               as={Checkbox}
@@ -345,6 +437,7 @@ const ScannersForm = () => {
               <ExperienceLevel values={values} setFieldValue={setFieldValue} />
               <JobType values={values} setFieldValue={setFieldValue} />
               <ProjectLength values={values} setFieldValue={setFieldValue} />
+              <HoursPerWeek values={values} setFieldValue={setFieldValue} />
             </div>
 
             <Button
