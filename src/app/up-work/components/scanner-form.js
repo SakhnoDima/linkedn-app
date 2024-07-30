@@ -12,6 +12,95 @@ import Input from "@/app/components/input";
 import Button from "@/app/components/button";
 import Checkbox from "@/app/components/checkbox";
 
+const filtersInputs = [
+  {
+    labelText: "1. Specify target words",
+    toolTipText: "Here you can add target wards",
+    fieldName: "targetWards",
+    fieldType: "text",
+    placeholder: `Ex: WP | developer`,
+  },
+  {
+    labelText: "2. Specify exception words",
+    toolTipText: "Here you can add exception words",
+    fieldName: "exceptWords",
+    fieldType: "text",
+    placeholder: `Ex: js | debag`,
+  },
+  {
+    labelText: "3. Specify category you want",
+    toolTipText: "Here you can add category, separate each category by ' | ' ",
+    fieldName: "category",
+    fieldType: "text",
+    placeholder: `Ex: Web & Mobile Design`,
+  },
+];
+const validationSchema = Yup.object({
+  targetWards: Yup.string().required("Required*"),
+  exceptWords: Yup.string(),
+  category: Yup.string(),
+  experienceLevel: Yup.object().shape({
+    1: Yup.boolean(),
+    2: Yup.boolean(),
+    3: Yup.boolean(),
+  }),
+  jobType: Yup.object().shape({
+    hourlyJobType: Yup.object().shape({
+      enabled: Yup.boolean(),
+      range: Yup.object().shape({
+        min: Yup.number().nullable(),
+        max: Yup.number().nullable(),
+      }),
+    }),
+    fixedJobType: Yup.object().shape({
+      enabled: Yup.boolean(),
+      range: Yup.object().shape({
+        min: Yup.number().nullable(),
+        max: Yup.number().nullable(),
+      }),
+    }),
+  }),
+  projectLength: Yup.object().shape({
+    week: Yup.boolean(),
+    month: Yup.boolean(),
+    semester: Yup.boolean(),
+    ongoing: Yup.boolean(),
+  }),
+});
+
+const initialValues = {
+  targetWards: "",
+  exceptWords: "",
+  category: "",
+  experienceLevel: {
+    1: false,
+    2: false,
+    3: false,
+  },
+  jobType: {
+    hourlyJobType: {
+      enabled: false,
+      range: {
+        min: null,
+        max: null,
+      },
+    },
+    fixedJobType: {
+      enabled: false,
+      range: {
+        min: null,
+        max: null,
+      },
+    },
+  },
+  projectLength: {
+    week: false,
+    month: false,
+    semester: false,
+    ongoing: false,
+  },
+};
+
 const InputFormComponent = ({ data }) => {
   return (
     <label className="flex flex-col space-y-2  relative">
@@ -33,6 +122,44 @@ const InputFormComponent = ({ data }) => {
         className="text-red-500 absolute top-[-4px] right-0"
       />
     </label>
+  );
+};
+
+const ExperienceLevel = ({ values, setFieldValue }) => {
+  const experienceLevels = [
+    { name: 1, label: "Entry Level", value: true },
+    { name: 2, label: "Intermediate", value: true },
+    { name: 3, label: "Expert", value: true },
+  ];
+
+  return (
+    <div>
+      <p className="mb-2">4. Experience level</p>
+      <div className="flex  flex-row gap-4 justify-around bg-indigo-50 p-2">
+        {experienceLevels.map((item, indx) => (
+          <label
+            key={indx}
+            htmlFor={item.label}
+            className="flex gap-2 items-center hover:cursor-pointer"
+          >
+            <Field
+              id={item.label}
+              name={`experienceLevel.${item.name}`}
+              type="checkbox"
+              checked={values.experienceLevel[item.name]}
+              onChange={() =>
+                setFieldValue(
+                  `experienceLevel.${item.name}`,
+                  !values.experienceLevel[item.name]
+                )
+              }
+              as={Checkbox}
+            />
+            <p>{item.label}</p>
+          </label>
+        ))}
+      </div>
+    </div>
   );
 };
 
@@ -154,89 +281,43 @@ const JobType = ({ values, setFieldValue }) => {
   );
 };
 
-const filtersInputs = [
-  {
-    labelText: "1. Specify target words",
-    toolTipText: "Here you can add target wards",
-    fieldName: "targetWards",
-    fieldType: "text",
-    placeholder: `Ex: WP | developer`,
-  },
-  {
-    labelText: "2. Specify exception words",
-    toolTipText: "Here you can add exception words",
-    fieldName: "exceptWords",
-    fieldType: "text",
-    placeholder: `Ex: js | debag`,
-  },
-  {
-    labelText: "3. Specify category you want",
-    toolTipText: "Here you can add category, separate each category by ' | ' ",
-    fieldName: "category",
-    fieldType: "text",
-    placeholder: `Ex: Web & Mobile Design`,
-  },
-];
+const ProjectLength = ({ values, setFieldValue }) => {
+  const projectLength = [
+    { name: "week", label: "Less than one month", value: true },
+    { name: "month", label: "1 to 3 month", value: true },
+    { name: "semester", label: "3 to 6 month", value: true },
+    { name: "ongoing", label: "More than 6 month", value: true },
+  ];
 
-const experienceLevels = [
-  { name: 1, label: "Entry Level", value: true },
-  { name: 2, label: "Intermediate", value: true },
-  { name: 3, label: "Expert", value: true },
-];
-
-const validationSchema = Yup.object({
-  targetWards: Yup.string().required("Required*"),
-  exceptWords: Yup.string(),
-  category: Yup.string(),
-  experienceLevel: Yup.object().shape({
-    1: Yup.boolean(),
-    2: Yup.boolean(),
-    3: Yup.boolean(),
-  }),
-  jobType: Yup.object().shape({
-    hourlyJobType: Yup.object().shape({
-      enabled: Yup.boolean(),
-      range: Yup.object().shape({
-        min: Yup.number().nullable(),
-        max: Yup.number().nullable(),
-      }),
-    }),
-    fixedJobType: Yup.object().shape({
-      enabled: Yup.boolean(),
-      range: Yup.object().shape({
-        min: Yup.number().nullable(),
-        max: Yup.number().nullable(),
-      }),
-    }),
-  }),
-});
-
-const initialValues = {
-  targetWards: "",
-  exceptWords: "",
-  category: "",
-  experienceLevel: {
-    1: false,
-    2: false,
-    3: false,
-  },
-  hourlyJobType: "",
-  jobType: {
-    hourlyJobType: {
-      enabled: false,
-      range: {
-        min: null,
-        max: null,
-      },
-    },
-    fixedJobType: {
-      enabled: false,
-      range: {
-        min: null,
-        max: null,
-      },
-    },
-  },
+  return (
+    <div>
+      <p className="mb-2">6. Project length</p>
+      <div className="flex  flex-row gap-4 justify-around bg-indigo-50 p-2">
+        {projectLength.map((item, indx) => (
+          <label
+            key={indx}
+            htmlFor={item.label}
+            className="flex gap-2 items-center hover:cursor-pointer"
+          >
+            <Field
+              id={item.label}
+              name={`projectLength.${item.name}`}
+              type="checkbox"
+              checked={values.experienceLevel[item.name]}
+              onChange={() =>
+                setFieldValue(
+                  `projectLength.${item.name}`,
+                  !values.projectLength[item.name]
+                )
+              }
+              as={Checkbox}
+            />
+            <p>{item.label}</p>
+          </label>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 const ScannersForm = () => {
@@ -261,34 +342,9 @@ const ScannersForm = () => {
               {filtersInputs.map((data, index) => (
                 <InputFormComponent key={index} data={data} />
               ))}
-              <div>
-                <p className="mb-2">4. Experience level</p>
-                <div className="flex  flex-row gap-4 justify-around bg-indigo-50 p-2">
-                  {experienceLevels.map((item, indx) => (
-                    <label
-                      key={indx}
-                      htmlFor={item.label}
-                      className="flex gap-2 items-center hover:cursor-pointer"
-                    >
-                      <Field
-                        id={item.label}
-                        name={`experienceLevel.${item.name}`}
-                        type="checkbox"
-                        checked={values.experienceLevel[item.name]}
-                        onChange={() =>
-                          setFieldValue(
-                            `experienceLevel.${item.name}`,
-                            !values.experienceLevel[item.name]
-                          )
-                        }
-                        as={Checkbox}
-                      />
-                      <p>{item.label}</p>
-                    </label>
-                  ))}
-                </div>
-              </div>
+              <ExperienceLevel values={values} setFieldValue={setFieldValue} />
               <JobType values={values} setFieldValue={setFieldValue} />
+              <ProjectLength values={values} setFieldValue={setFieldValue} />
             </div>
 
             <Button
