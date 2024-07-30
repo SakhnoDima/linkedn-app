@@ -36,6 +36,124 @@ const InputFormComponent = ({ data }) => {
   );
 };
 
+const JobType = ({ values, setFieldValue }) => {
+  return (
+    <div>
+      <p className="mb-2">5. Job type</p>
+      <div className="flex flex-col gap-4 bg-indigo-50 p-2 ">
+        <div className="flex  flex-row gap-4 justify-around">
+          <label
+            htmlFor="hourlyJobType"
+            className="flex gap-2 items-center  justify-between hover:cursor-pointer"
+          >
+            <Field
+              id="hourlyJobType"
+              name="jobType.hourlyJobType.enabled"
+              type="checkbox"
+              checked={values.jobType.hourlyJobType.enabled}
+              onChange={() => {
+                setFieldValue(
+                  "jobType.hourlyJobType.enabled",
+                  !values.jobType.hourlyJobType.enabled
+                );
+                if (values.jobType.hourlyJobType.enabled) {
+                  setFieldValue("jobType.hourlyJobType.range.min", null);
+                  setFieldValue("jobType.hourlyJobType.range.max", null);
+                }
+              }}
+              as={Checkbox}
+            />
+            <p className="min-w-[50px]">Hourly</p>
+          </label>
+          <div className="flex flex-row gap-4 ">
+            <div className="flex gap-2 items-center relative">
+              <BsCurrencyDollar className="absolute top-[5px] left-1 w-[20px] h-[20px]" />
+              <Field
+                name="jobType.hourlyJobType.range.min"
+                type="number"
+                placeholder="Min"
+                className="w-[158px] py-[4px] pl-[22px]"
+                value={values.jobType.hourlyJobType.range.min || ""}
+              />
+              <ErrorMessage
+                name="jobType.hourlyJobType.range.min"
+                component="div"
+                className="text-red-500 absolute top-[-4px] right-0"
+              />
+              <p>/hr</p>
+            </div>
+            <div className="flex gap-2 items-center relative">
+              <BsCurrencyDollar className="absolute top-[5px] left-1 w-[20px] h-[20px]" />
+              <Field
+                name="jobType.hourlyJobType.range.max"
+                type="number"
+                placeholder="Max"
+                className="w-[158px] py-[4px] pl-[22px]"
+                value={values.jobType.hourlyJobType.range.max || ""}
+              />
+              <ErrorMessage
+                name="jobType.hourlyJobType.range.max"
+                component="div"
+                className="text-red-500 absolute top-[-4px] right-0"
+              />
+              <p>/hr</p>
+            </div>
+          </div>
+        </div>
+        <div className="flex  flex-row gap-4 justify-around">
+          <label
+            htmlFor="fixedJobType"
+            className="flex gap-2 items-center  justify-between hover:cursor-pointer"
+          >
+            <Field
+              id="fixedJobType"
+              name="jobType.fixedJobType.enabled"
+              type="checkbox"
+              checked={values.jobType.fixedJobType.enabled}
+              onChange={() => {
+                setFieldValue(
+                  "jobType.fixedJobType.enabled",
+                  !values.jobType.fixedJobType.enabled
+                );
+                if (values.jobType.hourlyJobType.enabled) {
+                  setFieldValue("jobType.fixedJobType.range.min", null);
+                  setFieldValue("jobType.fixedJobType.range.max", null);
+                }
+              }}
+              as={Checkbox}
+            />
+            <p className="min-w-[50px]">Fixed</p>
+          </label>
+          <div className="flex flex-row gap-4 ">
+            <div className="flex gap-2 items-center relative">
+              <BsCurrencyDollar className="absolute top-[5px] left-1 w-[20px] h-[20px]" />
+              <Field
+                name="jobType.fixedJobType.range.min"
+                type="number"
+                placeholder="Min"
+                className="w-[158px] py-[4px] pl-[22px]"
+                value={values.jobType.fixedJobType.range.min || ""}
+              />
+              <p>/hr</p>
+            </div>
+            <div className="flex gap-2 items-center relative">
+              <BsCurrencyDollar className="absolute top-[5px] left-1 w-[20px] h-[20px]" />
+              <Field
+                name="jobType.fixedJobType.range.max"
+                type="number"
+                placeholder="Max"
+                className="w-[158px] py-[4px] pl-[22px]"
+                value={values.jobType.fixedJobType.range.max || ""}
+              />
+              <p>/hr</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const filtersInputs = [
   {
     labelText: "1. Specify target words",
@@ -83,6 +201,13 @@ const validationSchema = Yup.object({
         max: Yup.number().nullable(),
       }),
     }),
+    fixedJobType: Yup.object().shape({
+      enabled: Yup.boolean(),
+      range: Yup.object().shape({
+        min: Yup.number().nullable(),
+        max: Yup.number().nullable(),
+      }),
+    }),
   }),
 });
 
@@ -98,6 +223,13 @@ const initialValues = {
   hourlyJobType: "",
   jobType: {
     hourlyJobType: {
+      enabled: false,
+      range: {
+        min: null,
+        max: null,
+      },
+    },
+    fixedJobType: {
       enabled: false,
       range: {
         min: null,
@@ -156,53 +288,7 @@ const ScannersForm = () => {
                   ))}
                 </div>
               </div>
-              <div>
-                <p className="mb-2">5. Job type</p>
-                <div className="flex  flex-row gap-4 justify-around bg-indigo-50 p-2 ">
-                  <label
-                    htmlFor="hourlyJobType"
-                    className="flex gap-2 items-center  justify-between hover:cursor-pointer"
-                  >
-                    <Field
-                      id="hourlyJobType"
-                      name="jobType.hourlyJobType.enabled"
-                      type="checkbox"
-                      checked={values.jobType.hourlyJobType.enabled}
-                      onChange={() =>
-                        setFieldValue(
-                          "jobType.hourlyJobType.enabled",
-                          !values.jobType.hourlyJobType.enabled
-                        )
-                      }
-                      as={Checkbox}
-                    />
-                    <p>Hourly</p>
-                  </label>
-
-                  <div className="flex flex-row gap-4 ">
-                    <div className="flex gap-2 items-center relative">
-                      <BsCurrencyDollar className="absolute top-[6px] left-1 w-[20px] h-[20px]" />
-                      <Field
-                        name="jobType.hourlyJobType.range.min"
-                        type="number"
-                        placeholder="Min"
-                        className="w-[158px] py-[4px] pl-[22px]"
-                      />
-                      <p>/hr</p>
-                    </div>
-                    <div className="flex gap-2 items-center relative">
-                      <BsCurrencyDollar className="absolute top-[6px] left-1 w-[20px] h-[20px]" />
-                      <Field
-                        name="jobType.hourlyJobType.range.max"
-                        type="number"
-                        placeholder="Max"
-                        className="w-[158px] py-[4px] pl-[22px]"
-                      />
-                      <p>/hr</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <JobType values={values} setFieldValue={setFieldValue} />
             </div>
 
             <Button
