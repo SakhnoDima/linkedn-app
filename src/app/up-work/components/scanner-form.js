@@ -10,6 +10,31 @@ import { useEffect, useState } from "react";
 import { useModalContext } from "@/app/context/modal-context";
 import Input from "@/app/components/input";
 import Button from "@/app/components/button";
+import Checkbox from "@/app/components/checkbox";
+
+const InputFormComponent = ({ data }) => {
+  return (
+    <label className="flex flex-col space-y-2  relative">
+      <div className="flex items-center space-x-2">
+        <span>{data.labelText}</span>
+        <div className="tooltip" data-tip={`${data.toolTipText}`}>
+          <AiOutlineQuestionCircle className="hover:cursor-pointer" />
+        </div>
+      </div>
+      <Field
+        name={`${data.fieldName}`}
+        type={`${data.fieldType}`}
+        placeholder={`${data.placeholder}`}
+        as={Input}
+      />
+      <ErrorMessage
+        name={`${data.fieldName}`}
+        component="div"
+        className="text-red-500 absolute top-[-4px] right-0"
+      />
+    </label>
+  );
+};
 
 const filtersInputs = [
   {
@@ -36,16 +61,20 @@ const filtersInputs = [
 ];
 
 const experienceLevels = [
-  { label: "Entry Level" },
-  { label: "Intermediate" },
-  { label: "Expert" },
+  { name: 1, label: "Entry Level", value: true },
+  { name: 2, label: "Intermediate", value: true },
+  { name: 3, label: "Expert", value: true },
 ];
 
 const validationSchema = Yup.object({
   targetWards: Yup.string().required("Required*"),
   exceptWords: Yup.string(),
   category: Yup.string(),
-  checked: Yup.array().of(Yup.string()),
+  experienceLevel: Yup.object().shape({
+    1: Yup.boolean(),
+    2: Yup.boolean(),
+    3: Yup.boolean(),
+  }),
   jobType: Yup.object().shape({
     hourlyJobType: Yup.object().shape({
       enabled: Yup.boolean(),
@@ -61,7 +90,11 @@ const initialValues = {
   targetWards: "",
   exceptWords: "",
   category: "",
-  checked: [],
+  experienceLevel: {
+    1: false,
+    2: false,
+    3: false,
+  },
   hourlyJobType: "",
   jobType: {
     hourlyJobType: {
@@ -94,53 +127,38 @@ const ScannersForm = () => {
           <Form className="flex flex-wrap content-start flex-col space-y-4 p-4 pl-6 overflow-y-auto pt-[32px]  center gap-[30px] mx-auto justify-center items-center">
             <div className="flex flex-col  gap-[30px] mx-auto justify-center ">
               {filtersInputs.map((data, index) => (
-                <label
-                  key={index}
-                  className="flex flex-col space-y-2  relative"
-                >
-                  <div className="flex items-center space-x-2">
-                    <span>{data.labelText}</span>
-
-                    <div className="tooltip" data-tip={`${data.toolTipText}`}>
-                      <AiOutlineQuestionCircle className="hover:cursor-pointer" />
-                    </div>
-                  </div>
-                  <Field
-                    name={`${data.fieldName}`}
-                    type={`${data.fieldType}`}
-                    placeholder={`${data.placeholder}`}
-                    as={Input}
-                  />
-                  <ErrorMessage
-                    name={`${data.fieldName}`}
-                    component="div"
-                    className="text-red-500 absolute top-[-4px] right-0"
-                  />
-                </label>
+                <InputFormComponent key={index} data={data} />
               ))}
               <div>
                 <p className="mb-2">4. Experience level</p>
-                <div className="flex  flex-row gap-4 justify-center bg-indigo-50 p-2">
-                  {experienceLevels.map((level, indx) => (
+                <div className="flex  flex-row gap-4 justify-around bg-indigo-50 p-2">
+                  {experienceLevels.map((item, indx) => (
                     <label
                       key={indx}
-                      htmlFor={level.label}
+                      htmlFor={item.label}
                       className="flex gap-2 items-center hover:cursor-pointer"
                     >
                       <Field
-                        id={level.label}
-                        name="checked"
+                        id={item.label}
+                        name={`experienceLevel.${item.name}`}
                         type="checkbox"
-                        value={level.label}
+                        checked={values.experienceLevel[item.name]}
+                        onChange={() =>
+                          setFieldValue(
+                            `experienceLevel.${item.name}`,
+                            !values.experienceLevel[item.name]
+                          )
+                        }
+                        as={Checkbox}
                       />
-                      <p>{level.label}</p>
+                      <p>{item.label}</p>
                     </label>
                   ))}
                 </div>
               </div>
               <div>
                 <p className="mb-2">5. Job type</p>
-                <div className="flex  flex-row gap-4 justify-center bg-indigo-50 p-2 relative">
+                <div className="flex  flex-row gap-4 justify-around bg-indigo-50 p-2 ">
                   <label
                     htmlFor="hourlyJobType"
                     className="flex gap-2 items-center  justify-between hover:cursor-pointer"
@@ -156,33 +174,33 @@ const ScannersForm = () => {
                           !values.jobType.hourlyJobType.enabled
                         )
                       }
+                      as={Checkbox}
                     />
                     <p>Hourly</p>
                   </label>
-                  {values.jobType.hourlyJobType.enabled && (
-                    <div className="flex flex-row space-x-2 absolute left-full ml-4">
-                      <div className="flex gap-2 items-center relative">
-                        <BsCurrencyDollar className="absolute top-[6px] left-1 w-[20px] h-[20px]" />
-                        <Field
-                          name="jobType.hourlyJobType.range.min"
-                          type="number"
-                          placeholder="Min"
-                          className="w-20 py-[4px] pl-[22px]"
-                        />
-                        <p>/hr</p>
-                      </div>
-                      <div className="flex gap-2 items-center relative">
-                        <BsCurrencyDollar className="absolute top-[6px] left-1 w-[20px] h-[20px]" />
-                        <Field
-                          name="jobType.hourlyJobType.range.max"
-                          type="number"
-                          placeholder="Max"
-                          className="w-20 py-[4px] pl-[22px]"
-                        />
-                        <p>/hr</p>
-                      </div>
+
+                  <div className="flex flex-row gap-4 ">
+                    <div className="flex gap-2 items-center relative">
+                      <BsCurrencyDollar className="absolute top-[6px] left-1 w-[20px] h-[20px]" />
+                      <Field
+                        name="jobType.hourlyJobType.range.min"
+                        type="number"
+                        placeholder="Min"
+                        className="w-[158px] py-[4px] pl-[22px]"
+                      />
+                      <p>/hr</p>
                     </div>
-                  )}
+                    <div className="flex gap-2 items-center relative">
+                      <BsCurrencyDollar className="absolute top-[6px] left-1 w-[20px] h-[20px]" />
+                      <Field
+                        name="jobType.hourlyJobType.range.max"
+                        type="number"
+                        placeholder="Max"
+                        className="w-[158px] py-[4px] pl-[22px]"
+                      />
+                      <p>/hr</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
