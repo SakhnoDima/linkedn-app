@@ -79,17 +79,22 @@ const validationSchema = Yup.object({
         }),
       }),
     }),
-  }),
-
-  projectLength: Yup.object().shape({
-    week: Yup.boolean(),
-    month: Yup.boolean(),
-    semester: Yup.boolean(),
-    ongoing: Yup.boolean(),
-  }),
-  hoursPerWeek: Yup.object().shape({
-    as_needed: Yup.boolean(),
-    full_time: Yup.boolean(),
+    durationV3: Yup.object().shape({
+      week: Yup.boolean(),
+      month: Yup.boolean(),
+      semester: Yup.boolean(),
+      ongoing: Yup.boolean(),
+    }),
+    hoursPerWeek: Yup.object().shape({
+      as_needed: Yup.boolean(),
+      full_time: Yup.boolean(),
+    }),
+    clientHires: Yup.object().shape({
+      0: Yup.boolean(),
+      "1-9": Yup.boolean(),
+      "10-": Yup.boolean(),
+    }),
+    clientLocation: Yup.string(),
   }),
 });
 
@@ -123,17 +128,22 @@ const initialValues = {
         },
       },
     },
-  },
-
-  projectLength: {
-    week: false,
-    month: false,
-    semester: false,
-    ongoing: false,
-  },
-  hoursPerWeek: {
-    as_needed: false,
-    full_time: false,
+    durationV3: {
+      week: false,
+      month: false,
+      semester: false,
+      ongoing: false,
+    },
+    workload: {
+      as_needed: false,
+      full_time: false,
+    },
+    clientHires: {
+      0: false,
+      "1-9": false,
+      "10-": false,
+    },
+    clientLocation: "",
   },
 };
 
@@ -170,7 +180,7 @@ const ExperienceLevel = ({ values, setFieldValue }) => {
 
   return (
     <div>
-      <p className="mb-2">4. Experience level</p>
+      <p className="mb-2">6. Experience level</p>
       <div className="flex  flex-row gap-4 justify-around bg-indigo-50 p-2">
         {experienceLevels.map((item, indx) => (
           <label
@@ -202,7 +212,7 @@ const ExperienceLevel = ({ values, setFieldValue }) => {
 const JobType = ({ values, setFieldValue }) => {
   return (
     <div>
-      <p className="mb-2">5. Job type</p>
+      <p className="mb-2">7. Job type</p>
       <div className="flex flex-col gap-4 bg-indigo-50 p-2 ">
         <div className="flex  flex-row gap-4 justify-around">
           <label
@@ -347,7 +357,7 @@ const ProjectLength = ({ values, setFieldValue }) => {
 
   return (
     <div>
-      <p className="mb-2">6. Project length</p>
+      <p className="mb-2">8. Project length</p>
       <div className="flex  flex-row gap-4 justify-around bg-indigo-50 p-2">
         {projectLength.map((item, indx) => (
           <label
@@ -357,13 +367,13 @@ const ProjectLength = ({ values, setFieldValue }) => {
           >
             <Field
               id={item.label}
-              name={`projectLength.${item.name}`}
+              name={`searchFilters.durationV3.${item.name}`}
               type="checkbox"
-              checked={values.projectLength[item.name]}
+              checked={values.searchFilters.durationV3[item.name]}
               onChange={() =>
                 setFieldValue(
-                  `projectLength.${item.name}`,
-                  !values.projectLength[item.name]
+                  `searchFilters.durationV3.${item.name}`,
+                  !values.searchFilters.durationV3[item.name]
                 )
               }
               as={Checkbox}
@@ -383,7 +393,7 @@ const HoursPerWeek = ({ values, setFieldValue }) => {
 
   return (
     <div>
-      <p className="mb-2">7. Hours per week</p>
+      <p className="mb-2">9. Hours per week</p>
       <div className="flex  flex-row gap-4 justify-around bg-indigo-50 p-2">
         {hoursPerWeek.map((item, indx) => (
           <label
@@ -393,13 +403,13 @@ const HoursPerWeek = ({ values, setFieldValue }) => {
           >
             <Field
               id={item.label}
-              name={`hoursPerWeek.${item.name}`}
+              name={`searchFilters.workload.${item.name}`}
               type="checkbox"
-              checked={values.hoursPerWeek[item.name]}
+              checked={values.searchFilters.workload[item.name]}
               onChange={() =>
                 setFieldValue(
-                  `hoursPerWeek.${item.name}`,
-                  !values.hoursPerWeek[item.name]
+                  `searchFilters.workload.${item.name}`,
+                  !values.searchFilters.workload[item.name]
                 )
               }
               as={Checkbox}
@@ -409,6 +419,75 @@ const HoursPerWeek = ({ values, setFieldValue }) => {
         ))}
       </div>
     </div>
+  );
+};
+const ClientHistory = ({ values, setFieldValue }) => {
+  const hoursPerWeek = [
+    { name: 0, label: "No hires", value: true },
+    { name: "1-9", label: "1 to 9 hires", value: true },
+    { name: "10-", label: "10+ hires", value: true },
+  ];
+
+  return (
+    <div>
+      <p className="mb-2">10. Client history</p>
+      <div className="flex  flex-row gap-4 justify-around bg-indigo-50 p-2">
+        {hoursPerWeek.map((item, indx) => (
+          <label
+            key={indx}
+            htmlFor={item.label}
+            className="flex gap-2 items-center hover:cursor-pointer"
+          >
+            <Field
+              id={item.label}
+              name={`searchFilters.clientHires.${item.name}`}
+              type="checkbox"
+              checked={values.searchFilters.clientHires[item.name]}
+              onChange={() =>
+                setFieldValue(
+                  `searchFilters.clientHires.${item.name}`,
+                  !values.searchFilters.clientHires[item.name]
+                )
+              }
+              as={Checkbox}
+            />
+            <p>{item.label}</p>
+          </label>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const ClientLocation = () => {
+  const locationData = {
+    labelText: "11. Clients Location",
+    toolTipText: "Here you can add customer locations",
+    fieldName: "searchFilters.clientLocation",
+    fieldType: "text",
+    placeholder: `Ex: United Kingdom | United States`,
+  };
+
+  return (
+    <label className="flex flex-col space-y-2  relative">
+      <div className="flex items-center space-x-2">
+        <span>{locationData.labelText}</span>
+        <div className="tooltip" data-tip={`${locationData.toolTipText}`}>
+          <AiOutlineQuestionCircle className="hover:cursor-pointer" />
+        </div>
+      </div>
+      <Field
+        name={`${locationData.fieldName}`}
+        type={`${locationData.fieldType}`}
+        placeholder={`${locationData.placeholder}`}
+        as={Input}
+      />
+      <ErrorMessage
+        name={`${locationData.fieldName}`}
+        component="div"
+        className="text-red-500 absolute top-[-4px] right-0"
+      />
+    </label>
   );
 };
 
@@ -438,6 +517,8 @@ const ScannersForm = () => {
               <JobType values={values} setFieldValue={setFieldValue} />
               <ProjectLength values={values} setFieldValue={setFieldValue} />
               <HoursPerWeek values={values} setFieldValue={setFieldValue} />
+              <ClientHistory values={values} setFieldValue={setFieldValue} />
+              <ClientLocation />
             </div>
 
             <Button
