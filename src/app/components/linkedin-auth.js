@@ -12,7 +12,7 @@ const LinkedinAuth = ({ isAuth }) => {
   }
 
   return (
-    <div className="w-[500px] mt-[50px] mx-auto flex flex-col items-center">
+    <div className="w-[500px] mt-[50px] mx-auto mb-[40px] flex flex-col items-center">
       <h2 className="text-xl mb-[16px]">
         To start work, please authorize your account first
       </h2>

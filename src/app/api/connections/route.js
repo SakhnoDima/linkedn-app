@@ -4,6 +4,9 @@ import User from "@/app/lib/user-model";
 import LinkedinFilters from "@/app/lib/linkedin-filters-model";
 
 import LinkedinCompletedTasks from "@/app/lib/linkedin-tasks-model";
+import { ErrorList } from "../up-work-authorize/route";
+
+const errorList = new ErrorList();
 
 async function checkTaskStatus(taskId) {
   let isLinkedinAuth = false;
@@ -106,6 +109,13 @@ export const POST = async (req, res) => {
         checkTaskStatus(taskId)
           .then((res) => {
             console.log("res", res);
+
+            errorList.removeError(user._id.toHexString());
+
+            if (res.error) {
+              errorList.addError(user._id.toHexString(), res.error);
+            }
+
             LinkedinCompletedTasks.create({
               taskName: data.targetName,
               userId: user._id,
@@ -192,6 +202,12 @@ export const GET = async (req, res) => {
   try {
     const activeTarget = await LinkedinFilters.findById({ _id: targetId });
 
+    const isError = errorList.getErrorById(activeTarget.userId.toHexString());
+
+    if (isError) {
+      return NextResponse.json({ message: isError.message }, { status: 500 });
+    }
+
     return NextResponse.json(
       {
         status: activeTarget.status,
@@ -199,6 +215,7 @@ export const GET = async (req, res) => {
       { status: 200 }
     );
   } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { message: "Internal server error" },
       { status: 500 }

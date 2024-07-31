@@ -109,8 +109,8 @@ const UpWorkLoginForm = ({
     >
       {({}) => (
         <Form className="flex flex-col gap-[15px] items-center">
-          {filtersInputsUpWork.map((item) => (
-            <div className="flex flex-col gap-2">
+          {filtersInputsUpWork.map((item, index) => (
+            <div key={index} className="flex flex-col gap-2">
               <Field
                 name={item.fieldName}
                 type={item.fieldType}

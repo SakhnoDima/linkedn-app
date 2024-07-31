@@ -40,8 +40,11 @@ const UserLinkedinFiltersItem = ({
             console.log("Status is still false, continuing checks");
           }
         } catch (error) {
+          localStorage.removeItem("checkingStatus");
+          setIsLoading(null);
+          clearInterval(interval);
           console.error("Error checking connection status:", error);
-          showToast(error?.response.data.message || "Server error", "error"); //! обробити
+          showToast(error?.response.data.message || "Server error", "error");
         }
       }, 10000);
     };
@@ -102,8 +105,9 @@ const UserLinkedinFiltersItem = ({
         } catch (error) {
           localStorage.removeItem("checkingStatus");
           setIsLoading(null);
+          clearInterval(interval);
           console.error("Error checking connection status:", error);
-          showToast(error?.response.data.message || "Server error", "error"); //! обробити
+          showToast(error?.response.data.message || "Server error", "error");
         }
       }, 10000);
     } catch (error) {
