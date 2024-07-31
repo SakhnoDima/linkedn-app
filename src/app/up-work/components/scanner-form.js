@@ -11,6 +11,7 @@ import { useModalContext } from "@/app/context/modal-context";
 import Input from "@/app/components/input";
 import Button from "@/app/components/button";
 import Checkbox from "@/app/components/checkbox";
+import axios from "axios";
 
 const filtersInputs = [
   {
@@ -491,10 +492,30 @@ const ClientLocation = () => {
   );
 };
 
+const addScanner = async (scanner, userId) => {
+  console.log({ scanner, userId });
+  try {
+    const response = await axios.post(
+      "/api/scanners",
+      { scanner, userId },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      console.log(response.data);
+    }
+  } catch (error) {
+    console.log(error);
+    showToast(error?.response.data.message || "Server error", "error");
+  }
+};
+
 const ScannersForm = () => {
   const { data: session } = useSession();
-
-  const [hourlyType, setHourlyType] = useState(false);
 
   return (
     <>
@@ -503,7 +524,7 @@ const ScannersForm = () => {
         validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting }) => {
           console.log(values);
-          console.log("Scanner was saved");
+          addScanner(values, session.user.id);
           setSubmitting(false);
         }}
       >
