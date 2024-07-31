@@ -18,9 +18,10 @@ import {
   ProjectLength,
   ScannerInfo,
 } from "./form-sections";
+import { useToastContext } from "@/app/context/toast-context";
 
 const validationSchema = Yup.object({
-  scannerName: Yup.string(),
+  scannerName: Yup.string().required("Required*"),
   autoBidding: Yup.boolean(),
   searchWords: Yup.object().shape({
     allOfTheseWords: Yup.string(),
@@ -113,30 +114,30 @@ const initialValues = {
   },
 };
 
-const addScanner = async (scanner, userId) => {
-  console.log({ scanner, userId });
-  try {
-    const response = await axios.post(
-      "/api/scanners",
-      { scanner, userId },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    if (response.status === 200) {
-      console.log(response.data);
-    }
-  } catch (error) {
-    console.log(error);
-    showToast(error?.response.data.message || "Server error", "error");
-  }
-};
-
-const ScannersForm = () => {
+const ScannersForm = ({ setScanners }) => {
   const { data: session } = useSession();
+  const showToast = useToastContext();
+
+  const addScanner = async (scanner, userId) => {
+    try {
+      const response = await axios.post(
+        "/api/scanners",
+        { scanner, userId },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setScanners((prev) => [response.data.scanner, ...prev]);
+      }
+    } catch (error) {
+      console.log(error);
+      showToast(error?.response.data.message || "Server error", "error");
+    }
+  };
 
   return (
     <>

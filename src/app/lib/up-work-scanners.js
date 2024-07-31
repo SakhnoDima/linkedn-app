@@ -6,6 +6,7 @@ const ScannersSchema = new mongoose.Schema({
   },
   scannerName: {
     type: String,
+    required: [true, "Please provide scanner name"],
   },
   searchWords: {
     allOfTheseWords: { type: String, default: "" },

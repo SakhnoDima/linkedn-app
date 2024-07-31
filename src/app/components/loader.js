@@ -1,7 +1,11 @@
 import React from "react";
 
-const Loader = () => {
-  return <span className="loading loading-spinner text-primary"></span>;
+const Loader = ({ className }) => {
+  return (
+    <span
+      className={`loading loading-spinner text-primary ${className}`}
+    ></span>
+  );
 };
 
 export default Loader;
