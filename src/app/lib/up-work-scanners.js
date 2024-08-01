@@ -1,6 +1,14 @@
 import mongoose from "mongoose";
+import dbConnect from "./moongose-connect";
 
 const ScannersSchema = new mongoose.Schema({
+  autoBidding: {
+    type: Boolean,
+  },
+  scannerName: {
+    type: String,
+    required: [true, "Please provide scanner name"],
+  },
   searchWords: {
     allOfTheseWords: { type: String, default: "" },
     anyOfTheseWords: { type: String, default: "" },
@@ -9,7 +17,7 @@ const ScannersSchema = new mongoose.Schema({
   },
   searchFilters: {
     category: { type: String, default: "" },
-    experienceLevel: {
+    contractorTier: {
       1: { type: Boolean, default: false },
       2: { type: Boolean, default: false },
       3: { type: Boolean, default: false },
@@ -17,17 +25,14 @@ const ScannersSchema = new mongoose.Schema({
     jobType: {
       hourlyJobType: {
         enabled: { type: Boolean, default: false },
-        range: {
-          min: { type: Number, default: null },
-          max: { type: Number, default: null },
-        },
+        min: { type: Number, default: null },
+        max: { type: Number, default: null },
       },
       fixedJobType: {
         enabled: { type: Boolean, default: false },
-        range: {
-          min: { type: Number, default: null },
-          max: { type: Number, default: null },
-        },
+
+        min: { type: Number, default: null },
+        max: { type: Number, default: null },
       },
     },
     durationV3: {
@@ -53,6 +58,8 @@ const ScannersSchema = new mongoose.Schema({
     required: true,
   },
 });
+
+await dbConnect();
 
 const Scanners =
   mongoose.models.Scanners || mongoose.model("Scanners", ScannersSchema);

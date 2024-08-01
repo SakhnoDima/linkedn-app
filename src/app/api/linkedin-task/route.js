@@ -3,9 +3,10 @@ import LinkedinCompletedTasks from "@/app/lib/linkedin-tasks-model";
 
 export const GET = async (req, res) => {
   const { searchParams } = new URL(req.nextUrl);
-  const userId = searchParams.get("userId");
+  const taskId = searchParams.get("userId");
+
   try {
-    const results = await LinkedinCompletedTasks.findById({ _id: userId });
+    const results = await LinkedinCompletedTasks.findById({ _id: taskId });
 
     return NextResponse.json({ results }, { status: 200 });
   } catch (error) {

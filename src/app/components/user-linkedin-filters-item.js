@@ -129,13 +129,13 @@ const UserLinkedinFiltersItem = ({
   const getStatus = () => {
     if (isLoading === data._id) {
       return (
-        <StatusBadge className="badge-secondary badge-outline w-[60px]">
+        <StatusBadge active={true} className="w-[60px]">
           {statusState.progress}
         </StatusBadge>
       );
     } else
       return (
-        <StatusBadge className="badge-outline w-[60px]">
+        <StatusBadge active={false} className="w-[60px]">
           {statusState.pending}
         </StatusBadge>
       );
