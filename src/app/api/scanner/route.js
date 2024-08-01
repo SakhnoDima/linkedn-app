@@ -71,12 +71,7 @@ export const DELETE = async (req, res) => {
       throw new Error("No IDs provided for deletion");
     }
 
-    const deletionResults = await Promise.all(
-      ids.map(async (id) => {
-        const isDeleted = await LinkedinFilters.findByIdAndDelete(id);
-        return { id, isDeleted };
-      })
-    );
+    const deletionResults = await LinkedinFilters.findByIdAndDelete(id);
 
     const allDeleted = deletionResults.every((result) => result.isDeleted);
 
