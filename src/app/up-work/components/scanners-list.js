@@ -6,17 +6,15 @@ import axios from "axios";
 import { useToastContext } from "@/app/context/toast-context";
 import { useSession } from "next-auth/react";
 import { ScannerItem } from "./scanner-item";
-import Loader from "@/app/components/loader";
 
 export const ScannersList = ({ scanners, setScanners }) => {
   const showToast = useToastContext();
   const { data: session } = useSession();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchScanners = async () => {
       try {
-        setLoading(true);
         const { data } = await axios.get("/api/scanners", {
           params: {
             userId: session?.user.id,
@@ -38,15 +36,19 @@ export const ScannersList = ({ scanners, setScanners }) => {
 
   return (
     <div>
-      {loading && <Loader className="text-center" />}
-      {scanners.length > 0 ? (
+      {loading ? (
+        <p className="text-center p-1 border-b">Loading...</p>
+      ) : (
         <ul>
           {scanners.map((elem) => (
-            <ScannerItem key={elem._id} elem={elem} />
+            <ScannerItem key={elem._id} scanner={elem} />
           ))}
+          {scanners.length === 0 && (
+            <li className="text-center p-1 border-b">
+              You don`t have scanners yet
+            </li>
+          )}
         </ul>
-      ) : (
-        <p>You don`t have scanners yet</p>
       )}
     </div>
   );

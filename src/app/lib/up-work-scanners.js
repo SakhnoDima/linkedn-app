@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import dbConnect from "./moongose-connect";
 
 const ScannersSchema = new mongoose.Schema({
   autoBidding: {
@@ -16,7 +17,7 @@ const ScannersSchema = new mongoose.Schema({
   },
   searchFilters: {
     category: { type: String, default: "" },
-    experienceLevel: {
+    contractorTier: {
       1: { type: Boolean, default: false },
       2: { type: Boolean, default: false },
       3: { type: Boolean, default: false },
@@ -57,6 +58,8 @@ const ScannersSchema = new mongoose.Schema({
     required: true,
   },
 });
+
+await dbConnect();
 
 const Scanners =
   mongoose.models.Scanners || mongoose.model("Scanners", ScannersSchema);

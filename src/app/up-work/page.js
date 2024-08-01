@@ -16,7 +16,7 @@ const page = () => {
         {!session?.user.isUpWorkAuth && (
           <UpWorkLogin session={session?.user.isUpWorkAuth} />
         )}
-        <ScannersForm setScanners={setScanners} />
+        <ScannersForm setScanners={setScanners} actions="save" />
       </div>
       <div className="border flex-1/4 ">
         <ScannersList scanners={scanners} setScanners={setScanners} />

@@ -19,6 +19,7 @@ import {
   ScannerInfo,
 } from "./form-sections";
 import { useToastContext } from "@/app/context/toast-context";
+import { useRouter } from "next/navigation";
 
 const validationSchema = Yup.object({
   scannerName: Yup.string().required("Required*"),
@@ -114,15 +115,16 @@ const initialValues = {
   },
 };
 
-const ScannersForm = ({ setScanners }) => {
+const ScannersForm = ({ setScanners, scanner, actions }) => {
   const { data: session } = useSession();
+  const router = useRouter();
   const showToast = useToastContext();
 
-  const addScanner = async (scanner, userId) => {
+  const addScanner = async (scannerData, userId) => {
     try {
       const response = await axios.post(
-        "/api/scanners",
-        { scanner, userId },
+        "/api/scanner",
+        { scannerData, userId },
         {
           headers: {
             "Content-Type": "application/json",
@@ -139,14 +141,40 @@ const ScannersForm = ({ setScanners }) => {
     }
   };
 
+  const editScanner = async (scannerData, scannerId) => {
+    try {
+      const response = await axios.put(
+        "/api/scanner",
+        { scannerData, scannerId },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        router.push(`/up-work/`);
+      }
+    } catch (error) {
+      console.log(error);
+      showToast(error?.response.data.message || "Server error", "error");
+    }
+  };
+  const handleDelete = async () => {};
+
   return (
     <>
       <Formik
-        initialValues={initialValues}
+        initialValues={actions === "save" ? initialValues : scanner}
         validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting, resetForm }) => {
           console.log(values);
-          addScanner(values, session.user.id);
+          if (actions === "save") {
+            addScanner(values, session.user.id);
+          } else if (actions === "edit") {
+            editScanner(values, scanner._id);
+          }
           setSubmitting(false);
           resetForm();
         }}
@@ -205,14 +233,37 @@ const ScannersForm = ({ setScanners }) => {
                 </div>
               </div>
             </div>
-
-            <Button
-              type="submit"
-              className="mx-auto w-72 bg-indigo-600 hover:bg-indigo-800 rounded-[10px] text-white p-2"
-              disabled={isSubmitting}
-            >
-              <p>Save filters</p>
-            </Button>
+            <div className="flex flex-row gap-4">
+              <Button
+                initial={{ backgroundColor: "#4f46e5" }}
+                whileHover={{
+                  scale: 1.1,
+                  backgroundColor: "#3730a3",
+                }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                type="submit"
+                className="mx-auto w-72 rounded-[10px] text-white p-2"
+                disabled={isSubmitting}
+              >
+                <p>Save Scanner</p>
+              </Button>
+              {actions === "edit" && (
+                <Button
+                  onClick={handleDelete}
+                  initial={{ backgroundColor: "#dc2626" }}
+                  whileHover={{
+                    scale: 1.1,
+                    backgroundColor: "#991b1b",
+                  }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  type="button"
+                  className="mx-auto w-72 rounded-[10px] text-white p-2"
+                  disabled={isSubmitting}
+                >
+                  <p>Delete Scanner</p>
+                </Button>
+              )}
+            </div>
           </Form>
         )}
       </Formik>
