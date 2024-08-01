@@ -30,6 +30,7 @@ const AthForm = () => {
       .required("Email is required"),
     password: Yup.string().required("Password is required"),
   });
+
   const handlerAuthorize = async (values, { setSubmitting }) => {
     try {
       const response = await axios.post("/api/auth/register", {

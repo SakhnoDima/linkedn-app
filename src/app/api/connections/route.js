@@ -189,6 +189,7 @@ export const POST = async (req, res) => {
     );
   }
 };
+
 export const GET = async (req, res) => {
   const { searchParams } = new URL(req.nextUrl);
   const targetId = searchParams.get("targetId");

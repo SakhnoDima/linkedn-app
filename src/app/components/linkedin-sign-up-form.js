@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -11,6 +12,7 @@ import Button from "./button";
 import Loader from "./loader";
 
 const LinkedinSignUpForm = ({ setIsLinkedinAuth, setIsCodeConfirm }) => {
+  const [loading, setLoading] = useState(false);
   const showToast = useToastContext();
   const { data: session, update } = useSession();
 
@@ -25,6 +27,7 @@ const LinkedinSignUpForm = ({ setIsLinkedinAuth, setIsCodeConfirm }) => {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     setIsCodeConfirm(true);
+    setLoading(true);
     try {
       const linkedinAuthorization = await axios.post(
         "/api/lambda-authorize",
@@ -42,13 +45,34 @@ const LinkedinSignUpForm = ({ setIsLinkedinAuth, setIsCodeConfirm }) => {
       );
 
       showToast(linkedinAuthorization.data.message, "success");
-      setIsLinkedinAuth(true);
-      update({ isLinkedinAuth: true });
+
+      const interval = setInterval(async () => {
+        try {
+          const response = await axios.get("/api/lambda-authorize", {
+            params: {
+              userId: session.user.id,
+            },
+          });
+
+          if (response.data.status) {
+            console.log("Status is true, stopping checks");
+
+            clearInterval(interval);
+            setLoading(false);
+            setIsLinkedinAuth(true);
+            update({ isLinkedinAuth: true });
+          }
+        } catch (error) {
+          clearInterval(interval);
+          setLoading(false);
+          console.error("Error checking connection status:", error);
+          showToast(error?.response.data.message || "Server error", "error");
+        }
+      }, 10000);
     } catch (error) {
       console.log(error);
+      setLoading(false);
       showToast(error.response.data.message, "error");
-    } finally {
-      setSubmitting(false);
     }
   };
 
@@ -93,9 +117,9 @@ const LinkedinSignUpForm = ({ setIsLinkedinAuth, setIsCodeConfirm }) => {
           <Button
             type="submit"
             className="btn-primary min-w-[180px]"
-            disabled={isSubmitting}
+            disabled={loading}
           >
-            <p>{isSubmitting ? <Loader /> : "Connect to Linkedin"}</p>
+            <p>{loading ? <Loader /> : "Connect to Linkedin"}</p>
           </Button>
         </Form>
       )}
