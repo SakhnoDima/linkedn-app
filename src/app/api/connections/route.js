@@ -4,7 +4,7 @@ import User from "@/app/lib/user-model";
 import LinkedinFilters from "@/app/lib/linkedin-filters-model";
 
 import LinkedinCompletedTasks from "@/app/lib/linkedin-tasks-model";
-import { ErrorList } from "../up-work-authorize/route";
+import { ErrorList } from "../services/errors";
 
 const errorList = new ErrorList();
 
