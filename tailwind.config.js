@@ -5,10 +5,15 @@ module.exports = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  theme: {  },
-  plugins: [require('daisyui')],
+  theme: {
+    flex: {
+      "3/4": "3 3 75%",
+      "1/4": "1 1 25%",
+    },
+  },
+  plugins: [require("daisyui")],
   daisyui: {
-    themes: ["light", "dark", "cupcake"],// false: only light + dark | true: all themes | array: specific themes like this ["light", "dark", "cupcake"]
+    themes: ["light", "dark", "cupcake"], // false: only light + dark | true: all themes | array: specific themes like this ["light", "dark", "cupcake"]
     base: true, // applies background color and foreground color for root element by default
     styled: true, // include daisyUI colors and design decisions for all components
     utils: true, // adds responsive and modifier utility classes

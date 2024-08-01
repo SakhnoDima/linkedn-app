@@ -13,7 +13,7 @@ const Header = () => {
     <header className="px-[80px] py-2 border-b-2 flex justify-between ">
       <div>
         <Link href="/">
-          <Image src={Svg} width={45} height={45} />
+          <Image alt="logo" src={Svg} width={45} height={45} />
         </Link>
       </div>
       <div>
