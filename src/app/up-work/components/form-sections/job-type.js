@@ -1,10 +1,35 @@
 import Checkbox from "@/app/components/checkbox";
 import { ErrorMessage, Field } from "formik";
+import { useEffect } from "react";
 import { BsCurrencyDollar } from "react-icons/bs";
 
 export const JobType = ({ values, setFieldValue }) => {
+  useEffect(() => {
+    const minFix = values.searchFilters.jobType.fixedJobType.min;
+    const maxFix = values.searchFilters.jobType.fixedJobType.max;
+    const minHour = values.searchFilters.jobType.hourlyJobType.min;
+    const maxGHour = values.searchFilters.jobType.hourlyJobType.max;
+    if (minFix || maxFix) {
+      setFieldValue("searchFilters.jobType.fixedJobType.enabled", true);
+    } else if (!minFix && !maxFix) {
+      setFieldValue("searchFilters.jobType.fixedJobType.enabled", false);
+    }
+
+    if (minHour || maxGHour) {
+      setFieldValue("searchFilters.jobType.hourlyJobType.enabled", true);
+    } else if (!minHour && !maxGHour) {
+      setFieldValue("searchFilters.jobType.hourlyJobType.enabled", false);
+    }
+  }, [
+    values.searchFilters.jobType.fixedJobType.min,
+    values.searchFilters.jobType.fixedJobType.max,
+    values.searchFilters.jobType.hourlyJobType.min,
+    values.searchFilters.jobType.hourlyJobType.min,
+    setFieldValue,
+  ]);
+
   return (
-    <div>
+    <div className="mb-4">
       <p className="mb-2">7. Job type</p>
       <div className="flex flex-col gap-4 p-2 ">
         <div className="flex  flex-row gap-4 justify-around">
@@ -24,11 +49,11 @@ export const JobType = ({ values, setFieldValue }) => {
                 );
                 if (values.searchFilters.jobType.hourlyJobType.enabled) {
                   setFieldValue(
-                    "searchFilters.jobType.hourlyJobType.range.min",
+                    "searchFilters.jobType.hourlyJobType.min",
                     null
                   );
                   setFieldValue(
-                    "searchFilters.jobType.hourlyJobType.range.max",
+                    "searchFilters.jobType.hourlyJobType.max",
                     null
                   );
                 }
@@ -87,7 +112,7 @@ export const JobType = ({ values, setFieldValue }) => {
                   "searchFilters.jobType.fixedJobType.enabled",
                   !values.searchFilters.jobType.fixedJobType.enabled
                 );
-                if (values.searchFilters.jobType.hourlyJobType.enabled) {
+                if (values.searchFilters.jobType.fixedJobType.enabled) {
                   setFieldValue("searchFilters.jobType.fixedJobType.min", null);
                   setFieldValue("searchFilters.jobType.fixedJobType.max", null);
                 }

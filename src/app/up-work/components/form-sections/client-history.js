@@ -9,7 +9,7 @@ export const ClientHistory = ({ values, setFieldValue }) => {
   ];
 
   return (
-    <div>
+    <div className="mb-4">
       <p className="mb-2">10. Client history</p>
       <div className="flex  flex-row gap-4 justify-around p-2">
         {hoursPerWeek.map((item, indx) => (

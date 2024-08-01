@@ -71,16 +71,16 @@ export const DELETE = async (req, res) => {
       throw new Error("No IDs provided for deletion");
     }
 
-    const deletionResults = await LinkedinFilters.findByIdAndDelete(id);
+    const deletedScanner = await Scanners.findByIdAndDelete(scannerId);
 
-    const allDeleted = deletionResults.every((result) => result.isDeleted);
-
-    if (!allDeleted) {
+    if (!deletedScanner) {
       throw new Error("Some items were not deleted. Please try again.");
     }
 
     return NextResponse.json(
-      { message: "Filters deleted successfully" },
+      {
+        message: `Scanner - ${deletedScanner.scannerName} deleted successfully`,
+      },
       { status: 200 }
     );
   } catch (error) {

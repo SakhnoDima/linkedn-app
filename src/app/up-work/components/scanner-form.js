@@ -161,7 +161,25 @@ const ScannersForm = ({ setScanners, scanner, actions }) => {
       showToast(error?.response.data.message || "Server error", "error");
     }
   };
-  const handleDelete = async () => {};
+
+  const handleDelete = async () => {
+    try {
+      const { data } = await axios.delete("/api/scanner", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: {
+          scannerId: scanner._id,
+        },
+      });
+
+      showToast(data.message, "success");
+      router.push(`/up-work/`);
+    } catch (error) {
+      console.log(error);
+      showToast(error?.response?.data.message, "error");
+    }
+  };
 
   return (
     <>

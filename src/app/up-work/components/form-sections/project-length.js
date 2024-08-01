@@ -10,7 +10,7 @@ export const ProjectLength = ({ values, setFieldValue }) => {
   ];
 
   return (
-    <div>
+    <div className="mb-4">
       <p className="mb-2">8. Project length</p>
       <div className="flex  flex-row gap-4 justify-around p-2">
         {projectLength.map((item, indx) => (

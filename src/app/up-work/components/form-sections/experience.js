@@ -17,7 +17,7 @@ export const ExperienceLevel = ({ values, setFieldValue }) => {
   ];
 
   return (
-    <div>
+    <div className="mb-4">
       <p className="mb-2">6. Experience level</p>
       <div className="flex  flex-row gap-4 justify-around p-2">
         {experienceLevels.map((item, indx) => (
