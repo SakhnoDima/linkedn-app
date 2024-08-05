@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server";
 import User from "@/app/lib/user-model";
 import axios from "axios";
-import { ErrorList } from "../services/errors";
-
-const errorList = new ErrorList();
+import { errorList } from "../services/errors";
 
 export const maxDuration = 60;
 export const dynamic = "force-dynamic";

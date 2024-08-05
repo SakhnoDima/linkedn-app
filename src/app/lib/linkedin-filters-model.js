@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import dbConnect from "./moongose-connect";
 
 const LinkedinFiltersSchema = new mongoose.Schema({
   userId: {
@@ -38,6 +39,8 @@ const LinkedinFiltersSchema = new mongoose.Schema({
     default: false,
   },
 });
+
+await dbConnect();
 
 const LinkedinFilters =
   mongoose.models.LinkedinFilters ||
