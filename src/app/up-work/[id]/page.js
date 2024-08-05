@@ -56,13 +56,44 @@ const Page = ({ params }) => {
         </>
       )}
       <Button
-        onClick={() => {
-          console.log(11);
+        onClick={async () => {
+          const { data } = await axios.post(
+            "/api/cron",
+            {
+              taskId: id,
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+              timeout: 600000,
+            }
+          );
+
+          console.log(data);
         }}
         type="submit"
         className="mx-auto w-[50px] bg-indigo-600 hover:bg-indigo-800 rounded-[10px] text-white p-2"
       >
         <p>Start</p>
+      </Button>
+      <Button
+        onClick={async () => {
+          const { data } = await axios.delete("/api/cron", {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            data: {
+              taskId: id,
+            },
+          });
+
+          console.log(data);
+        }}
+        type="submit"
+        className="mx-auto w-[50px] bg-indigo-600 hover:bg-indigo-800 rounded-[10px] text-white p-2"
+      >
+        <p>Stop</p>
       </Button>
     </div>
   );
