@@ -60,10 +60,10 @@ export const POST = async (req, res) => {
 };
 
 export const DELETE = async (req, res) => {
-  const { taskId } = await req.json();
+  const { taskId, userId } = await req.json();
 
   try {
-    TaskService.stopTask(taskId);
+    TaskService.stopTask(userId, taskId);
 
     return NextResponse.json({ message: "Task is stopped" }, { status: 200 });
   } catch (error) {

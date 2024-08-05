@@ -46,13 +46,19 @@ async function checkTaskStatus(taskId) {
 
 class TaskServiceClass {
   constructor() {
-    this.tasks = {};
+    this.userTasks = new Map();
   }
 
   startTask(id, data, user, searchFilters) {
-    console.log("Before start Init", this.tasks);
-    if (!this.tasks[id]) {
-      const task = cron.schedule("0 0 * * * *", async () => {
+    console.log("Before start Init", this.userTasks);
+
+    if (!this.userTasks.has(data.userId)) {
+      this.userTasks.set(data.userId, {});
+    }
+    const tasks = this.userTasks.get(data.userId);
+
+    if (!tasks[id]) {
+      const task = cron.schedule("0 */15 * * * *", async () => {
         console.log(user.email);
         try {
           axios
@@ -135,37 +141,41 @@ class TaskServiceClass {
           console.log(error);
         }
       });
-      this.tasks[id] = task;
-      console.log("After start Init", this.tasks);
+      tasks[id] = task;
+      console.log("After start Init", this.userTasks);
       console.log(`Cron task ${id} started`);
     } else {
       console.log(`Task ${id} is already running`);
     }
   }
 
-  async stopTask(id) {
-    const task = this.tasks[id];
-    console.log("Before start del", this.tasks);
-    if (task) {
-      task.stop();
-      delete this.tasks[id];
-      console.log(`Cron task ${id} stopped`);
-      console.log("After del", this.tasks);
-      await LinkedinFilters.findByIdAndUpdate(
-        { _id: id },
-        {
-          status: false,
-        },
-        { new: true }
-      )
-        .then((updateRes) => {
-          console.log("Database updated successfully:", updateRes);
-        })
-        .catch((err) => {
-          console.error("Error updating database:", err);
-        });
+  async stopTask(userId, taskId) {
+    if (this.userTasks.has(userId)) {
+      const tasks = this.userTasks.get(userId);
+      const task = tasks[taskId];
+      if (task) {
+        task.stop();
+        delete tasks[taskId];
+        console.log(`Cron task ${taskId} stopped`);
+        console.log("After del", this.userTasks);
+        await LinkedinFilters.findByIdAndUpdate(
+          { _id: taskId },
+          {
+            status: false,
+          },
+          { new: true }
+        )
+          .then((updateRes) => {
+            console.log("Database updated successfully:", updateRes);
+          })
+          .catch((err) => {
+            console.error("Error updating database:", err);
+          });
+      } else {
+        console.log(`Task ${taskId} for user ${userId} is not running`);
+      }
     } else {
-      console.log(`Task ${id} is not running`);
+      console.log(`No tasks for user ${userId}`);
     }
   }
 

@@ -166,6 +166,7 @@ const UserLinkedinFiltersItem = ({
             "Content-Type": "application/json",
           },
           data: {
+            userId: data.userId,
             taskId: data._id,
           },
         });
