@@ -58,7 +58,7 @@ class TaskServiceClass {
     const tasks = this.userTasks.get(data.userId);
 
     if (!tasks[id]) {
-      const task = cron.schedule("0 */15 * * * *", async () => {
+      const task = cron.schedule("0 0 * * * *", async () => {
         console.log(user.email);
         try {
           axios
