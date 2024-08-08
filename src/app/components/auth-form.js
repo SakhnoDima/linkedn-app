@@ -73,8 +73,8 @@ const AthForm = () => {
   };
 
   return (
-    <>
-      <h2 className="text-center text-2xl mb-[20px]">
+    <div className="w-[650px] mx-auto ">
+      <h2 className="text-center text-2xl mb-[50px]">
         {isAuthorize ? "Login Form" : "Authorization Form"}
       </h2>
 
@@ -84,8 +84,8 @@ const AthForm = () => {
         onSubmit={isAuthorize ? handlerLogIn : handlerAuthorize}
       >
         {({ isSubmitting }) => (
-          <Form className="flex flex-col gap-[15px] items-center">
-            <div className="flex flex-col gap-2">
+          <Form className="flex flex-col gap-8 items-center">
+            <label className="flex flex-col gap-2 relative">
               <Field
                 name="email"
                 type="email"
@@ -96,10 +96,11 @@ const AthForm = () => {
               <ErrorMessage
                 name="email"
                 component="div"
-                className="text-red-500"
+                className="text-red-500 absolute right-0 top-[-18px]"
               />
-            </div>
-            <div className="flex flex-col gap-2">
+              <p className="absolute top-[-24px]">Email</p>
+            </label>
+            <label className="flex flex-col gap-2 relative">
               <Field
                 name="password"
                 type="password"
@@ -110,9 +111,10 @@ const AthForm = () => {
               <ErrorMessage
                 name="password"
                 component="div"
-                className="text-red-500"
+                className="text-red-500 absolute right-0 top-[-18px]"
               />
-            </div>
+              <p className="absolute top-[-24px]">Password</p>
+            </label>
             <div>
               {!!isProduction && (
                 <p className="text-center">
@@ -143,7 +145,7 @@ const AthForm = () => {
           </Form>
         )}
       </Formik>
-    </>
+    </div>
   );
 };
 
