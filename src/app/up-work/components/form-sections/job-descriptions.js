@@ -6,7 +6,7 @@ export const JobDescriptionsBlock = () => {
     toolTipText: "Here you can add category, separate each category by ' | ' ",
     fieldName: "searchFilters.category",
     fieldType: "text",
-    placeholder: `Ex: Web & Mobile Design`,
+    placeholder: `Ex: Web | Mobile Design`,
   };
   return (
     <div className="mb-4">

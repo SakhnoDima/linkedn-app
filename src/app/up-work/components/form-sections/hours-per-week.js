@@ -1,4 +1,5 @@
 import Checkbox from "@/app/components/checkbox";
+import { Tooltip } from "@/app/components/tooltip";
 import { Field } from "formik";
 
 export const HoursPerWeek = ({ values, setFieldValue }) => {
@@ -9,7 +10,11 @@ export const HoursPerWeek = ({ values, setFieldValue }) => {
 
   return (
     <div>
-      <p className="mb-2">9. Hours per week</p>
+      <div className="flex space-x-2">
+        <p className="mb-2">9. Hours per week</p>
+        <Tooltip text={`Hours per week duration`} />
+      </div>
+
       <div className="flex  flex-row gap-4 justify-around p-2">
         {hoursPerWeek.map((item, indx) => (
           <label

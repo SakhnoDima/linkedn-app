@@ -1,4 +1,5 @@
 import Checkbox from "@/app/components/checkbox";
+import { Tooltip } from "@/app/components/tooltip";
 import { ErrorMessage, Field } from "formik";
 import { useEffect } from "react";
 import { BsCurrencyDollar } from "react-icons/bs";
@@ -30,7 +31,12 @@ export const JobType = ({ values, setFieldValue }) => {
 
   return (
     <div className="mb-4">
-      <p className="mb-2">7. Job type</p>
+      <div className="flex space-x-2">
+        <p className="mb-2">7. Job type</p>
+        <Tooltip
+          text={`Chose hourly or fixed job type and prefer average price`}
+        />
+      </div>
       <div className="flex flex-col gap-4 p-2 ">
         <div className="flex  flex-row gap-4 justify-around">
           <label

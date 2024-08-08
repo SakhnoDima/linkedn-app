@@ -7,3 +7,6 @@ export { ProjectLength } from "./project-length";
 export { HoursPerWeek } from "./hours-per-week";
 export { ClientHistory } from "./client-history";
 export { ClientLocation } from "./client-location";
+export { ClientInfo } from "./client-info";
+export { ClientRating } from "./client-rating";
+export { ClientTotalSpent } from "./client-total-spent";

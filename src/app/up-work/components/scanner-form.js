@@ -17,6 +17,9 @@ import {
   JobType,
   ProjectLength,
   ScannerInfo,
+  ClientInfo,
+  ClientRating,
+  ClientTotalSpent,
 } from "./form-sections";
 import { useToastContext } from "@/app/context/toast-context";
 import { useRouter } from "next/navigation";
@@ -25,10 +28,8 @@ const validationSchema = Yup.object({
   scannerName: Yup.string().required("Required*"),
   autoBidding: Yup.boolean(),
   searchWords: Yup.object().shape({
-    allOfTheseWords: Yup.string(),
-    anyOfTheseWords: Yup.string(),
-    noneOfTheseWords: Yup.string(),
-    theExactPhrase: Yup.string(),
+    includeWords: Yup.string().max(200, "Must be 200 symbols maximum"),
+    excludeWords: Yup.string().max(200, "Must be 200 symbols maximum"),
   }),
   searchFilters: Yup.object({
     category: Yup.string(),
@@ -55,7 +56,7 @@ const validationSchema = Yup.object({
       semester: Yup.boolean(),
       ongoing: Yup.boolean(),
     }),
-    hoursPerWeek: Yup.object().shape({
+    workload: Yup.object().shape({
       as_needed: Yup.boolean(),
       full_time: Yup.boolean(),
     }),
@@ -65,6 +66,14 @@ const validationSchema = Yup.object({
       "10-": Yup.boolean(),
     }),
     clientLocation: Yup.string(),
+    clientInfo: Yup.object().shape({
+      all: Yup.boolean(),
+      1: Yup.boolean(),
+    }),
+  }),
+  clientParameters: Yup.object({
+    minAvgFeedback: Yup.number(),
+    minTotalSpent: Yup.string().nullable(),
   }),
 });
 
@@ -72,10 +81,8 @@ const initialValues = {
   scannerName: "",
   autoBidding: false,
   searchWords: {
-    allOfTheseWords: "",
-    anyOfTheseWords: "",
-    noneOfTheseWords: "",
-    theExactPhrase: "",
+    includeWords: "",
+    excludeWords: "",
   },
   searchFilters: {
     category: "",
@@ -112,6 +119,14 @@ const initialValues = {
       "10-": false,
     },
     clientLocation: "",
+    clientInfo: {
+      all: false,
+      1: false,
+    },
+  },
+  clientParameters: {
+    minAvgFeedback: 3,
+    minTotalSpent: null,
   },
 };
 
@@ -247,7 +262,13 @@ const ScannersForm = ({ setScanners, scanner, actions }) => {
                     values={values}
                     setFieldValue={setFieldValue}
                   />
+                  <ClientInfo values={values} setFieldValue={setFieldValue} />
                   <ClientLocation />
+                  <ClientRating values={values} setFieldValue={setFieldValue} />
+                  <ClientTotalSpent
+                    values={values}
+                    setFieldValue={setFieldValue}
+                  />
                 </div>
               </div>
             </div>

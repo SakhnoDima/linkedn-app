@@ -10,10 +10,8 @@ const ScannersSchema = new mongoose.Schema({
     required: [true, "Please provide scanner name"],
   },
   searchWords: {
-    allOfTheseWords: { type: String, default: "" },
-    anyOfTheseWords: { type: String, default: "" },
-    noneOfTheseWords: { type: String, default: "" },
-    theExactPhrase: { type: String, default: "" },
+    includeWords: { type: String, default: "" },
+    excludeWords: { type: String, default: "" },
   },
   searchFilters: {
     category: { type: String, default: "" },
@@ -51,6 +49,14 @@ const ScannersSchema = new mongoose.Schema({
       "10-": { type: Boolean, default: false },
     },
     clientLocation: { type: String, default: "" },
+    clientInfo: {
+      all: { type: Boolean, default: false },
+      1: { type: Boolean, default: false },
+    },
+  },
+  clientParameters: {
+    minAvgFeedback: { type: Number, default: 3 },
+    minTotalSpent: { type: String, default: null },
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,

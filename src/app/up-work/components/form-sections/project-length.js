@@ -1,4 +1,5 @@
 import Checkbox from "@/app/components/checkbox";
+import { Tooltip } from "@/app/components/tooltip";
 import { Field } from "formik";
 
 export const ProjectLength = ({ values, setFieldValue }) => {
@@ -11,7 +12,10 @@ export const ProjectLength = ({ values, setFieldValue }) => {
 
   return (
     <div className="mb-4">
-      <p className="mb-2">8. Project length</p>
+      <div className="flex space-x-2">
+        <p className="mb-2">8. Project length</p>
+        <Tooltip text={`Define project duration`} />
+      </div>
       <div className="flex  flex-row gap-4 justify-around p-2">
         {projectLength.map((item, indx) => (
           <label
