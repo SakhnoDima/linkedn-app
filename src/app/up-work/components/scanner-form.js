@@ -77,8 +77,8 @@ const validationSchema = Yup.object({
     minAvgFeedback: Yup.number(),
     minTotalSpent: Yup.string().nullable(),
     minHireRate: Yup.string().nullable(),
-    minAvgHourlyRatePaid: Yup.number(),
-    maxAvgHourlyRatePaid: Yup.number(),
+    minAvgHourlyRatePaid: Yup.number().nullable(),
+    maxAvgHourlyRatePaid: Yup.number().nullable(),
   }),
 });
 

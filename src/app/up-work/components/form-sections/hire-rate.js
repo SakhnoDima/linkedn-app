@@ -3,9 +3,9 @@ import { Field } from "formik";
 
 export const HireRate = ({ values, setFieldValue }) => {
   const hireRates = [
-    { value: "Mid Rates", label: "<40%" },
-    { value: "High Rates", label: "<70%" },
-    { value: "Max Rates", label: "70%>" },
+    { value: "Mid Rates", label: ">40%" },
+    { value: "High Rates", label: ">70%" },
+    { value: "Max Rates", label: "100%" },
   ];
   return (
     <div className="mb-4">

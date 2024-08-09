@@ -3,11 +3,11 @@ import { Field } from "formik";
 
 export const ClientTotalSpent = ({ values, setFieldValue }) => {
   const minTotalSpent = [
-    { value: "1K", label: "<1k" },
-    { value: "10K", label: "<10k" },
-    { value: "100K", label: "<100k" },
-    { value: "1M", label: "<1M" },
-    { value: "10M", label: "<10M" },
+    { value: "1K", label: "1K+" },
+    { value: "10K", label: "10K+" },
+    { value: "100K", label: "100K+" },
+    { value: "1M", label: "1M+" },
+    { value: "10M", label: "10M+" },
   ];
   return (
     <div className="mb-4">
