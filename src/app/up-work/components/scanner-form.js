@@ -20,6 +20,8 @@ import {
   ClientInfo,
   ClientRating,
   ClientTotalSpent,
+  HireRate,
+  MinAvgHourlyRate,
 } from "./form-sections";
 import { useToastContext } from "@/app/context/toast-context";
 import { useRouter } from "next/navigation";
@@ -74,6 +76,9 @@ const validationSchema = Yup.object({
   clientParameters: Yup.object({
     minAvgFeedback: Yup.number(),
     minTotalSpent: Yup.string().nullable(),
+    minHireRate: Yup.string().nullable(),
+    minAvgHourlyRatePaid: Yup.number(),
+    maxAvgHourlyRatePaid: Yup.number(),
   }),
 });
 
@@ -127,6 +132,9 @@ const initialValues = {
   clientParameters: {
     minAvgFeedback: 3,
     minTotalSpent: null,
+    minHireRate: null,
+    minAvgHourlyRatePaid: null,
+    maxAvgHourlyRatePaid: null,
   },
 };
 
@@ -220,7 +228,7 @@ const ScannersForm = ({ setScanners, scanner, actions }) => {
                 <div className="collapse-title text-xl font-medium">
                   Scanner
                 </div>
-                <div className="collapse-content">
+                <div className="collapse-content px-[3rem]">
                   <ScannerInfo values={values} handleChange={handleChange} />
                 </div>
               </div>
@@ -229,7 +237,7 @@ const ScannersForm = ({ setScanners, scanner, actions }) => {
                 <div className="collapse-title text-xl font-medium">
                   Target words
                 </div>
-                <div className="collapse-content">
+                <div className="collapse-content px-[3rem]">
                   <AddingTargetWardsBlock />
                 </div>
               </div>
@@ -238,7 +246,7 @@ const ScannersForm = ({ setScanners, scanner, actions }) => {
                 <div className="collapse-title text-xl font-medium">
                   Job Preferences
                 </div>
-                <div className="collapse-content">
+                <div className="collapse-content px-[3rem]">
                   <JobDescriptionsBlock />
                   <ExperienceLevel
                     values={values}
@@ -257,7 +265,7 @@ const ScannersForm = ({ setScanners, scanner, actions }) => {
                 <div className="collapse-title text-xl font-medium">
                   Client Parameters
                 </div>
-                <div className="collapse-content">
+                <div className="collapse-content px-[3rem]">
                   <ClientHistory
                     values={values}
                     setFieldValue={setFieldValue}
@@ -269,6 +277,8 @@ const ScannersForm = ({ setScanners, scanner, actions }) => {
                     values={values}
                     setFieldValue={setFieldValue}
                   />
+                  <HireRate values={values} setFieldValue={setFieldValue} />
+                  <MinAvgHourlyRate values={values} />
                 </div>
               </div>
             </div>

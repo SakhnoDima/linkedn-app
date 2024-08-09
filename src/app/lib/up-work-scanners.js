@@ -57,6 +57,9 @@ const ScannersSchema = new mongoose.Schema({
   clientParameters: {
     minAvgFeedback: { type: Number, default: 3 },
     minTotalSpent: { type: String, default: null },
+    minHireRate: { type: String, default: null },
+    minAvgHourlyRatePaid: { type: Number, default: null },
+    maxAvgHourlyRatePaid: { type: Number, default: null },
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
