@@ -55,6 +55,7 @@ const Page = ({ params }) => {
           searchWords: scanner.searchWords,
           searchFilters: scanner.searchFilters,
           clientParameters: scanner.clientParameters,
+          biddingOptions: scanner.biddingOptions,
         },
         {
           headers: {

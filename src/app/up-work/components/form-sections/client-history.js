@@ -4,7 +4,7 @@ import { Field } from "formik";
 
 export const ClientHistory = ({ values, setFieldValue }) => {
   const hoursPerWeek = [
-    { name: 0, label: "No hires", value: true },
+    { name: 0, label: "No hires", value: true, name: "" },
     { name: "1-9", label: "1 to 9 hires", value: true },
     { name: "10-", label: "10+ hires", value: true },
   ];
@@ -12,7 +12,7 @@ export const ClientHistory = ({ values, setFieldValue }) => {
   return (
     <div className="mb-4">
       <div className="flex space-x-2">
-        <p className="mb-2">10. Client history</p>
+        <p className="mb-2">10. Client History</p>
         <Tooltip text={`Define Client history`} />
       </div>
 

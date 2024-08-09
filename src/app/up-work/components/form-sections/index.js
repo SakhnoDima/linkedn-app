@@ -12,3 +12,5 @@ export { ClientRating } from "./client-rating";
 export { ClientTotalSpent } from "./client-total-spent";
 export { HireRate } from "./hire-rate";
 export { MinAvgHourlyRate } from "./min-avg-hourly-rate";
+export { ClientWithoutHistory } from "./client-without-history";
+export { BiddingOptions } from "./bidding-options";

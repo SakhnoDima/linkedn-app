@@ -12,6 +12,7 @@ export const POST = async (req, res) => {
       searchWords,
       searchFilters,
       clientParameters,
+      biddingOptions,
     } = await req.json();
 
     searchFilters.category = searchFilters.category
@@ -33,6 +34,7 @@ export const POST = async (req, res) => {
       ),
       searchFilters,
       clientParameters,
+      biddingOptions,
     });
 
     // const response = await axios.post(

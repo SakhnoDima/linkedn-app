@@ -60,6 +60,12 @@ const ScannersSchema = new mongoose.Schema({
     minHireRate: { type: String, default: null },
     minAvgHourlyRatePaid: { type: Number, default: null },
     maxAvgHourlyRatePaid: { type: Number, default: null },
+    clientsWithoutSufficientHistory: { type: Boolean, default: false },
+  },
+  biddingOptions: {
+    team: { type: String, default: "" },
+    freelancer: { type: String, default: "" },
+    profile: { type: String, default: "" },
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
