@@ -67,6 +67,14 @@ const ScannersSchema = new mongoose.Schema({
     freelancer: { type: String, default: "" },
     profile: { type: String, default: "" },
   },
+  coverLetterOptions: {
+    coverLetterTemplate: { type: String, default: "" },
+    freelancerSkills: { type: String, default: "" },
+    additionalLinks: {
+      gitHub: { type: String, default: "" },
+      linkedIn: { type: String, default: "" },
+    },
+  },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "users_collection",

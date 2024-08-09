@@ -24,6 +24,7 @@ import {
   MinAvgHourlyRate,
   ClientWithoutHistory,
   BiddingOptions,
+  CoverLetterOptions,
 } from "./form-sections";
 import { useToastContext } from "@/app/context/toast-context";
 import { useRouter } from "next/navigation";
@@ -88,6 +89,14 @@ const validationSchema = Yup.object({
     freelancer: Yup.string().required("Required*"),
     profile: Yup.string().nullable(),
   }),
+  coverLetterOptions: Yup.object({
+    coverLetterTemplate: Yup.string(),
+    freelancerSkills: Yup.string(),
+    additionalLinks: Yup.object({
+      gitHub: Yup.string(),
+      linkedIn: Yup.string(),
+    }),
+  }),
 });
 
 const initialValues = {
@@ -149,6 +158,14 @@ const initialValues = {
     team: "",
     freelancer: "",
     profile: "",
+  },
+  coverLetterOptions: {
+    coverLetterTemplate: "",
+    freelancerSkills: "",
+    additionalLinks: {
+      gitHub: "",
+      linkedIn: "",
+    },
   },
 };
 
@@ -306,6 +323,15 @@ const ScannersForm = ({ setScanners, scanner, actions }) => {
                 </div>
                 <div className="collapse-content px-[3rem]">
                   <BiddingOptions />
+                </div>
+              </div>
+              <div className="collapse collapse-arrow bg-base-200">
+                <input type="radio" name="my-accordion-2" />
+                <div className="collapse-title text-xl font-medium">
+                  Cover Letter Options
+                </div>
+                <div className="collapse-content px-[3rem]">
+                  <CoverLetterOptions />
                 </div>
               </div>
             </div>

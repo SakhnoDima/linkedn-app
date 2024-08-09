@@ -14,3 +14,4 @@ export { HireRate } from "./hire-rate";
 export { MinAvgHourlyRate } from "./min-avg-hourly-rate";
 export { ClientWithoutHistory } from "./client-without-history";
 export { BiddingOptions } from "./bidding-options";
+export { CoverLetterOptions } from "./cover-letter-options";
