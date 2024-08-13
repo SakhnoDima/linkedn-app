@@ -17,6 +17,14 @@ import {
   JobType,
   ProjectLength,
   ScannerInfo,
+  ClientInfo,
+  ClientRating,
+  ClientTotalSpent,
+  HireRate,
+  MinAvgHourlyRate,
+  ClientWithoutHistory,
+  BiddingOptions,
+  CoverLetterOptions,
 } from "./form-sections";
 import { useToastContext } from "@/app/context/toast-context";
 import { useRouter } from "next/navigation";
@@ -25,10 +33,8 @@ const validationSchema = Yup.object({
   scannerName: Yup.string().required("Required*"),
   autoBidding: Yup.boolean(),
   searchWords: Yup.object().shape({
-    allOfTheseWords: Yup.string(),
-    anyOfTheseWords: Yup.string(),
-    noneOfTheseWords: Yup.string(),
-    theExactPhrase: Yup.string(),
+    includeWords: Yup.string().max(200, "Must be 200 symbols maximum"),
+    excludeWords: Yup.string().max(200, "Must be 200 symbols maximum"),
   }),
   searchFilters: Yup.object({
     category: Yup.string(),
@@ -55,7 +61,7 @@ const validationSchema = Yup.object({
       semester: Yup.boolean(),
       ongoing: Yup.boolean(),
     }),
-    hoursPerWeek: Yup.object().shape({
+    workload: Yup.object().shape({
       as_needed: Yup.boolean(),
       full_time: Yup.boolean(),
     }),
@@ -65,6 +71,31 @@ const validationSchema = Yup.object({
       "10-": Yup.boolean(),
     }),
     clientLocation: Yup.string(),
+    clientInfo: Yup.object().shape({
+      all: Yup.boolean(),
+      1: Yup.boolean(),
+    }),
+  }),
+  clientParameters: Yup.object({
+    minAvgFeedback: Yup.number(),
+    minTotalSpent: Yup.string().nullable(),
+    minHireRate: Yup.string().nullable(),
+    minAvgHourlyRatePaid: Yup.number().nullable(),
+    maxAvgHourlyRatePaid: Yup.number().nullable(),
+    clientsWithoutSufficientHistory: Yup.boolean(),
+  }),
+  biddingOptions: Yup.object({
+    team: Yup.string().required("Required*"),
+    freelancer: Yup.string().required("Required*"),
+    profile: Yup.string().nullable(),
+  }),
+  coverLetterOptions: Yup.object({
+    coverLetterTemplate: Yup.string(),
+    freelancerSkills: Yup.string(),
+    additionalLinks: Yup.object({
+      gitHub: Yup.string(),
+      linkedIn: Yup.string(),
+    }),
   }),
 });
 
@@ -72,10 +103,8 @@ const initialValues = {
   scannerName: "",
   autoBidding: false,
   searchWords: {
-    allOfTheseWords: "",
-    anyOfTheseWords: "",
-    noneOfTheseWords: "",
-    theExactPhrase: "",
+    includeWords: "",
+    excludeWords: "",
   },
   searchFilters: {
     category: "",
@@ -112,6 +141,31 @@ const initialValues = {
       "10-": false,
     },
     clientLocation: "",
+    clientInfo: {
+      all: false,
+      1: false,
+    },
+  },
+  clientParameters: {
+    minAvgFeedback: 3,
+    minTotalSpent: null,
+    minHireRate: null,
+    minAvgHourlyRatePaid: null,
+    maxAvgHourlyRatePaid: null,
+    clientsWithoutSufficientHistory: false,
+  },
+  biddingOptions: {
+    team: "",
+    freelancer: "",
+    profile: "",
+  },
+  coverLetterOptions: {
+    coverLetterTemplate: "",
+    freelancerSkills: "",
+    additionalLinks: {
+      gitHub: "",
+      linkedIn: "",
+    },
   },
 };
 
@@ -205,7 +259,7 @@ const ScannersForm = ({ setScanners, scanner, actions }) => {
                 <div className="collapse-title text-xl font-medium">
                   Scanner
                 </div>
-                <div className="collapse-content">
+                <div className="collapse-content px-[3rem]">
                   <ScannerInfo values={values} handleChange={handleChange} />
                 </div>
               </div>
@@ -214,7 +268,7 @@ const ScannersForm = ({ setScanners, scanner, actions }) => {
                 <div className="collapse-title text-xl font-medium">
                   Target words
                 </div>
-                <div className="collapse-content">
+                <div className="collapse-content px-[3rem]">
                   <AddingTargetWardsBlock />
                 </div>
               </div>
@@ -223,7 +277,7 @@ const ScannersForm = ({ setScanners, scanner, actions }) => {
                 <div className="collapse-title text-xl font-medium">
                   Job Preferences
                 </div>
-                <div className="collapse-content">
+                <div className="collapse-content px-[3rem]">
                   <JobDescriptionsBlock />
                   <ExperienceLevel
                     values={values}
@@ -242,12 +296,42 @@ const ScannersForm = ({ setScanners, scanner, actions }) => {
                 <div className="collapse-title text-xl font-medium">
                   Client Parameters
                 </div>
-                <div className="collapse-content">
+                <div className="collapse-content px-[3rem]">
                   <ClientHistory
                     values={values}
                     setFieldValue={setFieldValue}
                   />
+                  <ClientInfo values={values} setFieldValue={setFieldValue} />
                   <ClientLocation />
+                  <ClientRating values={values} setFieldValue={setFieldValue} />
+                  <ClientTotalSpent
+                    values={values}
+                    setFieldValue={setFieldValue}
+                  />
+                  <HireRate values={values} setFieldValue={setFieldValue} />
+                  <MinAvgHourlyRate values={values} />
+                  <ClientWithoutHistory
+                    values={values}
+                    setFieldValue={setFieldValue}
+                  />
+                </div>
+              </div>
+              <div className="collapse collapse-arrow bg-base-200">
+                <input type="radio" name="my-accordion-2" />
+                <div className="collapse-title text-xl font-medium">
+                  Bidding Options
+                </div>
+                <div className="collapse-content px-[3rem]">
+                  <BiddingOptions />
+                </div>
+              </div>
+              <div className="collapse collapse-arrow bg-base-200">
+                <input type="radio" name="my-accordion-2" />
+                <div className="collapse-title text-xl font-medium">
+                  Cover Letter Options
+                </div>
+                <div className="collapse-content px-[3rem]">
+                  <CoverLetterOptions />
                 </div>
               </div>
             </div>

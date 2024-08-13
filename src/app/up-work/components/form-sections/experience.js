@@ -1,5 +1,7 @@
 import Checkbox from "@/app/components/checkbox";
+import { Tooltip } from "@/app/components/tooltip";
 import { Field } from "formik";
+import { AiOutlineQuestionCircle } from "react-icons/ai";
 
 export const ExperienceLevel = ({ values, setFieldValue }) => {
   const experienceLevels = [
@@ -18,7 +20,10 @@ export const ExperienceLevel = ({ values, setFieldValue }) => {
 
   return (
     <div className="mb-4">
-      <p className="mb-2">6. Experience level</p>
+      <div className="flex space-x-2">
+        <p className="mb-2">6. Experience level</p>
+        <Tooltip text={`Here you can defined Experience level`} />
+      </div>
       <div className="flex  flex-row gap-4 justify-around p-2">
         {experienceLevels.map((item, indx) => (
           <label

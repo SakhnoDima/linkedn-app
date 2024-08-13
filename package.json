@@ -23,6 +23,8 @@
     "next-auth": "^4.24.7",
     "node-cron": "^3.0.3",
     "nodemailer": "^6.9.14",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
     "qrcode": "^1.5.3",
     "react": "^18",
     "react-dom": "^18",

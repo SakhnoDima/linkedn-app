@@ -4,18 +4,20 @@ import { useRouter } from "next/navigation";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
+import axios from "axios";
+import { signIn } from "next-auth/react";
+import { IoEyeOff, IoEye } from "react-icons/io5";
+
+import Loader from "./loader";
 import Input from "./input";
 import Button from "./button";
 import { useToastContext } from "../context/toast-context";
-import axios from "axios";
-import { signIn } from "next-auth/react";
-import Loader from "./loader";
-import mixpanel from "mixpanel-browser";
 
 const isProduction = process.env.NEXT_PUBLIC_PRODUCTION || null;
 
 const AthForm = () => {
   const [isAuthorize, setIsAuthorize] = useState(!isProduction);
+  const [showPass, setShowPass] = useState(true);
   const showToast = useToastContext();
   const router = useRouter();
 
@@ -74,8 +76,8 @@ const AthForm = () => {
   };
 
   return (
-    <>
-      <h2 className="text-center text-2xl mb-[20px]">
+    <div className="w-[650px] mx-auto ">
+      <h2 className="text-center text-2xl mb-[50px]">
         {isAuthorize ? "Login Form" : "Authorization Form"}
       </h2>
 
@@ -85,8 +87,8 @@ const AthForm = () => {
         onSubmit={isAuthorize ? handlerLogIn : handlerAuthorize}
       >
         {({ isSubmitting }) => (
-          <Form className="flex flex-col gap-[15px] items-center">
-            <div className="flex flex-col gap-2">
+          <Form className="flex flex-col gap-8 items-center">
+            <label className="flex flex-col gap-2 relative">
               <Field
                 name="email"
                 type="email"
@@ -97,13 +99,14 @@ const AthForm = () => {
               <ErrorMessage
                 name="email"
                 component="div"
-                className="text-red-500"
+                className="text-red-500 absolute right-0 top-[-24px]"
               />
-            </div>
-            <div className="flex flex-col gap-2">
+              <p className="absolute top-[-24px]">Email</p>
+            </label>
+            <label className="flex flex-col gap-2 relative">
               <Field
                 name="password"
-                type="password"
+                type={showPass ? "password" : "text"}
                 placeholder="Password"
                 as={Input}
                 className="input-bordered"
@@ -111,9 +114,21 @@ const AthForm = () => {
               <ErrorMessage
                 name="password"
                 component="div"
-                className="text-red-500"
+                className="text-red-500 absolute right-0 top-[-24px]"
               />
-            </div>
+              <p className="absolute top-[-24px]">Password</p>
+              <button
+                type="button"
+                className="absolute right-2 top-[2px] min-h-[39px] h-[39px] rounded"
+                onClick={() => setShowPass(!showPass)}
+              >
+                {showPass ? (
+                  <IoEyeOff className="w-[28px] h-[28px] fill-gray-300" />
+                ) : (
+                  <IoEye className="w-[28px] h-[28px]" />
+                )}
+              </button>
+            </label>
             <div>
               {!!isProduction && (
                 <p className="text-center">
@@ -144,7 +159,7 @@ const AthForm = () => {
           </Form>
         )}
       </Formik>
-    </>
+    </div>
   );
 };
 

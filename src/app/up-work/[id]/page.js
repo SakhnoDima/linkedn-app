@@ -43,6 +43,35 @@ const Page = ({ params }) => {
     getUserLinkedinTasks(id);
   }, [id]);
 
+  const handBotInit = async () => {
+    try {
+      const { data } = await axios.post(
+        "/api/up-work-filtration",
+        {
+          _id: scanner._id,
+          userId: scanner.userId,
+          scannerName: scanner.scannerName,
+          autoBidding: scanner.autoBidding,
+          searchWords: scanner.searchWords,
+          searchFilters: scanner.searchFilters,
+          clientParameters: scanner.clientParameters,
+          biddingOptions: scanner.biddingOptions,
+          coverLetterOptions: scanner.coverLetterOptions,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          timeout: 600000,
+        }
+      );
+
+      console.log(data);
+    } catch (error) {
+      console.log("Error at page:", error);
+    }
+  };
+
   return (
     <div>
       <GoBack href="/up-work">
@@ -55,6 +84,20 @@ const Page = ({ params }) => {
           <ScannersForm scanner={scanner} actions="edit" />
         </>
       )}
+      <Button
+        onClick={handBotInit}
+        type="submit"
+        className="mx-auto w-[50px] bg-indigo-600 hover:bg-indigo-800 rounded-[10px] text-white p-2"
+      >
+        <p>Login</p>
+      </Button>
+      <Button
+        onClick={handBotInit}
+        type="submit"
+        className="mx-auto w-[50px] bg-indigo-600 hover:bg-indigo-800 rounded-[10px] text-white p-2"
+      >
+        <p>Start</p>
+      </Button>
     </div>
   );
 };
