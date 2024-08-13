@@ -1,4 +1,3 @@
-// lib/TaskService.js
 import cron from "node-cron";
 import { errorList } from "./errors";
 import LinkedinFilters from "@/app/lib/linkedin-filters-model";
@@ -58,7 +57,7 @@ class TaskServiceClass {
     const tasks = this.userTasks.get(data.userId);
 
     if (!tasks[id]) {
-      const task = cron.schedule("0 0 * * * *", async () => {
+      const task = cron.schedule("10 * * * *", async () => {
         console.log(user.email);
         try {
           axios
@@ -150,6 +149,8 @@ class TaskServiceClass {
   }
 
   async stopTask(userId, taskId) {
+    console.log(this.userTasks);
+
     if (this.userTasks.has(userId)) {
       const tasks = this.userTasks.get(userId);
       const task = tasks[taskId];
