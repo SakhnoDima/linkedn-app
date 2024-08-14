@@ -1,22 +1,22 @@
-import dbConnect from "@/app/lib/moongose-connect";
 import User from "@/app/lib/user-model";
 import { hash } from "bcrypt";
-import mongoose from "mongoose";
 import { NextResponse } from "next/server";
 
 export async function POST(req, res) {
-
   try {
     const { email, password } = await req.json();
 
     if (!email || !password) {
-        throw new Error("Password and email is required")
+      throw new Error("Password and email is required");
     }
-  
-    const existingUser = await User.findOne({email})
+
+    const existingUser = await User.findOne({ email });
 
     if (existingUser) {
-      return NextResponse.json({ error: `Email ${email} is already exist` },{ status:500 } );
+      return NextResponse.json(
+        { error: `Email ${email} is already exist` },
+        { status: 500 }
+      );
     }
 
     const hashPassword = await hash(password, 10);
@@ -25,10 +25,12 @@ export async function POST(req, res) {
       email,
       password: hashPassword,
     });
-    return NextResponse.json({ message: "User was saved", userId : newUser._id });
+    return NextResponse.json({
+      message: "User was saved",
+      userId: newUser._id,
+    });
   } catch (error) {
     console.log({ error });
-    return NextResponse.json({ error: error.message },{status:500});
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
-  
 }
