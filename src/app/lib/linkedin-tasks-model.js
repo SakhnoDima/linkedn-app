@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import dbConnect from "./moongose-connect";
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -71,6 +72,8 @@ const LinkedinCompletedTasksSchema = new mongoose.Schema({
     },
   },
 });
+
+await dbConnect();
 
 const LinkedinCompletedTasks =
   mongoose.models.LinkedinCompletedTasks ||

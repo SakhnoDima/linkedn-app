@@ -2,18 +2,17 @@ import Checkbox from "@/app/components/checkbox";
 import { Tooltip } from "@/app/components/tooltip";
 import { Field } from "formik";
 
-export const ClientHistory = ({ values, setFieldValue }) => {
+export const ClientInfo = ({ values, setFieldValue }) => {
   const hoursPerWeek = [
-    { name: 0, label: "No hires", value: true, name: "" },
-    { name: "1-9", label: "1 to 9 hires", value: true },
-    { name: "10-", label: "10+ hires", value: true },
+    { name: "all", label: "My previous clients", value: true },
+    { name: "1", label: "Payment verified", value: true },
   ];
 
   return (
     <div className="mb-4">
       <div className="flex space-x-2">
-        <p className="mb-2">10. Client History</p>
-        <Tooltip text={`Define Client history`} />
+        <p className="mb-2">11. Client info</p>
+        <Tooltip text={`Define Client info`} />
       </div>
 
       <div className="flex  flex-row gap-4 justify-around p-2">
@@ -25,13 +24,13 @@ export const ClientHistory = ({ values, setFieldValue }) => {
           >
             <Field
               id={item.label}
-              name={`searchFilters.clientHires.${item.name}`}
+              name={`searchFilters.clientInfo.${item.name}`}
               type="checkbox"
-              checked={values.searchFilters.clientHires[item.name]}
+              checked={values.searchFilters.clientInfo[item.name]}
               onChange={() =>
                 setFieldValue(
-                  `searchFilters.clientHires.${item.name}`,
-                  !values.searchFilters.clientHires[item.name]
+                  `searchFilters.clientInfo.${item.name}`,
+                  !values.searchFilters.clientInfo[item.name]
                 )
               }
               as={Checkbox}

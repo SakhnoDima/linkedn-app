@@ -1,4 +1,4 @@
-export class ErrorList {
+class ErrorList {
   constructor() {
     this.errors = [];
   }
@@ -24,3 +24,4 @@ export class ErrorList {
     return foundObject || false;
   }
 }
+export const errorList = new ErrorList();
