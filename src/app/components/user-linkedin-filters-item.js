@@ -24,102 +24,6 @@ const UserLinkedinFiltersItem = ({
     mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_SECRET_KEY, { debug: true });
   }, []);
 
-  // useEffect(() => {
-  //   let interval;
-  //   const checkStatus = async (targetId) => {
-  //     interval = setInterval(async () => {
-  //       try {
-  //         const response = await axios.get("/api/connections", {
-  //           params: {
-  //             targetId,
-  //           },
-  //         });
-
-  //         if (response.data.status === false) {
-  //           clearInterval(interval);
-  //           setIsLoading(null);
-  //           localStorage.removeItem("checkingStatus"); // remove from LS
-  //         } else {
-  //           console.log("Status is still false, continuing checks");
-  //         }
-  //       } catch (error) {
-  //         localStorage.removeItem("checkingStatus");
-  //         setIsLoading(null);
-  //         clearInterval(interval);
-  //         console.error("Error checking connection status:", error);
-  //         showToast(error?.response.data.message || "Server error", "error");
-  //       }
-  //     }, 10000);
-  //   };
-
-  //   const checkingStatus = JSON.parse(localStorage.getItem("checkingStatus"));
-  //   if (
-  //     checkingStatus &&
-  //     checkingStatus.targetId &&
-  //     checkingStatus.targetId === data._id
-  //   ) {
-  //     setIsLoading(checkingStatus.targetId);
-  //     checkStatus(checkingStatus.targetId);
-  //   }
-
-  //   return () => clearInterval(interval);
-  // }, []);
-
-  const handBotInit = async () => {
-    if (isLoading) return;
-    setIsLoading(data._id);
-
-    try {
-      const linkedinAuthorization = await axios.post(
-        "/api/connections",
-        {
-          data,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          timeout: 600000,
-        }
-      );
-      localStorage.setItem(
-        "checkingStatus",
-        JSON.stringify({ targetId: data._id })
-      );
-
-      showToast(linkedinAuthorization.data.message, "success");
-      mixpanel.track("start connections");
-
-      console.log(data._id);
-      const interval = setInterval(async () => {
-        try {
-          const response = await axios.get("/api/connections", {
-            params: {
-              targetId: data._id,
-            },
-          });
-
-          if (response.data.status === false) {
-            console.log("Status is true, stopping checks");
-            clearInterval(interval);
-            setIsLoading(null);
-            localStorage.removeItem("checkingStatus");
-          }
-        } catch (error) {
-          localStorage.removeItem("checkingStatus");
-          setIsLoading(null);
-          clearInterval(interval);
-          console.error("Error checking connection status:", error);
-          showToast(error?.response.data.message || "Server error", "error");
-        }
-      }, 10000);
-    } catch (error) {
-      console.log(error);
-      setIsLoading(null);
-      showToast(error?.response.data.message || "Server error", "error"); //! обробити
-    }
-  };
-
   const handleOnChange = (event) => {
     const checked = event.target.checked;
     checked
@@ -130,7 +34,6 @@ const UserLinkedinFiltersItem = ({
   };
 
   const handleChange = async (event) => {
-    console.log(isChecked);
     if (!isChecked) {
       console.log("Init");
       try {
