@@ -39,24 +39,30 @@ export const POST = async (req, res) => {
       coverLetterOptions,
     });
 
-    // const response = await axios.post(
-    //     'http://localhost:3001/upwork',
-    //     {
-    //         _id: _id,
-    //         userId: userId,
-    //         scannerName: scannerName,
-    //         autoBidding: autoBidding,
-    //         searchWords: searchWords,
-    //         searchFilters: searchFilters
-    //     },
-    // );
+    const response = await axios.post(
+        'http://localhost:3001/upwork',
+        {
+          _id: _id,
+          userId: userId,
+          scannerName,
+          autoBidding,
+          searchWords: transformQuery(
+              searchWords.includeWords,
+              searchWords.excludeWords
+          ),
+          searchFilters,
+          clientParameters,
+          biddingOptions,
+          coverLetterOptions,
+        },
+    );
 
-    // console.log(response.data);
+    console.log(response.data);
 
-    // return NextResponse.json(
-    //     { message: response.data },
-    //     { status: 200 }
-    // );
+    return NextResponse.json(
+        { message: response.data },
+        { status: 200 }
+    );
 
     return NextResponse.json({ message: "OK" }, { status: 200 });
   } catch (error) {
