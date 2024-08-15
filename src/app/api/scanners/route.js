@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import mongoose from "mongoose";
 import Scanners from "@/app/lib/up-work-scanners";
 
 export const GET = async (req, res) => {

@@ -29,43 +29,45 @@ export const POST = async (req, res) => {
       .split(" | ")
       .map((item) => item.trim());
 
-    console.log({
-      _id: _id,
-      userId: userId,
-      userEmail: user.email,
-      scannerName,
-      autoBidding,
-      searchWords: transformQuery(
-        searchWords.includeWords,
-        searchWords.excludeWords
-      ),
-      searchFilters,
-      clientParameters,
-      biddingOptions,
-      coverLetterOptions,
-    });
+    console.log("!!! START BID !!!");
 
-    const response = await axios.post("http://localhost:3001/upwork", {
-      _id: _id,
-      userId: userId,
-      userEmail: user.email,
-      scannerName,
-      autoBidding,
-      searchWords: transformQuery(
-        searchWords.includeWords,
-        searchWords.excludeWords
-      ),
-      searchFilters,
-      clientParameters,
-      biddingOptions,
-      coverLetterOptions,
-    });
+    // console.log({
+    //   _id: _id,
+    //   userId: userId,
+    //   userEmail: user.email,
+    //   scannerName,
+    //   autoBidding,
+    //   searchWords: transformQuery(
+    //     searchWords.includeWords,
+    //     searchWords.excludeWords
+    //   ),
+    //   searchFilters,
+    //   clientParameters,
+    //   biddingOptions,
+    //   coverLetterOptions,
+    // });
 
-    console.log(response.data);
+    // const response = await axios.post("http://localhost:3001/upwork", {
+    //   _id: _id,
+    //   userId: userId,
+    //   userEmail: user.email,
+    //   scannerName,
+    //   autoBidding,
+    //   searchWords: transformQuery(
+    //     searchWords.includeWords,
+    //     searchWords.excludeWords
+    //   ),
+    //   searchFilters,
+    //   clientParameters,
+    //   biddingOptions,
+    //   coverLetterOptions,
+    // });
 
-    return NextResponse.json({ message: response.data }, { status: 200 });
+    // console.log(response.data);
 
-    //return NextResponse.json({ message: "OK" }, { status: 200 });
+    // return NextResponse.json({ message: response.data }, { status: 200 });
+
+    return NextResponse.json({ message: "OK" }, { status: 200 });
   } catch (error) {
     console.log("Error at API:", error);
     return NextResponse.json(
@@ -74,40 +76,3 @@ export const POST = async (req, res) => {
     );
   }
 };
-
-// const Mixpanel = require("mixpanel");
-// const mixpanel = Mixpanel.init(process.env.MIXPANEL_TOKEN);
-// mixpanel.people.set(requestBody.email, {
-//   first_name: requestBody.email,
-//   unique_user_id: requestBody.email,
-// });
-// mixpanel.track(
-//   "CONNECT",
-//   {
-//     name_event: "CONNECT",
-//     distinct_id: requestBody.email,
-//     publisher: "LinkedIn",
-//     agency: "band-it.space",
-//     level_of_target: requestBody.levelOfTarget,
-//     target: requestBody.targetName,
-//     Time: await getTime(),
-//     sent_time: await getTime(),
-//     sender_username: requestBody.email,
-//     from_page_url: page.url(),
-//     cover_letter: message,
-//     filters_search: formattedFilters,
-//     keywords: requestBody.searchTags,
-//     recipient_username: userName,
-//     limit_invitations_sent_per_day: requestBody.totalLettersPerDay,
-//     total_invitation_sent: responseBody.totalInvitationSent,
-//     totalClicks: responseBody.totalClicks,
-//     unique_user_id: requestBody.email,
-//   },
-//   (err) => {
-//     if (err) {
-//       console.error("Error tracking event:", err);
-//     } else {
-//       console.log("Event tracked successfully");
-//     }
-//   }
-// );

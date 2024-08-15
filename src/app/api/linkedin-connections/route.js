@@ -3,7 +3,7 @@ import axios from "axios";
 import User from "@/app/lib/user-model";
 import LinkedinFilters from "@/app/lib/linkedin-filters-model";
 
-import { TaskService } from "../services/cron";
+import { TaskService } from "../services/linkedin-cron";
 
 export const POST = async (req, res) => {
   const { data } = await req.json();
