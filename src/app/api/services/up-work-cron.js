@@ -8,7 +8,7 @@ class CronUpWorkClass {
     this.userTasks = new Map();
   }
 
-  startScanner(userId, scannerData, userEmail) {
+  async startScanner(userId, scannerData, userEmail) {
     console.log("Before start Init", this.userTasks);
 
     if (!this.userTasks.has(userId)) {
@@ -17,9 +17,9 @@ class CronUpWorkClass {
     const tasks = this.userTasks.get(userId);
 
     if (!tasks[scannerData._id]) {
-      const task = cron.schedule("0 * * * *", async () => {
+      const task = cron.schedule("*/2 * * * *", async () => {
         try {
-          axios
+          await axios
             .post("http://localhost:3001/upwork", {
               _id: scannerData._id,
               userId: scannerData.userId,
@@ -49,7 +49,7 @@ class CronUpWorkClass {
               biddingOptions: scannerData.biddingOptions,
               coverLetterOptions: scannerData.biddingOptions,
             })
-            .then((res) => console.log(11));
+            .then((res) => console.log(res));
         } catch (error) {
           console.log(error);
         }
