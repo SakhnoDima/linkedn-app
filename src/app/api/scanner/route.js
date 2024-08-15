@@ -17,12 +17,13 @@ export const POST = async (req, res) => {
       return NextResponse.json({ message: "Server error" }, { status: 500 });
     }
     const user = await User.findById({ _id: userId });
+
     if (scannerData.autoBidding) {
       CronUpWork.startScanner(userId, newScanner, user.email);
     }
 
     return NextResponse.json(
-      { message: "Add filters", scanner: newScanner },
+      { message: "Scanner was saved successful", scanner: newScanner },
       { status: 200 }
     );
   } catch (error) {

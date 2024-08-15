@@ -1,8 +1,6 @@
 import cron from "node-cron";
 import { errorList } from "./errors";
-import LinkedinFilters from "@/app/lib/linkedin-filters-model";
 import axios from "axios";
-import LinkedinCompletedTasks from "@/app/lib/linkedin-tasks-model";
 import { transformQuery } from "../helpers";
 
 class CronUpWorkClass {
@@ -19,7 +17,7 @@ class CronUpWorkClass {
     const tasks = this.userTasks.get(userId);
 
     if (!tasks[scannerData._id]) {
-      const task = cron.schedule("*/5 * * * *", async () => {
+      const task = cron.schedule("0 * * * *", async () => {
         try {
           axios
             .post("http://localhost:3001/upwork", {
