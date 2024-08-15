@@ -64,7 +64,7 @@ class TaskServiceClass {
             .post(
               "https://6ejajjistb.execute-api.eu-north-1.amazonaws.com/default/lambda-create-task",
               {
-                id: data.userId,
+                id: id,
                 levelOfTarget: 1,
                 searchTags: data.keyWords,
                 searchFilters,
