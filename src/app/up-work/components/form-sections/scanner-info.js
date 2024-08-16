@@ -1,6 +1,7 @@
 import React from "react";
 import FormicInput from "../ui/formik-input";
 import FormikToggle from "../ui/formik-toggle";
+import { SetBiddingOptions } from "./set-time";
 
 export const ScannerInfo = ({ values, handleChange }) => {
   const filtersInputs = {
@@ -14,13 +15,8 @@ export const ScannerInfo = ({ values, handleChange }) => {
     <>
       <div>
         <FormicInput data={filtersInputs} />
-        <div className="w-[200px] mt-4">
-          <FormikToggle
-            labelText="Auto Bidding"
-            values={values}
-            handleChange={handleChange}
-          />
-        </div>
+
+        <SetBiddingOptions values={values} handleChange={handleChange} />
       </div>
     </>
   );

@@ -16,11 +16,20 @@ class CronUpWorkClass {
     }
     const tasks = this.userTasks.get(userId);
 
+    const min = scannerData.cronTime.min ? scannerData.cronTime.min : "0";
+    const hour = scannerData.cronTime.hour ? scannerData.cronTime.hour : "0";
+
+    const time =
+      !scannerData.cronTime.min && !scannerData.cronTime.hour
+        ? "0 * * * *"
+        : `${min} ${hour} * * *`;
+    console.log("Time", time);
+
     if (!tasks[scannerData._id]) {
-      const task = cron.schedule("*/2 * * * *", async () => {
+      const task = cron.schedule(time, async () => {
         try {
           await axios
-            .post("http://localhost:3001/upwork", {
+            .post("http://localhost:8080/upwork", {
               _id: scannerData._id,
               userId: scannerData.userId,
               userEmail: userEmail,
@@ -51,7 +60,7 @@ class CronUpWorkClass {
             })
             .then((res) => console.log(res));
         } catch (error) {
-          console.log(error);
+          console.log("Error in init cron", error);
         }
       });
       tasks[scannerData._id] = task;

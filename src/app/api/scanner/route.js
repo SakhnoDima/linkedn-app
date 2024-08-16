@@ -6,6 +6,7 @@ import User from "@/app/lib/user-model";
 
 export const POST = async (req, res) => {
   const { scannerData, userId } = await req.json();
+  console.log(scannerData);
 
   try {
     const newScanner = await Scanners.create({
@@ -53,7 +54,7 @@ export const GET = async (req, res) => {
 
 export const PUT = async (req, res) => {
   const { scannerData, scannerId } = await req.json();
-  console.log({ scannerData, scannerId });
+
   try {
     const updatedScanner = await Scanners.findByIdAndUpdate(
       {
@@ -72,7 +73,12 @@ export const PUT = async (req, res) => {
     const user = await User.findById({ _id: updatedScanner.userId });
 
     if (scannerData.autoBidding) {
-      CronUpWork.startScanner(
+      await CronUpWork.stopScanner(
+        updatedScanner.userId.toString(),
+        updatedScanner._id
+      );
+
+      await CronUpWork.startScanner(
         updatedScanner.userId.toString(),
         updatedScanner,
         user.email
@@ -85,7 +91,7 @@ export const PUT = async (req, res) => {
     }
 
     return NextResponse.json(
-      { message: "Add filters", filter: updatedScanner },
+      { message: "Scanner was saved successful", filter: updatedScanner },
       { status: 200 }
     );
   } catch (error) {

@@ -31,6 +31,16 @@ import { useRouter } from "next/navigation";
 
 const validationSchema = Yup.object({
   scannerName: Yup.string().required("Required*"),
+  cronTime: Yup.object().shape({
+    min: Yup.number()
+      .min(0, "Time cannot be negative")
+      .max(59, "Maximum 59 minutes")
+      .nullable(),
+    hour: Yup.number()
+      .min(0, "Time cannot be negative")
+      .max(23, "Maximum 23 hour")
+      .nullable(),
+  }),
   autoBidding: Yup.boolean(),
   searchWords: Yup.object().shape({
     includeWords: Yup.string().max(200, "Must be 200 symbols maximum"),
@@ -101,6 +111,10 @@ const validationSchema = Yup.object({
 
 const initialValues = {
   scannerName: "",
+  cronTime: {
+    min: null,
+    hour: null,
+  },
   autoBidding: false,
   searchWords: {
     includeWords: "",

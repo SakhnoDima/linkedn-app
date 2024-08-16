@@ -75,7 +75,7 @@ export const JobType = ({ values, setFieldValue }) => {
                 name="searchFilters.jobType.hourlyJobType.min"
                 type="number"
                 placeholder="Min"
-                className="w-[158px] py-[4px] pl-[22px]"
+                className="w-[158px] py-[4px] pl-[22px] border-[2px] border-gray-300 p-2 rounded"
                 value={values.searchFilters.jobType.hourlyJobType.min || ""}
               />
               <ErrorMessage
@@ -91,7 +91,7 @@ export const JobType = ({ values, setFieldValue }) => {
                 name="searchFilters.jobType.hourlyJobType.max"
                 type="number"
                 placeholder="Max"
-                className="w-[158px] py-[4px] pl-[22px]"
+                className="w-[158px] py-[4px] pl-[22px] border-[2px] border-gray-300 p-2 rounded"
                 value={values.searchFilters.jobType.hourlyJobType.max || ""}
               />
               <ErrorMessage
@@ -134,7 +134,7 @@ export const JobType = ({ values, setFieldValue }) => {
                 name="searchFilters.jobType.fixedJobType.min"
                 type="number"
                 placeholder="Min"
-                className="w-[158px] py-[4px] pl-[22px]"
+                className="w-[158px] py-[4px] pl-[22px] border-[2px] border-gray-300 p-2 rounded"
                 value={values.searchFilters.jobType.fixedJobType.min || ""}
               />
               <p>/hr</p>
@@ -145,7 +145,7 @@ export const JobType = ({ values, setFieldValue }) => {
                 name="searchFilters.jobType.fixedJobType.max"
                 type="number"
                 placeholder="Max"
-                className="w-[158px] py-[4px] pl-[22px]"
+                className="w-[158px] py-[4px] pl-[22px] border-[2px] border-gray-300 p-2 rounded"
                 value={values.searchFilters.jobType.fixedJobType.max || ""}
               />
               <p>/hr</p>

@@ -23,7 +23,7 @@ export const MinAvgHourlyRate = ({ values }) => {
             name="clientParameters.minAvgHourlyRatePaid"
             type="number"
             placeholder="Min"
-            className="w-[158px] py-[4px] pl-[22px]"
+            className="w-[158px] py-[4px] pl-[22px] border-[2px] border-gray-300 p-2 rounded"
             value={values.clientParameters.minAvgHourlyRatePaid || ""}
           />
           <ErrorMessage
@@ -39,7 +39,7 @@ export const MinAvgHourlyRate = ({ values }) => {
             name="clientParameters.maxAvgHourlyRatePaid"
             type="number"
             placeholder="Max"
-            className="w-[158px] py-[4px] pl-[22px]"
+            className="w-[158px] py-[4px] pl-[22px] border-[2px] border-gray-300 p-2 rounded"
             value={values.clientParameters.maxAvgHourlyRatePaid || ""}
           />
           <ErrorMessage
