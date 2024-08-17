@@ -84,7 +84,12 @@ const UserLinkedinFiltersItem = ({
   return (
     <tr>
       <td>
-        <input type="checkbox" className="checkbox" onChange={handleOnChange} />
+        <input
+          type="checkbox"
+          className="checkbox"
+          disabled={isChecked}
+          onChange={handleOnChange}
+        />
       </td>
       <td>{data.targetName}</td>
       <td>{data.connections}</td>

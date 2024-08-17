@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
 import mongoose from "mongoose";
 import Scanners from "@/app/lib/up-work-scanners";
+import { CronUpWork } from "../services/up-work-cron";
+import User from "@/app/lib/user-model";
 
 export const POST = async (req, res) => {
   const { scannerData, userId } = await req.json();
+  console.log(scannerData);
 
   try {
     const newScanner = await Scanners.create({
@@ -11,8 +14,17 @@ export const POST = async (req, res) => {
       userId: new mongoose.Types.ObjectId(userId),
     });
 
+    if (!newScanner) {
+      return NextResponse.json({ message: "Server error" }, { status: 500 });
+    }
+    const user = await User.findById({ _id: userId });
+
+    if (scannerData.autoBidding) {
+      CronUpWork.startScanner(userId, newScanner, user.email);
+    }
+
     return NextResponse.json(
-      { message: "Add filters", scanner: newScanner },
+      { message: "Scanner was saved successful", scanner: newScanner },
       { status: 200 }
     );
   } catch (error) {
@@ -42,9 +54,9 @@ export const GET = async (req, res) => {
 
 export const PUT = async (req, res) => {
   const { scannerData, scannerId } = await req.json();
-  console.log({ scannerData, scannerId });
+
   try {
-    const updatedField = await Scanners.findByIdAndUpdate(
+    const updatedScanner = await Scanners.findByIdAndUpdate(
       {
         _id: scannerId,
       },
@@ -54,8 +66,32 @@ export const PUT = async (req, res) => {
       { new: true }
     );
 
+    if (!updatedScanner) {
+      return NextResponse.json({ message: "Server error" }, { status: 500 });
+    }
+
+    const user = await User.findById({ _id: updatedScanner.userId });
+
+    if (scannerData.autoBidding) {
+      await CronUpWork.stopScanner(
+        updatedScanner.userId.toString(),
+        updatedScanner._id
+      );
+
+      await CronUpWork.startScanner(
+        updatedScanner.userId.toString(),
+        updatedScanner,
+        user.email
+      );
+    } else {
+      await CronUpWork.stopScanner(
+        updatedScanner.userId.toString(),
+        updatedScanner._id
+      );
+    }
+
     return NextResponse.json(
-      { message: "Add filters", filter: updatedField },
+      { message: "Scanner was saved successful", filter: updatedScanner },
       { status: 200 }
     );
   } catch (error) {
@@ -72,6 +108,10 @@ export const DELETE = async (req, res) => {
     }
 
     const deletedScanner = await Scanners.findByIdAndDelete(scannerId);
+
+    if (deletedScanner.autoBidding) {
+      await CronUpWork.stopScanner(deletedScanner.userId, deletedScanner._id);
+    }
 
     if (!deletedScanner) {
       throw new Error("Some items were not deleted. Please try again.");

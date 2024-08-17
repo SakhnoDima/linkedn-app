@@ -57,14 +57,14 @@ class TaskServiceClass {
     const tasks = this.userTasks.get(data.userId);
 
     if (!tasks[id]) {
-      const task = cron.schedule("0 11 * * *", async () => {
-        console.log(user.email);
+      const task = cron.schedule("09 15 * * *", async () => {
         try {
           axios
             .post(
               "https://6ejajjistb.execute-api.eu-north-1.amazonaws.com/default/lambda-create-task",
               {
                 id: data.userId,
+                taskId: id,
                 levelOfTarget: 1,
                 searchTags: data.keyWords,
                 searchFilters,
