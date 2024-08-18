@@ -7,6 +7,13 @@ const LinkedinFiltersSchema = new mongoose.Schema({
     ref: "users_collection",
     required: true,
   },
+  autoBidding: {
+    type: Boolean,
+  },
+  cronTime: {
+    min: { type: Number, default: false },
+    hour: { type: Number, default: false },
+  },
   targetName: {
     type: String,
     required: [true, "Pleas provide Name of this targets"],

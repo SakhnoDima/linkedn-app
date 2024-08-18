@@ -3,6 +3,7 @@ import { errorList } from "./errors";
 import LinkedinFilters from "@/app/lib/linkedin-filters-model";
 import axios from "axios";
 import LinkedinCompletedTasks from "@/app/lib/linkedin-tasks-model";
+import { timeCreator } from "../helpers";
 
 async function checkTaskStatus(taskId) {
   let isLinkedinAuth = false;
@@ -51,13 +52,15 @@ class TaskServiceClass {
   startTask(id, data, user, searchFilters) {
     console.log("Before start Init", this.userTasks);
 
-    if (!this.userTasks.has(data.userId)) {
-      this.userTasks.set(data.userId, {});
+    const time = timeCreator(data.cronTime.min, data.cronTime.hour);
+
+    if (!this.userTasks.has(data.userId.toString())) {
+      this.userTasks.set(data.userId.toString(), {});
     }
-    const tasks = this.userTasks.get(data.userId);
+    const tasks = this.userTasks.get(data.userId.toString());
 
     if (!tasks[id]) {
-      const task = cron.schedule("09 15 * * *", async () => {
+      const task = cron.schedule(time, async () => {
         try {
           axios
             .post(
@@ -159,19 +162,6 @@ class TaskServiceClass {
         delete tasks[taskId];
         console.log(`Cron task ${taskId} stopped`);
         console.log("After del", this.userTasks);
-        await LinkedinFilters.findByIdAndUpdate(
-          { _id: taskId },
-          {
-            status: false,
-          },
-          { new: true }
-        )
-          .then((updateRes) => {
-            console.log("Database updated successfully:", updateRes);
-          })
-          .catch((err) => {
-            console.error("Error updating database:", err);
-          });
       } else {
         console.log(`Task ${taskId} for user ${userId} is not running`);
       }
