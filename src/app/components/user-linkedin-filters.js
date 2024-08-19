@@ -11,7 +11,6 @@ const UsersLinkedinFilters = () => {
   const showToast = useToastContext();
   const [filters, setFilters] = useState([]);
   const [currentTarget, setCurrentTarget] = useState([]);
-  const [isLoading, setIsLoading] = useState(null);
 
   useEffect(() => {
     const fetchLinkedinFilters = async () => {
@@ -66,7 +65,6 @@ const UsersLinkedinFilters = () => {
             <th>Industry</th>
             <th>Language</th>
             <th>Categories</th>
-            <th>Send Connections</th>
             <th>Status</th>
           </tr>
         </thead>
@@ -77,8 +75,6 @@ const UsersLinkedinFilters = () => {
                 key={data._id}
                 data={data}
                 setCurrentTarget={setCurrentTarget}
-                isLoading={isLoading}
-                setIsLoading={setIsLoading}
               />
             ))
           ) : (

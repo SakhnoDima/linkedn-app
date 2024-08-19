@@ -11,6 +11,9 @@ import Button from "./button";
 
 import mixpanel from "mixpanel-browser";
 import { useEffect } from "react";
+import FormikToggle from "../up-work/components/ui/formik-toggle";
+import { FormicInputNumber } from "../up-work/components/ui/formic-input-number";
+import { Tooltip } from "./tooltip";
 
 const filtersInputs = [
   {
@@ -70,6 +73,17 @@ const filtersInputs = [
 ];
 
 const validationSchema = Yup.object({
+  cronTime: Yup.object().shape({
+    min: Yup.number()
+      .min(0, "Time cannot be negative")
+      .max(59, "Maximum 59 minutes")
+      .nullable(),
+    hour: Yup.number()
+      .min(0, "Time cannot be negative")
+      .max(23, "Maximum 23 hour")
+      .nullable(),
+  }),
+  autoBidding: Yup.boolean(),
   targetName: Yup.string().required("Required*"),
   connections: Yup.number().required("Required*"),
   keyWords: Yup.string().required("Required*"),
@@ -82,11 +96,16 @@ const languageOptions = [
   { value: "de", label: "German" },
 ];
 
-const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
+const ConnectionForm = ({ currentTarget, handler }) => {
   const { data: session } = useSession();
   const { closeModal } = useModalContext();
 
   const initialValues = {
+    cronTime: {
+      min: currentTarget.cronTime?.min || null,
+      hour: currentTarget.cronTime?.hour || null,
+    },
+    autoBidding: currentTarget.autoBidding || false,
     targetName: currentTarget.targetName || "",
     connections: currentTarget.connections || "",
     keyWords: currentTarget.keyWords || "",
@@ -114,6 +133,8 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
           handler(
             {
               status: false,
+              cronTime: values.cronTime,
+              autoBidding: values.autoBidding,
               targetName: values.targetName,
               connections: values.connections,
               keyWords: values.keyWords,
@@ -144,9 +165,9 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
           console.log("create new target");
         }}
       >
-        {({ isSubmitting }) => (
+        {({ isSubmitting, values, handleChange }) => (
           <Form className="flex flex-col space-y-4 p-4 pl-6 overflow-y-auto pt-[32px]">
-            <div className="flex flex-col center gap-[30px] mx-auto justify-center items-center w-min">
+            <div className="flex flex-col center gap-[30px] mx-auto mb-8 justify-center items-center w-min">
               {filtersInputs.map((data, index) => (
                 <>
                   <label
@@ -180,7 +201,7 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
                   )}
                 </>
               ))}
-              <label className="flex flex-col mx-auto">
+              <label key="language" className="flex flex-col mx-auto">
                 <div className="flex items-center space-x-2">
                   <span>8. Add profile language</span>
                   <div
@@ -231,6 +252,43 @@ const ConnectionForm = ({ setFilters, currentTarget, handler }) => {
                   className="text-red-500"
                 />
               </label>
+              <div key="time">
+                <div className="flex space-x-2 items-center mb-2">
+                  <p>Start time options</p>
+                  <Tooltip
+                    text={`If you don't specify a time, the scanner will start every hour at 0 minutes (e.g., 00:00, etc.). If you only specify the hour, the scanner will start daily at the hour you set (e.g., at 14:00 every day).If you only specify the minutes, the scanner will start every hour at the minutes you set (e.g., at 00:15, ).`}
+                  />
+                </div>
+
+                <div className="flex justify-around flex-row gap-4 py-4 ">
+                  <FormikToggle
+                    className="flex gap-2"
+                    values={values.autoBidding}
+                    handleChange={handleChange}
+                  >
+                    {values.autoBidding ? <span>ON</span> : <span>OFF</span>}
+                  </FormikToggle>
+
+                  <FormicInputNumber
+                    name="cronTime.min"
+                    placeholder="Minutes"
+                    value={values.cronTime.min}
+                    errorClassName="left-0 top-[-18px]"
+                  >
+                    <p>Minutes</p>
+                  </FormicInputNumber>
+
+                  <FormicInputNumber
+                    key="time-options-hour"
+                    name="cronTime.hour"
+                    placeholder="Hours"
+                    value={values.cronTime.hour}
+                    errorClassName="left-0 top-[-18px]"
+                  >
+                    <p>Hours</p>
+                  </FormicInputNumber>
+                </div>
+              </div>
             </div>
 
             <Button

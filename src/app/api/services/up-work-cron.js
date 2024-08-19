@@ -1,7 +1,7 @@
 import cron from "node-cron";
 import { errorList } from "./errors";
 import axios from "axios";
-import { transformQuery } from "../helpers";
+import { timeCreator, transformQuery } from "../helpers";
 
 class CronUpWorkClass {
   constructor() {
@@ -16,13 +16,10 @@ class CronUpWorkClass {
     }
     const tasks = this.userTasks.get(userId);
 
-    const min = scannerData.cronTime.min ? scannerData.cronTime.min : "0";
-    const hour = scannerData.cronTime.hour ? scannerData.cronTime.hour : "0";
-
-    const time =
-      !scannerData.cronTime.min && !scannerData.cronTime.hour
-        ? "0 * * * *"
-        : `${min} ${hour} * * *`;
+    const time = timeCreator(
+      scannerData.cronTime.min,
+      scannerData.cronTime.hour
+    );
     console.log("Time", time);
 
     if (!tasks[scannerData._id]) {
