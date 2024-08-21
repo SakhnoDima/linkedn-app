@@ -26,9 +26,9 @@ class CronUpWorkClass {
       const task = cron.schedule(time, async () => {
         try {
           await axios
-            .post("http://localhost:8080/upwork", {
-              _id: scannerData._id,
-              userId: scannerData.userId,
+            .post("https://65pic01jzc.execute-api.eu-north-1.amazonaws.com/default/upwork-crawler", {
+              id: "lambda-upwork-test",//scannerData._id,
+              taskId: "lambda-upwork-test",//scannerData.userId,
               userEmail: userEmail,
               scannerName: scannerData.scannerName,
               autoBidding: scannerData.autoBidding,
