@@ -61,6 +61,9 @@ export const POST = async (req, res) => {
       { status: 400 }
     );
   }
+
+  await errorList.removeError(userId);
+
   try {
     axios
       .post(
