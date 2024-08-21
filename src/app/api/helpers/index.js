@@ -37,7 +37,7 @@ export const timeCreator = (minutes, hours) => {
   const min = minutes ? minutes : "*";
   const hour = hours ? hours : "*";
 
-  const [UTC0Hour, UTC0Min] = getUTC0Time(hour, min)
+  const [UTC0Hour, UTC0Min] = getUTC0Time(hour, min);
 
   if (!minutes && !hours) {
     return "0 * * * *";
@@ -51,14 +51,14 @@ export const timeCreator = (minutes, hours) => {
 const getUTC0Time = (hour, min) => {
   let localDate = new Date();
 
-  localDate.setHours((hour === '*') ? 0 : hour);
-  localDate.setMinutes((min === '*') ? 0 : min);
+  localDate.setHours(hour === "*" ? 0 : hour);
+  localDate.setMinutes(min === "*" ? 0 : min);
   localDate.setSeconds(0);
 
   let UTC0Date = new Date(localDate.toUTCString());
 
-  let UTC0Hour = UTC0Date.getUTCHours();
-  let UTC0Min = UTC0Date.getUTCMinutes();
+  let UTC0Hour = hour === "*" ? "*" : UTC0Date.getUTCHours();
+  let UTC0Min = min === "*" ? "*" : UTC0Date.getUTCMinutes();
 
-  return [(UTC0Hour === 0) ? '*': UTC0Hour , (UTC0Min === 0) ? '*': UTC0Min]
-}
+  return [UTC0Hour, UTC0Min];
+};
