@@ -53,7 +53,6 @@ class TaskServiceClass {
     console.log("Before start Init", this.userTasks);
 
     const time = timeCreator(data.cronTime.min, data.cronTime.hour);
-    console.log(time);
 
     if (!this.userTasks.has(data.userId.toString())) {
       this.userTasks.set(data.userId.toString(), {});
