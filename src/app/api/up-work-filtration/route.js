@@ -47,23 +47,23 @@ export const POST = async (req, res) => {
     //   coverLetterOptions,
     // });
 
-    // const response = await axios.post("http://localhost:3001/upwork", {
-    //   _id: _id,
-    //   userId: userId,
-    //   userEmail: user.email,
-    //   scannerName,
-    //   autoBidding,
-    //   searchWords: transformQuery(
-    //     searchWords.includeWords,
-    //     searchWords.excludeWords
-    //   ),
-    //   searchFilters,
-    //   clientParameters,
-    //   biddingOptions,
-    //   coverLetterOptions,
-    // });
+    const response = await axios.post("http://localhost:8080/upwork", {
+      _id: _id,
+      userId: userId,
+      userEmail: user.email,
+      scannerName,
+      autoBidding,
+      searchWords: transformQuery(
+        searchWords.includeWords,
+        searchWords.excludeWords
+      ),
+      searchFilters,
+      clientParameters,
+      biddingOptions,
+      coverLetterOptions,
+    });
 
-    // console.log(response.data);
+    console.log(response.data);
 
     // return NextResponse.json({ message: response.data }, { status: 200 });
 
