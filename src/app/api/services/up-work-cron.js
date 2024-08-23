@@ -25,36 +25,41 @@ class CronUpWorkClass {
     if (!tasks[scannerData._id]) {
       const task = cron.schedule(time, async () => {
         try {
+          console.log("START");
           await axios
-            .post("https://65pic01jzc.execute-api.eu-north-1.amazonaws.com/default/upwork-crawler", {
-              id: "lambda-upwork-test",//scannerData._id,
-              taskId: "lambda-upwork-test",//scannerData.userId,
-              userEmail: userEmail,
-              scannerName: scannerData.scannerName,
-              autoBidding: scannerData.autoBidding,
-              searchWords: transformQuery(
-                scannerData.searchWords.includeWords,
-                scannerData.searchWords.excludeWords
-              ),
-              searchFilters: {
-                ...scannerData.searchFilters,
-                category:
-                  scannerData.searchFilters.category.length > 0
-                    ? scannerData.searchFilters.category
-                        .split(" | ")
-                        .map((item) => item.trim())
-                    : null,
-                clientLocation:
-                  scannerData.searchFilters.clientLocation.length > 0
-                    ? scannerData.searchFilters.clientLocation
-                        .split(" | ")
-                        .map((item) => item.trim())
-                    : null,
-              },
-              clientParameters: scannerData.clientParameters,
-              biddingOptions: scannerData.biddingOptions,
-              coverLetterOptions: scannerData.biddingOptions,
-            })
+            .post(
+              "https://6ejajjistb.execute-api.eu-north-1.amazonaws.com/default/lambda-create-task",
+              {
+                key: "upWork",
+                id: scannerData.userId,
+                taskId: scannerData._id,
+                userEmail: userEmail,
+                scannerName: scannerData.scannerName,
+                autoBidding: scannerData.autoBidding,
+                searchWords: transformQuery(
+                  scannerData.searchWords.includeWords,
+                  scannerData.searchWords.excludeWords
+                ),
+                searchFilters: {
+                  ...scannerData.searchFilters,
+                  category:
+                    scannerData.searchFilters.category.length > 0
+                      ? scannerData.searchFilters.category
+                          .split(" | ")
+                          .map((item) => item.trim())
+                      : null,
+                  clientLocation:
+                    scannerData.searchFilters.clientLocation.length > 0
+                      ? scannerData.searchFilters.clientLocation
+                          .split(" | ")
+                          .map((item) => item.trim())
+                      : null,
+                },
+                clientParameters: scannerData.clientParameters,
+                biddingOptions: scannerData.biddingOptions,
+                coverLetterOptions: scannerData.biddingOptions,
+              }
+            )
             .then((res) => console.log(res));
         } catch (error) {
           console.log("Error in init cron", error);
