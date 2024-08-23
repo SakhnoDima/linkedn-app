@@ -50,18 +50,23 @@ export const timeCreator = (minutes, hours) => {
 
 const getUTC0Time = (hour, min) => {
   let localDate = new Date();
-
+  console.log("local", localDate);
   localDate.setHours(hour === "*" ? 0 : hour);
   localDate.setMinutes(min === "*" ? 0 : min);
   localDate.setSeconds(0);
-  console.log("local", localDate);
-  let UTC0Date = new Date(localDate.toUTCString());
 
-  console.log("UTC0Date hour", UTC0Date.getUTCHours());
-  console.log("UTC0Date min", UTC0Date.getUTCMinutes());
+  // Получаем смещение временной зоны сервера относительно UTC в минутах
+  let timezoneOffset = localDate.getTimezoneOffset();
+  console.log("timezoneOffset", timezoneOffset);
 
-  let UTC0Hour = hour === "*" ? "*" : UTC0Date.getUTCHours();
-  let UTC0Min = min === "*" ? "*" : UTC0Date.getUTCMinutes();
+  // Корректируем время с учетом смещения
+  localDate.setMinutes(localDate.getMinutes() - timezoneOffset);
+
+  // Получаем часы и минуты в UTC
+  let UTC0Hour = hour === "*" ? "*" : localDate.getUTCHours();
+  let UTC0Min = min === "*" ? "*" : localDate.getUTCMinutes();
+  console.log("UTC0Hour", UTC0Hour);
+  console.log("UTC0Min", UTC0Min);
 
   return [UTC0Hour, UTC0Min];
 };
