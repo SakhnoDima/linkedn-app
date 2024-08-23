@@ -42,11 +42,9 @@ export const timeCreator = (minutes, hours) => {
   if (!minutes && !hours) {
     return "0 * * * *";
   } else if (!minutes && hours) {
-    return `0 ${process.env.NEXT_PUBLIC_PRODUCTION ? hour : UTC0Hour} * * *`;
+    return `0 ${UTC0Hour} * * *`;
   } else {
-    return `${process.env.NEXT_PUBLIC_PRODUCTION ? min : UTC0Min} ${
-      process.env.NEXT_PUBLIC_PRODUCTION ? hour : UTC0Hour
-    } * * *`;
+    return `${UTC0Min} ${UTC0Hour} * * *`;
   }
 };
 
