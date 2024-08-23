@@ -61,7 +61,7 @@ const getUTC0Time = (hour, min) => {
 
   // Корректируем время с учетом смещения
   localDate.setMinutes(localDate.getMinutes() - timezoneOffset);
-
+  console.log("new time", localDate.getMinutes() - timezoneOffset);
   // Получаем часы и минуты в UTC
   let UTC0Hour = hour === "*" ? "*" : localDate.getUTCHours();
   let UTC0Min = min === "*" ? "*" : localDate.getUTCMinutes();
