@@ -1,7 +1,7 @@
 "use client";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
-
+import { redirect } from "next/navigation";
 import UpWorkLogin from "./components/up-work-login";
 import ScannersForm from "./components/scanner-form";
 import { ScannersList } from "./components/scanners-list";
@@ -9,6 +9,10 @@ import { ScannersList } from "./components/scanners-list";
 const page = () => {
   const { data: session } = useSession();
   const [scanners, setScanners] = useState([]);
+
+  if (!session) {
+    redirect("/");
+  }
 
   return (
     <div className="flex flex-row">

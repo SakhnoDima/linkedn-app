@@ -16,11 +16,7 @@ const NavBar = () => {
 
   return (
     <div className="navbar bg-base-100 flex-col justify-center">
-      <Link className={linkStyle("/")} href="/">
-        Home
-      </Link>
-
-      {!!session && (
+      {!!session ? (
         <>
           <Link className={linkStyle("/up-work")} href="/up-work">
             UpWork
@@ -38,6 +34,10 @@ const NavBar = () => {
             Account
           </Link>
         </>
+      ) : (
+        <Link className={linkStyle("/")} href="/">
+          Home
+        </Link>
       )}
     </div>
   );
