@@ -11,7 +11,7 @@ class ErrorList {
       this.errors[index].message = message;
     }
   }
-  removeError(id) {
+  async removeError(id) {
     const index = this.errors.findIndex((obj) => obj.id === id);
 
     if (index !== -1) {

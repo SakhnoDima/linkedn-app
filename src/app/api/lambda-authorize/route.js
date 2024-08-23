@@ -62,6 +62,8 @@ export const POST = async (req, res) => {
     );
   }
 
+  await errorList.removeError(userId);
+
   try {
     axios
       .post(
