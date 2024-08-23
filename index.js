@@ -54,11 +54,8 @@ const getUTC0Time = (hour, min) => {
   localDate.setHours(hour === "*" ? 0 : hour);
   localDate.setMinutes(min === "*" ? 0 : min);
   localDate.setSeconds(0);
-  console.log("local", localDate);
-  let UTC0Date = new Date(localDate.toUTCString());
 
-  console.log("UTC0Date hour", UTC0Date.getUTCHours());
-  console.log("UTC0Date min", UTC0Date.getUTCMinutes());
+  let UTC0Date = new Date(localDate.toUTCString());
 
   let UTC0Hour = hour === "*" ? "*" : UTC0Date.getUTCHours();
   let UTC0Min = min === "*" ? "*" : UTC0Date.getUTCMinutes();
