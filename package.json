@@ -17,6 +17,7 @@
     "formik": "^2.4.6",
     "framer-motion": "^11.3.8",
     "mixpanel-browser": "^2.53.0",
+    "moment-timezone": "^0.5.45",
     "mongodb": "^6.8.0",
     "mongoose": "^8.4.5",
     "next": "14.2.4",

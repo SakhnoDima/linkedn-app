@@ -47,7 +47,7 @@ export const POST = async (req, res) => {
     //   coverLetterOptions,
     // });
 
-    const response = await axios.post("http://localhost:8080/upwork", {
+    const response = await axios.post("http://localhost:3001/upwork", {
       _id: _id,
       userId: userId,
       userEmail: user.email,
