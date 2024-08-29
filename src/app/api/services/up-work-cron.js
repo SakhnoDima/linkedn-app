@@ -66,6 +66,8 @@ class CronUpWorkClass {
               const taskId = createTaskResponse.data.taskId;
               console.log("Task started with ID:", taskId);
             });
+
+          //TODO bot req init
         } catch (error) {
           console.log("Error in init cron", error);
         }
