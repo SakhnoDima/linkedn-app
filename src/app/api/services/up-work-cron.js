@@ -15,10 +15,12 @@ class CronUpWorkClass {
       this.userTasks.set(userId, {});
     }
     const tasks = this.userTasks.get(userId);
+    console.log("Scanner data", scannerData);
 
     const time = timeCreator(
       scannerData.cronTime.min,
-      scannerData.cronTime.hour
+      scannerData.cronTime.hour,
+      scannerData.cronTime.timeZone
     );
     console.log("Time", time);
 
@@ -60,7 +62,10 @@ class CronUpWorkClass {
                 coverLetterOptions: scannerData.biddingOptions,
               }
             )
-            .then((res) => console.log(res));
+            .then((createTaskResponse) => {
+              const taskId = createTaskResponse.data.taskId;
+              console.log("Task started with ID:", taskId);
+            });
         } catch (error) {
           console.log("Error in init cron", error);
         }

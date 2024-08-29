@@ -71,7 +71,19 @@ const Page = ({ params }) => {
       console.log("Error at page:", error);
     }
   };
+  const handInfo = async () => {
+    try {
+      const res = await axios.get("/api/up-work-filtration", {
+        params: {
+          userId: scanner.userId,
+        },
+      });
 
+      console.log("Res", res);
+    } catch (error) {
+      console.log("Error at page:", error);
+    }
+  };
   return (
     <div>
       <GoBack href="/up-work">
@@ -97,6 +109,13 @@ const Page = ({ params }) => {
         className="mx-auto w-[50px] bg-indigo-600 hover:bg-indigo-800 rounded-[10px] text-white p-2"
       >
         <p>Start</p>
+      </Button>
+      <Button
+        onClick={handInfo}
+        type="submit"
+        className="mx-auto w-[50px] bg-indigo-600 hover:bg-indigo-800 rounded-[10px] text-white p-2"
+      >
+        <p>Info</p>
       </Button>
     </div>
   );

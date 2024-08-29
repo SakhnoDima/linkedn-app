@@ -52,7 +52,11 @@ class TaskServiceClass {
   startTask(id, data, user, searchFilters) {
     console.log("Before start Init", this.userTasks);
 
-    const time = timeCreator(data.cronTime.min, data.cronTime.hour);
+    const time = timeCreator(
+      data.cronTime.min,
+      data.cronTime.hour,
+      data.cronTime.timeZone
+    );
     console.log("time", time);
 
     if (!this.userTasks.has(data.userId.toString())) {

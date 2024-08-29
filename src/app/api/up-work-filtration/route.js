@@ -76,3 +76,26 @@ export const POST = async (req, res) => {
     );
   }
 };
+export const GET = async (req, res) => {
+  const { searchParams } = new URL(req.nextUrl);
+  const userId = searchParams.get("userId");
+  try {
+    await axios
+      .get("http://localhost:3001/get-info", {
+        params: {
+          userId,
+        },
+      })
+      .then((response) => console.log("res", response));
+
+    // return NextResponse.json({ message: response.data }, { status: 200 });
+
+    return NextResponse.json({ message: "OK" }, { status: 200 });
+  } catch (error) {
+    console.log("Error at API:", error);
+    return NextResponse.json(
+      { message: "Internal server error" },
+      { status: 500 }
+    );
+  }
+};

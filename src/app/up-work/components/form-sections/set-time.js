@@ -3,7 +3,6 @@ import { ErrorMessage, Field } from "formik";
 import React from "react";
 import FormikToggle from "../ui/formik-toggle";
 import { FormicInputNumber } from "../ui/formic-input-number";
-import TimezoneSelector from "@/app/components/time-zone";
 
 export const SetBiddingOptions = ({ values, handleChange }) => {
   return (
@@ -41,7 +40,6 @@ export const SetBiddingOptions = ({ values, handleChange }) => {
         >
           <p>Hours</p>
         </FormicInputNumber>
-        <TimezoneSelector />
       </div>
     </div>
   );

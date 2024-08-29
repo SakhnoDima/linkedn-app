@@ -1,3 +1,5 @@
+import moment from "moment-timezone";
+
 export const transformQuery = (includeString, excludeString) => {
   includeString = includeString.replace(/&/g, "AND").replace(/\|/g, "OR");
 
@@ -33,11 +35,12 @@ export const compleatSearchFilters = async (data) => {
   return searchFilters;
 };
 
-export const timeCreator = (minutes, hours) => {
+export const timeCreator = (minutes, hours, timeZone) => {
   const min = minutes ? minutes : "*";
   const hour = hours ? hours : "*";
+  console.log(timeZone);
 
-  const [UTC0Hour, UTC0Min] = getUTC0Time(hour, min);
+  const [UTC0Hour, UTC0Min] = getUTC0Time(hour, min, timeZone);
 
   if (!minutes && !hours) {
     return "0 * * * *";
@@ -50,17 +53,21 @@ export const timeCreator = (minutes, hours) => {
   }
 };
 
-const getUTC0Time = (hour, min) => {
-  let localDate = new Date();
+const getUTC0Time = (hour, minute, timeZone) => {
+  console.log("timeZone", timeZone);
 
-  localDate.setHours(hour === "*" ? 0 : hour);
-  localDate.setMinutes(min === "*" ? 0 : min);
-  localDate.setSeconds(0);
+  let localTime = moment.tz(
+    { hour: hour === "*" ? 0 : hour, minute: minute === "*" ? 0 : minute },
+    timeZone
+  );
+  console.log("local time", localTime.format("YYYY-MM-DD HH:mm:ss"));
 
-  let UTC0Date = new Date(localDate.toUTCString());
+  let utcTime = localTime.utc();
+  console.log("utcH", utcTime.hours());
+  console.log("utcM", utcTime.minutes());
 
-  let UTC0Hour = hour === "*" ? "*" : UTC0Date.getUTCHours();
-  let UTC0Min = min === "*" ? "*" : UTC0Date.getUTCMinutes();
+  let UTC0Hour = hour === "*" ? "*" : utcTime.hours();
+  let UTC0Min = minute === "*" ? "*" : utcTime.minutes();
 
   return [UTC0Hour, UTC0Min];
 };

@@ -4,6 +4,7 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import moment from "moment-timezone";
 
 import Button from "@/app/components/button";
 
@@ -40,6 +41,7 @@ const validationSchema = Yup.object({
       .min(0, "Time cannot be negative")
       .max(23, "Maximum 23 hour")
       .nullable(),
+    timeZone: Yup.string(),
   }),
   autoBidding: Yup.boolean(),
   searchWords: Yup.object().shape({
@@ -114,6 +116,7 @@ const initialValues = {
   cronTime: {
     min: null,
     hour: null,
+    timeZone: moment.tz.guess() || null,
   },
   autoBidding: false,
   searchWords: {
@@ -211,9 +214,12 @@ const ScannersForm = ({ setScanners, scanner, actions }) => {
 
   const editScanner = async (scannerData, scannerId) => {
     try {
+      const data = { ...scannerData };
+      data.cronTime.timeZone = moment.tz.guess();
+
       const response = await axios.put(
         "/api/scanner",
-        { scannerData, scannerId },
+        { scannerData: data, scannerId },
         {
           headers: {
             "Content-Type": "application/json",
@@ -255,7 +261,6 @@ const ScannersForm = ({ setScanners, scanner, actions }) => {
         initialValues={actions === "save" ? initialValues : scanner}
         validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting, resetForm }) => {
-          console.log(values);
           if (actions === "save") {
             addScanner(values, session.user.id);
           } else if (actions === "edit") {

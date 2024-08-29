@@ -9,35 +9,57 @@ const NavBar = () => {
   const pathname = usePathname();
   const { data: session } = useSession();
 
-  const linkStyle = (path) =>
-    pathname === path
-      ? "btn btn-ghost text-xl text-blue-500"
-      : "btn btn-ghost text-xl";
+  const linkStyle = (path) => {
+    if (pathname === path) {
+      return "text-blue-500";
+    }
+  };
 
   return (
     <div className="navbar bg-base-100 flex-col justify-center">
-      {!!session ? (
+      <Link
+        className={`btn btn-ghost text-xl ${
+          pathname === "/" ? "text-blue-500" : ""
+        }`}
+        href="/"
+      >
+        Home
+      </Link>
+      {!!session && (
         <>
-          <Link className={linkStyle("/up-work")} href="/up-work">
+          <Link
+            className={`btn btn-ghost text-xl ${
+              pathname === "/up-work" ? "text-blue-500" : ""
+            }`}
+            href="/up-work"
+          >
             UpWork
           </Link>
-          <Link className={linkStyle("/linkedin")} href="/linkedin">
+          <Link
+            className={`btn btn-ghost text-xl ${
+              pathname === "/linkedin" ? "text-blue-500" : ""
+            }`}
+            href="/linkedin"
+          >
             Linkedin
           </Link>
-          <Link className={linkStyle("/dashboard")} href="/dashboard">
+          <Link
+            className={`btn btn-ghost text-xl ${
+              pathname === "/dashboard" ? "text-blue-500" : ""
+            }`}
+            href="/dashboard"
+          >
             Dashboard
           </Link>
-          <Link className={linkStyle("/donations")} href="/donations">
+          <Link
+            className={`btn btn-ghost text-xl ${
+              pathname === "/donations" ? "text-blue-500" : ""
+            }`}
+            href="/donations"
+          >
             Donations
           </Link>
-          <Link className={linkStyle("/account")} href="/account">
-            Account
-          </Link>
         </>
-      ) : (
-        <Link className={linkStyle("/")} href="/">
-          Home
-        </Link>
       )}
     </div>
   );

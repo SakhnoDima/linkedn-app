@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import { useSession } from "next-auth/react";
 import { useModalContext } from "../context/modal-context";
+import moment from "moment-timezone";
 
 import Input from "./input";
 import Button from "./button";
@@ -82,6 +83,7 @@ const validationSchema = Yup.object({
       .min(0, "Time cannot be negative")
       .max(23, "Maximum 23 hour")
       .nullable(),
+    timeZone: Yup.string(),
   }),
   autoBidding: Yup.boolean(),
   targetName: Yup.string().required("Required*"),
@@ -104,6 +106,7 @@ const ConnectionForm = ({ currentTarget, handler }) => {
     cronTime: {
       min: currentTarget.cronTime?.min || null,
       hour: currentTarget.cronTime?.hour || null,
+      timeZone: moment.tz.guess() || null,
     },
     autoBidding: currentTarget.autoBidding || false,
     targetName: currentTarget.targetName || "",
