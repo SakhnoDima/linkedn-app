@@ -3,7 +3,6 @@ import React from "react";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import LogOut from "./log-out";
 
 const NavBar = () => {
   const pathname = usePathname();

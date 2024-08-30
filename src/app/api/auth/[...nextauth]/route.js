@@ -49,6 +49,7 @@ export const authOptions = {
         return {
           ...token,
           id: user._id,
+          email: user.email,
           isLinkedinAuth: user.isLinkedinAuth,
           isUpWorkAuth: user.isUpWorkAuth,
         };
@@ -61,6 +62,7 @@ export const authOptions = {
         ...session,
         user: {
           id: token.id,
+          email: token.email,
           isLinkedinAuth: token.isLinkedinAuth,
           isUpWorkAuth: token.isUpWorkAuth,
         },
