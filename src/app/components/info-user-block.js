@@ -10,7 +10,7 @@ const InfoUserBlock = ({ userInfo }) => {
         size={30}
         className="hover:fill-main-blue hover:cursor-pointer"
       />
-      <div className="hidden absolute  top-[34px] left-[-150%] border-2 border-main-blue rounded-lg bg-white px-2 py-4 group-hover:block">
+      <div className="hidden absolute top-[34px] left-[-100px] border-2 rounded-lg bg-white px-2 py-4 group-hover:block">
         <ul className="flex flex-col gap-4">
           <li className={itemsClasses}>
             <p className={itemStyle}>User email:</p> <p>{userInfo.email}</p>
