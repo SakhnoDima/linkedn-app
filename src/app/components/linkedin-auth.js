@@ -10,7 +10,6 @@ const LinkedinAuth = () => {
 
   const [isCodeConfirm, setIsCodeConfirm] = useState(false);
 
-  console.log("Show Lin Auth", session?.user.isLinkedinAuth);
   return (
     !session?.user.isLinkedinAuth && (
       <div className="w-[500px] mt-[50px] mx-auto mb-[40px] flex flex-col items-center">
