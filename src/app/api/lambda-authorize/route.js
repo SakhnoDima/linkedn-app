@@ -54,7 +54,6 @@ async function checkTaskStatus(taskId) {
 
 export const POST = async (req, res) => {
   const { login, pass, userId } = await req.json();
-
   if (!login || !pass || !userId) {
     return NextResponse.json(
       { message: "Credentials is required" },
@@ -90,13 +89,13 @@ export const POST = async (req, res) => {
               userId,
               isLinkedinAuth.message || "Authorization error"
             );
+          } else {
+            await User.findOneAndUpdate(
+              { _id: userId },
+              { isLinkedinAuth: true, tempPass: null },
+              { new: true, upsert: true, runValidators: true }
+            );
           }
-
-          await User.findOneAndUpdate(
-            { _id: userId },
-            { isLinkedinAuth: true, tempPass: null },
-            { new: true, upsert: true, runValidators: true }
-          );
         });
       });
 

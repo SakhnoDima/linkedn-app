@@ -20,7 +20,7 @@ const Header = () => {
       </div>
 
       <div className="flex gap-8 items-center">
-        {session && <InfoUserBlock userInfo={session.user} />}
+        {session && <InfoUserBlock />}
         {!session ? (
           <>
             <Link className="btn btn-ghost text-xl" href="/login">

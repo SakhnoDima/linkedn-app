@@ -30,7 +30,7 @@ export class ErrorList {
 }
 const errorList = new ErrorList();
 
-async function checkTaskStatus(taskId) {
+async function checkTaskStatus(taskId, userId) {
   let isAuth = false;
 
   const interval = setInterval(async () => {
@@ -51,6 +51,11 @@ async function checkTaskStatus(taskId) {
         console.log("Task completed:", statusResponse.data.result);
         const response = JSON.parse(statusResponse.data.result);
         console.log("Res in check status f", response);
+        if (response.error) {
+          console.log("Error", response.error);
+          errorList.addError(taskId, response.error);
+          clearInterval(interval);
+        }
         if (response.isUpWorkAuth) {
           const newUser = await User.findByIdAndUpdate(
             { _id: response.id },
@@ -114,11 +119,12 @@ export const POST = async (req, res) => {
           console.log("in Post", createTaskResponse.data.error);
           errorList.addError(userId, createTaskResponse.data.error);
           return;
-        }
-        const taskId = createTaskResponse.data.taskId;
-        errorList.removeError(userId);
+        } else {
+          const taskId = createTaskResponse.data.taskId;
+          errorList.removeError(userId, userId);
 
-        checkTaskStatus(taskId);
+          checkTaskStatus(taskId);
+        }
       });
 
     return NextResponse.json(
@@ -148,13 +154,16 @@ export const GET = async (req, res) => {
   }
   try {
     const isError = errorList.getErrorById(targetId);
+    console.log("Is error in get", isError);
+
     if (isError) {
-      return NextResponse.json({ message: isError.message }, { status: 500 });
+      return NextResponse.json(
+        { error: true, message: isError.message },
+        { status: 500 }
+      );
     }
 
     const currentUser = await User.findById({ _id: targetId });
-
-    console.log(currentUser.isUpWorkAuth);
 
     console.log("User in get", currentUser);
     return NextResponse.json(
@@ -165,7 +174,7 @@ export const GET = async (req, res) => {
     );
   } catch (error) {
     return NextResponse.json(
-      { message: "Internal server error" },
+      { error: true, message: "Internal server error" },
       { status: 500 }
     );
   }

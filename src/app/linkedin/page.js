@@ -10,11 +10,10 @@ const ConnectionPage = async () => {
   if (!session) {
     redirect("/");
   }
+
   return (
     <div>
-      {!session?.user.isLinkedinAuth && (
-        <LinkedinAuth isAuth={session?.user.isLinkedinAuth} />
-      )}
+      <LinkedinAuth />
       <FiltersBlock />
     </div>
   );

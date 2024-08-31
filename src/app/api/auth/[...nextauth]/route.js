@@ -42,9 +42,16 @@ export const authOptions = {
       if (trigger === "update" && session.isLinkedinAuth) {
         token.isLinkedinAuth = session.isLinkedinAuth;
       }
+      if (trigger === "update" && session.user.isLinkedinAuth === "update") {
+        token.isLinkedinAuth = false;
+      }
       if (trigger === "update" && session.isUpWorkAuth) {
         token.isUpWorkAuth = session.isUpWorkAuth;
       }
+      if (trigger === "update" && session.user.isUpWorkAuth === "update") {
+        token.isUpWorkAuth = false;
+      }
+
       if (user) {
         return {
           ...token,
