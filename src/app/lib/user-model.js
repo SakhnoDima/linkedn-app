@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import dbConnect from "./moongose-connect";
+import {string} from "yup";
 
 const UserSchema = new mongoose.Schema({
   email: {
@@ -21,6 +22,10 @@ const UserSchema = new mongoose.Schema({
   tempPass: {
     type: String,
   },
+  chatId: {
+    type: String,
+    unique: true
+  }
 });
 
 await dbConnect();
