@@ -21,6 +21,10 @@ const UserSchema = new mongoose.Schema({
   tempPass: {
     type: String,
   },
+  isTelegramNotifications: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 await dbConnect();

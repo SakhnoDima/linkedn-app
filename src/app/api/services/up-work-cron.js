@@ -80,6 +80,47 @@ class CronUpWorkClass {
     }
   }
 
+  async startTelegramNotification(userId) {
+    console.log("Before start Init", this.userTasks);
+
+    if (!this.userTasks.has(userId)) {
+      this.userTasks.set(userId, {});
+    }
+    const tasks = this.userTasks.get(userId);
+
+    if (!tasks[userId]) {
+      const task = cron.schedule("*/15 * * * *", async () => {
+        try {
+          console.log("START");
+
+          // TODO bot req to lambda!!!
+
+          await axios
+            .get("http://localhost:3001/get-info", {
+              params: {
+                userId,
+              },
+            })
+            .then((response) => {
+              // TODO обробити також на помилку!!!
+              if (response.data.body.isNewMessage) {
+                console.log("Send message");
+              } else {
+                console.log("Don`t have new message");
+              }
+            });
+        } catch (error) {
+          console.log("Error in init cron", error);
+        }
+      });
+      tasks[userId] = task;
+      console.log("After start Init", this.userTasks);
+      console.log(`Cron task ${userId} started`);
+    } else {
+      console.log(`Scanner ${id} is already running`);
+    }
+  }
+
   async stopScanner(userId, taskId) {
     const newUserId = userId.toString();
 

@@ -29,7 +29,7 @@ const Page = ({ params }) => {
             taskId: id,
           },
         });
-        console.log(data);
+
         setScanner(data);
       } catch (error) {
         console.log(error);

@@ -43,6 +43,26 @@ const InfoUserBlock = () => {
       setLoading(false);
     }
   };
+
+  const handleInitTelegramNotifications = async (target) => {
+    try {
+      setLoading(target);
+      const { data } = await axios.get("/api/init-telegram-note", {
+        params: {
+          userId: session.user.id,
+        },
+      });
+      update({
+        ...session,
+        user: { ...session.user, isTelegramNotifications: "update" },
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="relative group">
       <FaRegUserCircle
@@ -73,7 +93,7 @@ const InfoUserBlock = () => {
             </div>
             <Button
               disabled={loading || !session.user.isLinkedinAuth}
-              className="min-h-8 h-8"
+              className="min-h-8 h-8 w-[50px]"
               onClick={() => handleClick("linkedin")}
             >
               {loading === "linkedin" ? <Loader /> : "Out"}
@@ -90,10 +110,35 @@ const InfoUserBlock = () => {
             </div>
             <Button
               disabled={loading || !session.user.isUpWorkAuth}
-              className="min-h-8 h-8"
+              className="min-h-8 h-8 w-[50px]"
               onClick={() => handleClick("upWork")}
             >
               {loading === "upWork" ? <Loader /> : "Out"}
+            </Button>
+          </li>
+          <li className={itemsClasses}>
+            <div className={itemsClasses}>
+              <p className={itemStyle}>Telegram:</p>
+              <FaCheck
+                className={`${
+                  session.user.isTelegramNotifications
+                    ? "fill-green-600"
+                    : "fill-red-500"
+                }`}
+              />
+            </div>
+            <Button
+              disabled={loading}
+              className="min-h-8 h-8 w-[50px]"
+              onClick={() => handleInitTelegramNotifications("telegram")}
+            >
+              {loading === "telegram" ? (
+                <Loader />
+              ) : session.user.isTelegramNotifications ? (
+                "Off"
+              ) : (
+                "On"
+              )}
             </Button>
           </li>
         </ul>

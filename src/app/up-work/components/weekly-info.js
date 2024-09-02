@@ -1,8 +1,11 @@
+"use client";
 import Button from "@/app/components/button";
-import React from "react";
+import { useState } from "react";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 
 const WeeklyInfo = ({ active, scanner }) => {
+  const [availableVacancies, setAvailableVacancies] = useState(null);
+
   const handleGetWeeklyResults = async (scanner) => {
     const { data } = await axios.get("/api/scanner/info", {
       params: {
@@ -10,6 +13,7 @@ const WeeklyInfo = ({ active, scanner }) => {
       },
     });
     console.log(data);
+    // TODO setAvailableVacancies() сюди покласти результат
   };
   return (
     <div className="mt-4">
@@ -26,13 +30,17 @@ const WeeklyInfo = ({ active, scanner }) => {
       </div>
       {active && (
         <div className="flex items-center gap-5">
-          <Button type="button" onClick={() => handleGetWeeklyResults(scanner)}>
+          <Button
+            className="border border-white hover:border-white"
+            type="button"
+            onClick={() => handleGetWeeklyResults(scanner)}
+          >
             <span>Check</span>
           </Button>
           <div>
             <p>
               Here you`ll see weekly available result:
-              <span> </span>
+              <span>{availableVacancies}</span>
             </p>
           </div>
         </div>

@@ -51,6 +51,12 @@ export const authOptions = {
       if (trigger === "update" && session.user.isUpWorkAuth === "update") {
         token.isUpWorkAuth = false;
       }
+      if (
+        trigger === "update" &&
+        session.user.isTelegramNotifications === "update"
+      ) {
+        token.isTelegramNotifications = !token.isTelegramNotifications;
+      }
 
       if (user) {
         return {
@@ -59,6 +65,7 @@ export const authOptions = {
           email: user.email,
           isLinkedinAuth: user.isLinkedinAuth,
           isUpWorkAuth: user.isUpWorkAuth,
+          isTelegramNotifications: user.isTelegramNotifications,
         };
       }
 
@@ -72,6 +79,7 @@ export const authOptions = {
           email: token.email,
           isLinkedinAuth: token.isLinkedinAuth,
           isUpWorkAuth: token.isUpWorkAuth,
+          isTelegramNotifications: token.isTelegramNotifications,
         },
       };
     },
