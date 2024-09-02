@@ -29,6 +29,7 @@ import {
 } from "./form-sections";
 import { useToastContext } from "@/app/context/toast-context";
 import { useRouter } from "next/navigation";
+import WeeklyInfo from "./weekly-info";
 
 const validationSchema = Yup.object({
   scannerName: Yup.string().required("Required*"),
@@ -280,6 +281,10 @@ const ScannersForm = ({ setScanners, scanner, actions }) => {
                 </div>
                 <div className="collapse-content px-[3rem]">
                   <ScannerInfo values={values} handleChange={handleChange} />
+                  <WeeklyInfo
+                    active={actions === "edit" ? true : false}
+                    scanner={scanner}
+                  />
                 </div>
               </div>
               <div className="collapse collapse-arrow bg-base-200">

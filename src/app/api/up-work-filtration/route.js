@@ -19,8 +19,6 @@ export const POST = async (req, res) => {
 
     const user = await User.findById({ _id: userId });
 
-    console.log(user);
-
     searchFilters.category = searchFilters.category
       .split(" | ")
       .map((item) => item.trim());
@@ -30,22 +28,6 @@ export const POST = async (req, res) => {
       .map((item) => item.trim());
 
     console.log("!!! START BID !!!");
-
-    // console.log({
-    //   _id: _id,
-    //   userId: userId,
-    //   userEmail: user.email,
-    //   scannerName,
-    //   autoBidding,
-    //   searchWords: transformQuery(
-    //     searchWords.includeWords,
-    //     searchWords.excludeWords
-    //   ),
-    //   searchFilters,
-    //   clientParameters,
-    //   biddingOptions,
-    //   coverLetterOptions,
-    // });
 
     const response = await axios.post("http://localhost:3001/upwork", {
       _id: _id,
@@ -65,8 +47,6 @@ export const POST = async (req, res) => {
 
     console.log(response.data);
 
-    // return NextResponse.json({ message: response.data }, { status: 200 });
-
     return NextResponse.json({ message: "OK" }, { status: 200 });
   } catch (error) {
     console.log("Error at API:", error);
@@ -76,6 +56,7 @@ export const POST = async (req, res) => {
     );
   }
 };
+
 export const GET = async (req, res) => {
   const { searchParams } = new URL(req.nextUrl);
   const userId = searchParams.get("userId");
