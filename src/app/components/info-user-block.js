@@ -6,17 +6,19 @@ import { useSession } from "next-auth/react";
 
 import Button from "./button";
 import Loader from "./loader";
+import {FaRegCopy} from "react-icons/fa6";
 
 const itemsClasses = "flex gap-2 items-center justify-between";
 const itemStyle = "whitespace-nowrap font-bold";
 const after =
-  "after:content-[''] after:block after:absolute after:top-[-10px] after:left-0 after:w-full after:h-[10px]";
+    "after:content-[''] after:block after:absolute after:top-[-10px] after:left-0 after:w-full after:h-[10px]";
 const before =
-  "before:content-[''] before:w-[12px] before:h-[10px] before:block before:absolute before:top-[-7px] before:left-[115px] before:border-2 before:bg-white before:border-r-0 before:border-t-0  before:transform before:transform before:-translate-x-1/2 before:rotate-[135deg]";
+    "before:content-[''] before:w-[12px] before:h-[10px] before:block before:absolute before:top-[-7px] before:left-[115px] before:border-2 before:bg-white before:border-r-0 before:border-t-0 before:transform before:-translate-x-1/2 before:rotate-[135deg]";
 
 const InfoUserBlock = () => {
   const [loading, setLoading] = useState(false);
   const { data: session, update } = useSession();
+  const [tooltipText, setTooltipText] = useState("Click to copy");
 
   const handleClick = async (target) => {
     try {
@@ -63,22 +65,42 @@ const InfoUserBlock = () => {
     }
   };
 
+  const tooltipClick = async () => {
+    try {
+      await navigator.clipboard.writeText(session.user.id);
+      await setTooltipText("Copied!");
+    } catch (error) {
+      console.error("Failed to copy text: ", error);
+    }
+  };
+
   return (
-    <div className="relative group">
+    <div className="relative group dropdown dropdown-hover">
       <FaRegUserCircle
         size={30}
-        className="hover:fill-main-blue hover:cursor-pointer"
+        tabIndex={0}
+        role="button"
+        className="hover:fill-main-blue m-1"
       />
       <div
-        className={`hidden absolute z-[1] top-[40px] left-[-100px] border-2 rounded-lg bg-white px-2 py-4 group-hover:block ${after} ${before}`}
+          tabIndex={0}
+          className={`dropdown-content absolute z-[1] top-[40px] left-[-100px] border-2 rounded-lg bg-white px-2 py-4 ${after} ${before}`}
       >
         <ul className="flex flex-col gap-4">
           <li className={itemsClasses}>
-            <p className={itemStyle}>User email:</p> <p>{session.user.email}</p>
+            <p className={itemStyle}>User email:</p>
+            <p>{session.user.email}</p>
           </li>
           <li className={itemsClasses}>
             <p className={itemStyle}>User id:</p>
-            <p>{session.user.id}</p>
+            <div className="tooltip" data-tip={tooltipText}>
+              <button className="btn w-[130px] flex flex-nowrap" onClick={tooltipClick}>
+                <FaRegCopy
+                    size={35}
+                />
+                <span className="text-ellipsis overflow-hidden ...">{session.user.id}</span>
+              </button>
+            </div>
           </li>
           <li className={itemsClasses}>
             <div className={itemsClasses}>
