@@ -42,15 +42,30 @@ export const authOptions = {
       if (trigger === "update" && session.isLinkedinAuth) {
         token.isLinkedinAuth = session.isLinkedinAuth;
       }
+      if (trigger === "update" && session.user.isLinkedinAuth === "update") {
+        token.isLinkedinAuth = false;
+      }
       if (trigger === "update" && session.isUpWorkAuth) {
         token.isUpWorkAuth = session.isUpWorkAuth;
       }
+      if (trigger === "update" && session.user.isUpWorkAuth === "update") {
+        token.isUpWorkAuth = false;
+      }
+      if (
+        trigger === "update" &&
+        session.user.isTelegramNotifications === "update"
+      ) {
+        token.isTelegramNotifications = !token.isTelegramNotifications;
+      }
+
       if (user) {
         return {
           ...token,
           id: user._id,
+          email: user.email,
           isLinkedinAuth: user.isLinkedinAuth,
           isUpWorkAuth: user.isUpWorkAuth,
+          isTelegramNotifications: user.isTelegramNotifications,
         };
       }
 
@@ -61,8 +76,10 @@ export const authOptions = {
         ...session,
         user: {
           id: token.id,
+          email: token.email,
           isLinkedinAuth: token.isLinkedinAuth,
           isUpWorkAuth: token.isUpWorkAuth,
+          isTelegramNotifications: token.isTelegramNotifications,
         },
       };
     },

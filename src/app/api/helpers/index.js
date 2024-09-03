@@ -1,3 +1,5 @@
+import moment from "moment-timezone";
+
 export const transformQuery = (includeString, excludeString) => {
   includeString = includeString.replace(/&/g, "AND").replace(/\|/g, "OR");
 
@@ -33,11 +35,12 @@ export const compleatSearchFilters = async (data) => {
   return searchFilters;
 };
 
-export const timeCreator = (minutes, hours) => {
+export const timeCreator = (minutes, hours, timeZone) => {
   const min = minutes ? minutes : "*";
   const hour = hours ? hours : "*";
+  console.log(timeZone);
 
-  const [UTC0Hour, UTC0Min] = getUTC0Time(hour, min);
+  const [UTC0Hour, UTC0Min] = getUTC0Time(hour, min, timeZone);
 
   if (!minutes && !hours) {
     return "0 * * * *";
@@ -48,25 +51,21 @@ export const timeCreator = (minutes, hours) => {
   }
 };
 
-const getUTC0Time = (hour, min) => {
-  let localDate = new Date();
-  console.log("local", localDate);
-  localDate.setHours(hour === "*" ? 0 : hour);
-  localDate.setMinutes(min === "*" ? 0 : min);
-  localDate.setSeconds(0);
+const getUTC0Time = (hour, minute, timeZone) => {
+  console.log("timeZone", timeZone);
 
-  // Получаем смещение временной зоны сервера относительно UTC в минутах
-  let timezoneOffset = localDate.getTimezoneOffset();
-  console.log("timezoneOffset", timezoneOffset);
+  let localTime = moment.tz(
+    { hour: hour === "*" ? 0 : hour, minute: minute === "*" ? 0 : minute },
+    timeZone
+  );
+  console.log("local time", localTime.format("YYYY-MM-DD HH:mm:ss"));
 
-  // Корректируем время с учетом смещения
-  localDate.setMinutes(localDate.getMinutes() - timezoneOffset);
-  console.log("new time", localDate.getMinutes() - timezoneOffset);
-  // Получаем часы и минуты в UTC
-  let UTC0Hour = hour === "*" ? "*" : localDate.getUTCHours();
-  let UTC0Min = min === "*" ? "*" : localDate.getUTCMinutes();
-  console.log("UTC0Hour", UTC0Hour);
-  console.log("UTC0Min", UTC0Min);
+  let utcTime = localTime.utc();
+  console.log("utcH", utcTime.hours());
+  console.log("utcM", utcTime.minutes());
+
+  let UTC0Hour = hour === "*" ? "*" : utcTime.hours();
+  let UTC0Min = minute === "*" ? "*" : utcTime.minutes();
 
   return [UTC0Hour, UTC0Min];
 };

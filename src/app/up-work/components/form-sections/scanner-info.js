@@ -15,7 +15,6 @@ export const ScannerInfo = ({ values, handleChange }) => {
     <>
       <div>
         <FormicInput data={filtersInputs} />
-
         <SetBiddingOptions values={values} handleChange={handleChange} />
       </div>
     </>

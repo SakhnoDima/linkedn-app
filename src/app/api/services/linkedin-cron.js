@@ -53,7 +53,12 @@ class TaskServiceClass {
     console.log("Before start Init", this.userTasks);
     console.log("time before", data.cronTime.min, data.cronTime.hour);
 
-    const time = timeCreator(data.cronTime.min, data.cronTime.hour);
+    const time = timeCreator(
+      data.cronTime.min,
+      data.cronTime.hour,
+      data.cronTime.timeZone
+    );
+    console.log("time", time);
 
     console.log("time after", time);
 

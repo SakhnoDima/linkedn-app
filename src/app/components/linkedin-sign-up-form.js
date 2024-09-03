@@ -11,7 +11,7 @@ import Input from "./input";
 import Button from "./button";
 import Loader from "./loader";
 
-const LinkedinSignUpForm = ({ setIsLinkedinAuth, setIsCodeConfirm }) => {
+const LinkedinSignUpForm = ({ setIsCodeConfirm }) => {
   const [loading, setLoading] = useState(false);
   const showToast = useToastContext();
   const { data: session, update } = useSession();
@@ -59,7 +59,6 @@ const LinkedinSignUpForm = ({ setIsLinkedinAuth, setIsCodeConfirm }) => {
 
             clearInterval(interval);
             setLoading(false);
-            setIsLinkedinAuth(true);
             update({ isLinkedinAuth: true });
           }
         } catch (error) {

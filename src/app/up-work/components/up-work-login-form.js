@@ -83,6 +83,10 @@ const UpWorkLoginForm = ({
             clearInterval(interval);
             update({ isUpWorkAuth: true });
             setIsSubmitting(false);
+          } else if (response.data.error) {
+            setIsUpWorkAut(false);
+            clearInterval(interval);
+            setIsSubmitting(false);
           } else {
             console.log("User connecting....");
           }

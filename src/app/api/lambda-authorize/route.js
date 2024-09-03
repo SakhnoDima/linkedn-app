@@ -54,7 +54,6 @@ async function checkTaskStatus(taskId) {
 
 export const POST = async (req, res) => {
   const { login, pass, userId } = await req.json();
-
   if (!login || !pass || !userId) {
     return NextResponse.json(
       { message: "Credentials is required" },

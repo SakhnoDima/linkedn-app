@@ -8,6 +8,7 @@ const ScannersSchema = new mongoose.Schema({
   cronTime: {
     min: { type: Number, default: false },
     hour: { type: Number, default: false },
+    timeZone: { type: String, default: "" },
   },
   scannerName: {
     type: String,
