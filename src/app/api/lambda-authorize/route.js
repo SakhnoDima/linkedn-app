@@ -118,12 +118,13 @@ export const GET = async (req, res) => {
 
   try {
     const isError = errorList.getErrorById(userId);
+    console.log("error", isError);
 
     const user = await User.findOne({ _id: userId });
 
     if (isError) {
       console.log(isError);
-      return NextResponse.json({ message: isError.message }, { status: 500 });
+      return NextResponse.json({ message: isError.message });
     }
 
     return NextResponse.json(
