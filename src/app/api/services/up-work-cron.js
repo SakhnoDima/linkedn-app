@@ -13,7 +13,7 @@ class CronUpWorkClass {
     this.userTasks = new Map();
   }
 
-  async startScanner(userId, scannerData, userEmail) {
+  async startScanner(userId, scannerData, user) {
     console.log("Before start Init", this.userTasks);
 
     if (!this.userTasks.has(userId)) {
@@ -40,7 +40,8 @@ class CronUpWorkClass {
                 key: "upWork",
                 id: scannerData.userId,
                 taskId: scannerData._id,
-                userEmail: userEmail,
+                userEmail: user.userEmail,
+                taskType: user.status,
                 scannerName: scannerData.scannerName,
                 autoBidding: scannerData.autoBidding,
                 searchWords: transformQuery(
@@ -71,8 +72,6 @@ class CronUpWorkClass {
               const taskId = createTaskResponse.data.taskId;
               console.log("Task started with ID:", taskId);
             });
-
-          //TODO bot req init
         } catch (error) {
           console.log("Error in init cron", error);
         }

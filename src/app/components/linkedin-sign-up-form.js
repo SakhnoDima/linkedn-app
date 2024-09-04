@@ -59,7 +59,10 @@ const LinkedinSignUpForm = ({ setIsCodeConfirm }) => {
 
             clearInterval(interval);
             setLoading(false);
-            update({ isLinkedinAuth: true });
+            update({
+              ...session,
+              user: { ...session.user, isLinkedinAuth: "update" },
+            });
           }
         } catch (error) {
           clearInterval(interval);

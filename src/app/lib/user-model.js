@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import dbConnect from "./moongose-connect";
-import {string} from "yup";
+import { string } from "yup";
 
 const UserSchema = new mongoose.Schema({
   email: {
@@ -28,8 +28,12 @@ const UserSchema = new mongoose.Schema({
   },
   chatId: {
     type: String,
-    unique: true
-  }
+    unique: true,
+  },
+  status: {
+    type: String,
+    unique: true,
+  },
 });
 
 await dbConnect();

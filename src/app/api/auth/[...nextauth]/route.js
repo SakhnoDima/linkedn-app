@@ -39,22 +39,18 @@ export const authOptions = {
   ],
   callbacks: {
     async jwt({ token, user, session, trigger }) {
-      if (trigger === "update" && session.isLinkedinAuth) {
-        token.isLinkedinAuth = session.isLinkedinAuth;
-      }
       if (trigger === "update" && session.user.isLinkedinAuth === "update") {
-        token.isLinkedinAuth = false;
+        token.isLinkedinAuth = !token.isLinkedinAuth;
       }
-      if (trigger === "update" && session.isUpWorkAuth) {
-        token.isUpWorkAuth = session.isUpWorkAuth;
-      }
+
       if (trigger === "update" && session.user.isUpWorkAuth === "update") {
-        token.isUpWorkAuth = false;
+        token.isUpWorkAuth = !token.isUpWorkAuth;
       }
       if (
         trigger === "update" &&
         session.user.isTelegramNotifications === "update"
       ) {
+        console.log("isTelegramNotifications set false");
         token.isTelegramNotifications = !token.isTelegramNotifications;
       }
 
@@ -66,6 +62,7 @@ export const authOptions = {
           isLinkedinAuth: user.isLinkedinAuth,
           isUpWorkAuth: user.isUpWorkAuth,
           isTelegramNotifications: user.isTelegramNotifications,
+          accountStatus: user.status,
         };
       }
 
@@ -80,6 +77,7 @@ export const authOptions = {
           isLinkedinAuth: token.isLinkedinAuth,
           isUpWorkAuth: token.isUpWorkAuth,
           isTelegramNotifications: token.isTelegramNotifications,
+          accountStatus: token.accountStatus,
         },
       };
     },

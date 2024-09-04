@@ -33,6 +33,7 @@ export const POST = async (req, res) => {
       _id: _id,
       userId: userId,
       userEmail: user.email,
+      taskType: user.status,
       scannerName,
       autoBidding,
       searchWords: transformQuery(

@@ -1,5 +1,4 @@
 "use client";
-import { FaCheck } from "react-icons/fa";
 import { useSession } from "next-auth/react";
 import { MdLogin } from "react-icons/md";
 import Link from "next/link";

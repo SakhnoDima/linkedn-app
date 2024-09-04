@@ -5,6 +5,10 @@ const ScannersSchema = new mongoose.Schema({
   autoBidding: {
     type: Boolean,
   },
+  weeklyStatus: {
+    type: Boolean,
+    default: false,
+  },
   cronTime: {
     min: { type: Number, default: false },
     hour: { type: Number, default: false },

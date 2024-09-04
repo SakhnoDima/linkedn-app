@@ -30,7 +30,7 @@ export class ErrorList {
 }
 const errorList = new ErrorList();
 
-async function checkTaskStatus(taskId, userId) {
+async function checkTaskStatus(taskId, status) {
   let isAuth = false;
 
   const interval = setInterval(async () => {
@@ -61,6 +61,7 @@ async function checkTaskStatus(taskId, userId) {
             { _id: response.id },
             {
               isUpWorkAuth: true,
+              status: status,
             },
             { new: true }
           );
@@ -88,15 +89,15 @@ async function checkTaskStatus(taskId, userId) {
 }
 
 export const POST = async (req, res) => {
-  const { login, pass, userId, secret } = await req.json();
+  const { login, pass, userId, secret, status } = await req.json();
 
-  if (!login || !pass || !userId) {
+  if (!login || !pass || !userId || !status) {
     return NextResponse.json(
       { message: "Credentials is required" },
       { status: 400 }
     );
   }
-  console.log({ login, pass, userId, secret });
+  console.log({ login, pass, userId, secret, status });
   try {
     axios
       .post(
@@ -123,7 +124,7 @@ export const POST = async (req, res) => {
           const taskId = createTaskResponse.data.taskId;
           errorList.removeError(userId, userId);
 
-          checkTaskStatus(taskId);
+          checkTaskStatus(taskId, status);
         }
       });
 

@@ -6,7 +6,6 @@ import User from "@/app/lib/user-model";
 
 export const POST = async (req, res) => {
   const { scannerData, userId } = await req.json();
-  console.log(scannerData);
 
   try {
     const newScanner = await Scanners.create({
@@ -20,7 +19,7 @@ export const POST = async (req, res) => {
     const user = await User.findById({ _id: userId });
 
     if (scannerData.autoBidding) {
-      CronUpWork.startScanner(userId, newScanner, user.email);
+      CronUpWork.startScanner(userId, newScanner, user);
     }
 
     return NextResponse.json(
@@ -81,7 +80,7 @@ export const PUT = async (req, res) => {
       await CronUpWork.startScanner(
         updatedScanner.userId.toString(),
         updatedScanner,
-        user.email
+        user
       );
     } else {
       await CronUpWork.stopScanner(
