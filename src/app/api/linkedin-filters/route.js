@@ -72,7 +72,6 @@ export const PUT = async (req, res) => {
       {
         cronTime: values.cronTime,
         autoBidding: values.autoBidding,
-        autoBidding: values.autoBidding,
         targetName: values.targetName,
         connections: values.connections,
         keyWords: values.keyWords,
