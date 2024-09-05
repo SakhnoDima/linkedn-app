@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
 import Scanners from "@/app/lib/up-work-scanners";
-import axios from "axios";
-import User from "@/app/lib/user-model";
 
 export const GET = async (req, res) => {
   const { searchParams } = new URL(req.nextUrl);

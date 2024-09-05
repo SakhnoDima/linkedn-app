@@ -3,17 +3,19 @@ import { FaCheck, FaRegUserCircle } from "react-icons/fa";
 import axios from "axios";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
+import { ImQrcode } from "react-icons/im";
 
 import Button from "./button";
 import Loader from "./loader";
-import {FaRegCopy} from "react-icons/fa6";
+import { FaRegCopy } from "react-icons/fa6";
+import Image from "next/image";
 
-const itemsClasses = "flex gap-2 items-center justify-between";
+const itemsClasses = "flex gap-2 items-center justify-between relative";
 const itemStyle = "whitespace-nowrap font-bold";
 const after =
-    "after:content-[''] after:block after:absolute after:top-[-10px] after:left-0 after:w-full after:h-[10px]";
+  "after:content-[''] after:block after:absolute after:top-[-10px] after:left-0 after:w-full after:h-[10px]";
 const before =
-    "before:content-[''] before:w-[12px] before:h-[10px] before:block before:absolute before:top-[-7px] before:left-[115px] before:border-2 before:bg-white before:border-r-0 before:border-t-0 before:transform before:-translate-x-1/2 before:rotate-[135deg]";
+  "before:content-[''] before:w-[12px] before:h-[10px] before:block before:absolute before:top-[-7px] before:left-[115px] before:border-2 before:bg-white before:border-r-0 before:border-t-0 before:transform before:-translate-x-1/2 before:rotate-[135deg]";
 
 const InfoUserBlock = () => {
   const [loading, setLoading] = useState(false);
@@ -75,7 +77,7 @@ const InfoUserBlock = () => {
   };
 
   return (
-    <div className="relative group dropdown dropdown-hover">
+    <div className="relative dropdown dropdown-hover">
       <FaRegUserCircle
         size={30}
         tabIndex={0}
@@ -83,8 +85,8 @@ const InfoUserBlock = () => {
         className="hover:fill-main-blue m-1"
       />
       <div
-          tabIndex={0}
-          className={`dropdown-content absolute z-[1] top-[40px] left-[-100px] border-2 rounded-lg bg-white px-2 py-4 ${after} ${before}`}
+        tabIndex={0}
+        className={`dropdown-content absolute z-[1] top-[40px] left-[-100px] border-2 rounded-lg bg-white px-2 py-4 ${after} ${before}`}
       >
         <ul className="flex flex-col gap-4">
           <li className={itemsClasses}>
@@ -94,11 +96,14 @@ const InfoUserBlock = () => {
           <li className={itemsClasses}>
             <p className={itemStyle}>User id:</p>
             <div className="tooltip" data-tip={tooltipText}>
-              <button className="btn w-[130px] flex flex-nowrap" onClick={tooltipClick}>
-                <FaRegCopy
-                    size={35}
-                />
-                <span className="text-ellipsis overflow-hidden ...">{session.user.id}</span>
+              <button
+                className="btn w-[130px] flex flex-nowrap"
+                onClick={tooltipClick}
+              >
+                <FaRegCopy size={35} />
+                <span className="text-ellipsis overflow-hidden ...">
+                  {session.user.id}
+                </span>
               </button>
             </div>
           </li>
@@ -148,6 +153,17 @@ const InfoUserBlock = () => {
                     : "fill-red-500"
                 }`}
               />
+            </div>
+            <div className="group">
+              <ImQrcode />
+              <div className="hidden  justify-center min-w-[250px]  group-hover:flex  absolute bottom-[35px] right-[-5px] rounded-lg bg-white p-2 border">
+                <Image
+                  width={200}
+                  height={200}
+                  src="/QR.jpg"
+                  alt="Qr code to Telegram"
+                />
+              </div>
             </div>
             <Button
               disabled={loading}

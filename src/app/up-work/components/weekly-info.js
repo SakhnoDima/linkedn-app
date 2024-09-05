@@ -37,8 +37,6 @@ const WeeklyInfo = ({ active, scanner }) => {
       const isWeeklyLoading = isIdInLocalStorage(scanner._id);
 
       if (isWeeklyLoading) {
-        console.log(loading);
-
         setLoading(true);
         interval = setInterval(async () => {
           try {
@@ -149,7 +147,9 @@ const WeeklyInfo = ({ active, scanner }) => {
               </p>
             ) : (
               <>
-                {scanner?.weeklyStatus || availableVacancies ? (
+                {scanner?.weeklyStatus ||
+                availableVacancies ||
+                availableVacancies === 0 ? (
                   <>
                     <p>Your last checking result is:</p>
                     <span>{scanner?.weeklyStatus || availableVacancies}</span>

@@ -139,17 +139,18 @@ class CronUpWorkClass {
                   });
                 }
 
-                bot
-                  .sendMessage(chatId, proposalsMessage, { parse_mode: "HTML" })
-                  .then((response) => {
-                    console.log(
-                      "Message sent successfully:\n",
-                      proposalsMessage
-                    );
-                  })
-                  .catch((error) => {
-                    console.error("Error sending message:", error);
-                  });
+                try {
+                  axios.post(
+                    `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`,
+                    {
+                      chat_id: chatId,
+                      text: proposalsMessage,
+                      parse_mode: "HTML",
+                    }
+                  );
+                } catch (error) {
+                  console.log(error);
+                }
               } else {
                 console.log("Don`t have new proposals");
               }
