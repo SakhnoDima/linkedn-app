@@ -6,8 +6,8 @@ const ScannersSchema = new mongoose.Schema({
     type: Boolean,
   },
   weeklyStatus: {
-    type: Boolean,
-    default: false,
+    type: Number,
+    default: null,
   },
   cronTime: {
     min: { type: Number, default: false },

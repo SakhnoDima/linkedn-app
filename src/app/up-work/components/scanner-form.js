@@ -191,7 +191,6 @@ const ScannersForm = ({ setScanners, scanner, actions }) => {
   const { data: session } = useSession();
   const router = useRouter();
   const showToast = useToastContext();
-  console.log(session.user.accountStatus);
 
   const addScanner = async (scannerData, userId) => {
     try {
@@ -342,7 +341,7 @@ const ScannersForm = ({ setScanners, scanner, actions }) => {
                 </div>
               </div>
 
-              {session.user.accountStatus === "agency-account" && (
+              {session?.user.accountStatus === "agency-account" && (
                 <div className="collapse collapse-arrow bg-base-200">
                   <input type="radio" name="my-accordion-2" />
                   <div className="collapse-title text-xl font-medium">

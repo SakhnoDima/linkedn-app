@@ -9,6 +9,8 @@ export const GET = async (req, res) => {
   try {
     const scannerData = await Scanners.findOne({ _id: taskId });
     console.log("In status", scannerData.weeklyStatus);
+    console.log("id", taskId);
+
     if (!scannerData) {
       return NextResponse.json(
         { message: "Scanner did`nt find" },
