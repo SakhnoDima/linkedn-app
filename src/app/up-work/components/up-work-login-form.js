@@ -10,6 +10,7 @@ import Button from "@/app/components/button";
 import Input from "@/app/components/input";
 import Loader from "@/app/components/loader";
 import { useSession } from "next-auth/react";
+import Radio from "@/app/components/radio";
 
 const filtersInputsUpWork = [
   {
@@ -28,24 +29,38 @@ const filtersInputsUpWork = [
     placeholder: "UpWork Secret",
   },
 ];
-
+const statuses = [
+  {
+    name: "freelancer-account",
+    label: "Freelancer",
+    value: "freelancer-account",
+  },
+  {
+    name: "agency-account",
+    label: "Agency",
+    value: "agency-account",
+  },
+];
 const UpWorkLoginForm = ({
   setIsUpWorkAut,
   isSubmitting,
   setIsSubmitting,
   userId,
 }) => {
-  const { update } = useSession();
+  const { data: session, update } = useSession();
   const showToast = useToastContext();
 
   const initialValues = {
     login: "",
     pass: "",
+    secret: "",
+    status: null,
   };
   const validationSchema = Yup.object({
     login: Yup.string().required("Login is required"),
     pass: Yup.string().required("Password is required"),
     secret: Yup.string().required("Secret is required"),
+    status: Yup.string().required("Chose type of account"),
   });
 
   const handleSubmit = async (values) => {
@@ -57,6 +72,7 @@ const UpWorkLoginForm = ({
           pass: values.pass,
           login: values.login,
           secret: values.secret,
+          status: values.status,
           userId: userId,
         },
         {
@@ -81,7 +97,10 @@ const UpWorkLoginForm = ({
             console.log("Auth successful");
             setIsUpWorkAut(true);
             clearInterval(interval);
-            update({ isUpWorkAuth: true });
+            update({
+              ...session,
+              user: { ...session.user, isUpWorkAuth: "update" },
+            });
             setIsSubmitting(false);
           } else if (response.data.error) {
             setIsUpWorkAut(false);
@@ -111,10 +130,10 @@ const UpWorkLoginForm = ({
       onSubmit={handleSubmit}
       validationSchema={validationSchema}
     >
-      {({}) => (
+      {({ values, setFieldValue }) => (
         <Form className="flex flex-col gap-[15px] items-center">
           {filtersInputsUpWork.map((item, index) => (
-            <div key={index} className="flex flex-col gap-2">
+            <div key={index} className="flex flex-col gap-2 relative">
               <Field
                 name={item.fieldName}
                 type={item.fieldType}
@@ -125,10 +144,35 @@ const UpWorkLoginForm = ({
               <ErrorMessage
                 name={item.fieldName}
                 component="div"
-                className="text-red-500"
+                className="text-red-500 absolute top-[-15px] right-0 text-sm"
               />
             </div>
           ))}
+          <div className="flex gap-6 relative">
+            {statuses.map((item, indx) => (
+              <label
+                key={indx}
+                htmlFor={item.name}
+                className="flex gap-2 items-center hover:cursor-pointer"
+              >
+                <Field
+                  id={item.name}
+                  name="status"
+                  type="radio"
+                  value={item.value}
+                  checked={values.status === item.value}
+                  onChange={() => setFieldValue("status", item.value)}
+                  as={Radio}
+                />
+                <p>{item.label}</p>
+              </label>
+            ))}
+            <ErrorMessage
+              name="status"
+              component="div"
+              className="text-red-500 absolute top-[-15px] right-[0] text-sm"
+            />
+          </div>
 
           <Button
             type="submit"

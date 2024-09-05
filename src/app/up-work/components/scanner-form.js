@@ -98,8 +98,8 @@ const validationSchema = Yup.object({
     clientsWithoutSufficientHistory: Yup.boolean(),
   }),
   biddingOptions: Yup.object({
-    team: Yup.string().required("Required*"),
-    freelancer: Yup.string().required("Required*"),
+    team: Yup.string(),
+    freelancer: Yup.string(),
     profile: Yup.string().nullable(),
   }),
   coverLetterOptions: Yup.object({
@@ -340,15 +340,18 @@ const ScannersForm = ({ setScanners, scanner, actions }) => {
                   />
                 </div>
               </div>
-              <div className="collapse collapse-arrow bg-base-200">
-                <input type="radio" name="my-accordion-2" />
-                <div className="collapse-title text-xl font-medium">
-                  Bidding Options
+
+              {session?.user.accountStatus === "agency-account" && (
+                <div className="collapse collapse-arrow bg-base-200">
+                  <input type="radio" name="my-accordion-2" />
+                  <div className="collapse-title text-xl font-medium">
+                    Bidding Options
+                  </div>
+                  <div className="collapse-content px-[3rem]">
+                    <BiddingOptions />
+                  </div>
                 </div>
-                <div className="collapse-content px-[3rem]">
-                  <BiddingOptions />
-                </div>
-              </div>
+              )}
               <div className="collapse collapse-arrow bg-base-200">
                 <input type="radio" name="my-accordion-2" />
                 <div className="collapse-title text-xl font-medium">

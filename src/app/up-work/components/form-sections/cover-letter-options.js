@@ -23,7 +23,7 @@ export const CoverLetterOptions = () => {
 
       fieldType: "text",
       placeholder: `Ex: Super boy`,
-      fieldClassName: "h-[100px]",
+      fieldClassName: "h-[300px]",
     },
   ];
   const freelancerLinkInputs = [

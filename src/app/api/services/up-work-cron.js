@@ -13,7 +13,7 @@ class CronUpWorkClass {
     this.userTasks = new Map();
   }
 
-  async startScanner(userId, scannerData, userEmail) {
+  async startScanner(userId, scannerData, user) {
     console.log("Before start Init", this.userTasks);
 
     if (!this.userTasks.has(userId)) {
@@ -40,7 +40,8 @@ class CronUpWorkClass {
                 key: "upWork",
                 id: scannerData.userId,
                 taskId: scannerData._id,
-                userEmail: userEmail,
+                userEmail: user.userEmail,
+                taskType: user.status,
                 scannerName: scannerData.scannerName,
                 autoBidding: scannerData.autoBidding,
                 searchWords: transformQuery(
@@ -71,8 +72,6 @@ class CronUpWorkClass {
               const taskId = createTaskResponse.data.taskId;
               console.log("Task started with ID:", taskId);
             });
-
-          //TODO bot req init
         } catch (error) {
           console.log("Error in init cron", error);
         }
@@ -140,17 +139,18 @@ class CronUpWorkClass {
                   });
                 }
 
-                bot
-                  .sendMessage(chatId, proposalsMessage, { parse_mode: "HTML" })
-                  .then((response) => {
-                    console.log(
-                      "Message sent successfully:\n",
-                      proposalsMessage
-                    );
-                  })
-                  .catch((error) => {
-                    console.error("Error sending message:", error);
-                  });
+                try {
+                  axios.post(
+                    `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`,
+                    {
+                      chat_id: chatId,
+                      text: proposalsMessage,
+                      parse_mode: "HTML",
+                    }
+                  );
+                } catch (error) {
+                  console.log(error);
+                }
               } else {
                 console.log("Don`t have new proposals");
               }
