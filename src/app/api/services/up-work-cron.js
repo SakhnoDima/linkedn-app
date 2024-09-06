@@ -111,53 +111,13 @@ class CronUpWorkClass {
               console.error("Error finding user:", error);
             });
 
-          await axios
-            .post(
-              "https://5zfmj0shmi.execute-api.eu-north-1.amazonaws.com/default/upwork-get-info",
-              {
-                id: userId,
-                chatId: chatId,
-              }
-            )
-            .then((response) => {
-              const newProposals = response.data.newProposals;
-              const newProposalsLength = newProposals.length;
-              if (newProposalsLength !== 0) {
-                console.log("Send message");
-                let proposalsMessage;
-                if (newProposalsLength === 1) {
-                  proposalsMessage = "<b>You have new proposal! ⭐️</b>\n\n";
-                  newProposals.forEach((proposal) => {
-                    proposalsMessage += `Recived ${proposal.time}: <a href="${proposal.link}">${proposal.title}</a>;\n`;
-                  });
-                } else {
-                  proposalsMessage = "<b>You have new proposals! 🚀</b>\n\n";
-                  newProposals.forEach((proposal, index) => {
-                    proposalsMessage += `${index + 1}. Recived ${
-                      proposal.time
-                    }: <a href="${proposal.link}">${proposal.title}</a>;\n`;
-                  });
-                }
-
-                try {
-                  axios.post(
-                    `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`,
-                    {
-                      chat_id: chatId,
-                      text: proposalsMessage,
-                      parse_mode: "HTML",
-                    }
-                  );
-                } catch (error) {
-                  console.log(error);
-                }
-              } else {
-                console.log("Don`t have new proposals");
-              }
-            })
-            .catch((error) => {
-              console.error("Processing telegram message error:", error);
-            });
+          await axios.post(
+            "https://5zfmj0shmi.execute-api.eu-north-1.amazonaws.com/default/upwork-get-info",
+            {
+              id: userId,
+              chatId: chatId,
+            }
+          );
         } catch (error) {
           console.error("Send telegram message error", error);
         }

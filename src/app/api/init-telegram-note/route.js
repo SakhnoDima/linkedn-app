@@ -9,8 +9,6 @@ export const GET = async (req, res) => {
   try {
     const user = await User.findById({ _id: userId });
 
-    console.log("start telegram", user);
-
     if (!user.isTelegramNotifications) {
       await CronUpWork.startTelegramNotification(userId);
     } else {
