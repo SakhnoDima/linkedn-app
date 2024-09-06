@@ -10,7 +10,7 @@ const LogOut = () => {
   const router = useRouter();
 
   const handleSignOut = async () => {
-    await signOut({ redirect: true });
+    await signOut({ callbackUrl: "/" });
     router.push("/");
   };
 

@@ -7,7 +7,7 @@ export async function GET(req) {
   const to_date = searchParams.get("to_date");
 
   try {
-    const url = `https://data-eu.mixpanel.com/api/2.0/export?from_date=${from_date}&to_date=${to_date}&event=%5B%22SEND%20BID%22%5D`;
+    const url = `https://data-eu.mixpanel.com/api/2.0/export?from_date=${from_date}&to_date=${to_date}`;
     const headers = {
       Accept: "text/plain",
       Authorization: "Basic MWZiYmU0M2ExNmIyY2UzZWE4ZWI1YTZiMDY2MDM5NjU6",
@@ -23,6 +23,8 @@ export async function GET(req) {
       .split("\n")
       .filter(Boolean)
       .map((line) => JSON.parse(line));
+
+    //TODO filter to event reject or send
 
     return NextResponse.json(data);
   } catch (error) {

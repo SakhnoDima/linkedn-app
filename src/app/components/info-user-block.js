@@ -70,7 +70,7 @@ const InfoUserBlock = () => {
   const tooltipClick = async () => {
     try {
       await navigator.clipboard.writeText(session.user.id);
-      await setTooltipText("Copied!");
+      setTooltipText("Copied!");
     } catch (error) {
       console.error("Failed to copy text: ", error);
     }

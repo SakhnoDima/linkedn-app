@@ -40,7 +40,7 @@ class CronUpWorkClass {
                 key: "upWork",
                 id: scannerData.userId,
                 taskId: scannerData._id,
-                userEmail: user.userEmail,
+                userEmail: user.email,
                 taskType: user.status,
                 scannerName: scannerData.scannerName,
                 autoBidding: scannerData.autoBidding,
@@ -97,25 +97,14 @@ class CronUpWorkClass {
         try {
           console.log("START");
 
-          let chatId;
-          await User.findOne({ _id: userId }, "chatId")
-            .then((user) => {
-              if (user) {
-                chatId = user.chatId;
-                console.log("Found chatId:", chatId);
-              } else {
-                console.log("User not found");
-              }
-            })
-            .catch((error) => {
-              console.error("Error finding user:", error);
-            });
+          const user = await User.findOne({ _id: userId });
 
           await axios.post(
             "https://5zfmj0shmi.execute-api.eu-north-1.amazonaws.com/default/upwork-get-info",
             {
               id: userId,
-              chatId: chatId,
+              chatId: user.chatId,
+              taskType: user.status,
             }
           );
         } catch (error) {
