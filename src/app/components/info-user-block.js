@@ -95,7 +95,8 @@ const InfoUserBlock = () => {
           </li>
           <li className={itemsClasses}>
             <p className={itemStyle}>User id:</p>
-            <div className="tooltip" data-tip={tooltipText}>
+            <span className="text-ellipsis ">{session.user.id}</span>
+            {/* <div className="tooltip" data-tip={tooltipText}>
               <button
                 className="btn w-[130px] flex flex-nowrap"
                 onClick={tooltipClick}
@@ -105,7 +106,7 @@ const InfoUserBlock = () => {
                   {session.user.id}
                 </span>
               </button>
-            </div>
+            </div> */}
           </li>
           <li className={itemsClasses}>
             <div className={itemsClasses}>
