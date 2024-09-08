@@ -46,6 +46,7 @@ const SaveCodeForm = () => {
             >
               <Input
                 required
+                className="w-[400px]"
                 type="text"
                 value={code}
                 onChange={(e) => setCod(e.target.value)}

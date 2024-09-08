@@ -93,7 +93,7 @@ const LinkedinSignUpForm = ({ setIsCodeConfirm }) => {
               type="text"
               placeholder="Linkedin Login"
               as={Input}
-              className="input-bordered"
+              className="input-bordered w-[400px]"
             />
             <ErrorMessage
               name="login"
@@ -107,7 +107,7 @@ const LinkedinSignUpForm = ({ setIsCodeConfirm }) => {
               type="password"
               placeholder="Linkedin Password"
               as={Input}
-              className="input-bordered"
+              className="input-bordere w-[400px]"
             />
             <ErrorMessage
               name="pass"

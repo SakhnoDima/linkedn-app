@@ -91,7 +91,7 @@ const LoginForm = () => {
               type="email"
               placeholder="Email"
               as={Input}
-              className="input-bordered"
+              className="input-bordered w-[400px]"
             />
             <ErrorMessage
               name="email"
@@ -106,7 +106,7 @@ const LoginForm = () => {
                 type="text"
                 placeholder="Verification Code"
                 as={Input}
-                className="input-bordered"
+                className="input-bordered w-[400px]"
               />
               <ErrorMessage
                 name="code"

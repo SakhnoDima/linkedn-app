@@ -139,7 +139,7 @@ const UpWorkLoginForm = ({
                 type={item.fieldType}
                 placeholder={item.placeholder}
                 as={Input}
-                className="input-bordered"
+                className="input-bordered w-[400px]"
               />
               <ErrorMessage
                 name={item.fieldName}

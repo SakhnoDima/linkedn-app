@@ -15,21 +15,22 @@ export async function GET(req) {
 
     const response = await axios.get(url, { headers });
 
-    //TODO if (!response.ok) {
-    //   throw new Error(`HTTP error! status: ${response.status}`);
-    // }
+    if (!response.status === 200) {
+      console.log(response.data);
+
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
 
     const data = response.data
       .split("\n")
       .filter(Boolean)
-      .map((line) => JSON.parse(line));
-
-    //TODO filter to event reject or send
+      .map((line) => JSON.parse(line))
+      .filter(
+        (elem) => elem.event === "REJECT BID" || elem.event === "SEND BID"
+      );
 
     return NextResponse.json(data);
   } catch (error) {
-    console.log(error);
-
     return NextResponse.json(
       { error: `Failed to fetch data: ${error.message}` },
       { status: 500 }
