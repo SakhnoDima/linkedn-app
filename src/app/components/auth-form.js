@@ -94,7 +94,7 @@ const AthForm = () => {
                 type="email"
                 placeholder="Email"
                 as={Input}
-                className="input-bordered"
+                className="input-bordered w-[400px]"
               />
               <ErrorMessage
                 name="email"
@@ -109,7 +109,7 @@ const AthForm = () => {
                 type={showPass ? "password" : "text"}
                 placeholder="Password"
                 as={Input}
-                className="input-bordered"
+                className="input-bordered w-[400px]"
               />
               <ErrorMessage
                 name="password"
