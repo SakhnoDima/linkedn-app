@@ -175,20 +175,22 @@ const ConnectionForm = ({ currentTarget, handler }) => {
                 <>
                   <label
                     key={index}
-                    className="flex flex-col space-y-2  relative"
+                    className="w-[100%] flex flex-col space-y-2  relative"
                   >
                     <div className="flex items-center space-x-2">
                       <span>{data.labelText}</span>
                       {index <= 2 && <span className="text-red-500">*</span>}
-                    </div>
-                    <div className="tooltip" data-tip={`${data.toolTipText}`}>
-                      <AiOutlineQuestionCircle className="hover:cursor-pointer" />
+
+                      <div className="tooltip" data-tip={`${data.toolTipText}`}>
+                        <AiOutlineQuestionCircle className="hover:cursor-pointer" />
+                      </div>
                     </div>
                     <Field
                       name={`${data.fieldName}`}
                       type={`${data.fieldType}`}
                       placeholder={`${data.placeholder}`}
                       as={Input}
+                      className="w-[100%]"
                     />
                     <ErrorMessage
                       name={`${data.fieldName}`}
