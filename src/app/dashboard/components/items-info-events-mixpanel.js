@@ -63,12 +63,16 @@ const ItemsInfoEvents = ({ data }) => {
             <td>{item.properties.scanName}</td>
             <td>{item.properties.freelancer}</td>
             <td>
-              <a
-                className="underline hover:cursor-pointer hover:text-main-blue"
-                href={item.properties.targetLink}
-              >
-                View job posting
-              </a>
+              {item.properties.targetLink ? (
+                <a
+                  className="underline hover:cursor-pointer hover:text-main-blue"
+                  href={item.properties.targetLink}
+                >
+                  View job posting
+                </a>
+              ) : (
+                "-"
+              )}
             </td>
 
             <td>{formattedTime}</td>

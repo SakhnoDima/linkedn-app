@@ -6,9 +6,10 @@ import Input from "@/app/components/input";
 import Loader from "@/app/components/loader";
 import { useToastContext } from "@/app/context/toast-context";
 import ItemsInfoEvents from "./items-info-events-mixpanel";
+import { EventChart } from "./event-chart";
 
 const fetchAndParseMixpanelData = async (from_date, to_date, userId) => {
-  const url = `/api/mix-panel-info?from_date=${from_date}&to_date=${to_date}&user_id=${userId}`;
+  const url = `/api/mix-panel-info?from_date=${from_date}T00:00:00&to_date=${to_date}T15:15:00&user_id=${userId}`;
 
   const { data } = await axios.get(url);
 
@@ -76,8 +77,6 @@ export const TableInfoEventsMixpanel = ({ userId }) => {
       });
   }, []);
 
-  console.log(data);
-
   return (
     <div>
       <div className="mb-4 flex gap-4 items-center justify-center">
@@ -126,6 +125,7 @@ export const TableInfoEventsMixpanel = ({ userId }) => {
           <ItemsInfoEvents data={data} />
         </table>
       </div>
+      <EventChart data={data} />
     </div>
   );
 };
