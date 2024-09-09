@@ -13,7 +13,7 @@ const DashboardPage = async () => {
   return (
     <div>
       <h2 className="font-bold text-3xl text-center mb-4">DashboardPage</h2>
-      <ActiveDashboards />
+      <ActiveDashboards session={session} />
     </div>
   );
 };

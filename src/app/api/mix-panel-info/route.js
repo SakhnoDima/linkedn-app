@@ -24,6 +24,8 @@ export async function GET(req) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
+    console.log(response.data);
+
     const data = response.data
       .split("\n")
       .filter(Boolean)

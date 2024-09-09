@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { TableInfoEventsMixpanel } from "./table-info-events-mixpanel";
 import LinkedinTasksTable from "./linkedin-tasks-table";
-import { useSession } from "next-auth/react";
 import Button from "@/app/components/button";
 
 const dashboards = {
@@ -41,9 +40,8 @@ const SetActiveDashboard = ({ setDashboard, dashboard }) => {
   );
 };
 
-const ActiveDashboards = () => {
+const ActiveDashboards = ({ session }) => {
   const [dashboard, setDashboard] = useState(dashboards.upWork);
-  const { data: session } = useSession();
 
   return (
     <div>
