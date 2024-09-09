@@ -6,15 +6,15 @@ import Input from "@/app/components/input";
 import Loader from "@/app/components/loader";
 import { useToastContext } from "@/app/context/toast-context";
 
-const fetchAndParseMixpanelData = async (from_date, to_date) => {
-  const url = `/api/mix-panel-info?from_date=${from_date}&to_date=${to_date}`;
+const fetchAndParseMixpanelData = async (from_date, to_date, userId) => {
+  const url = `/api/mix-panel-info?from_date=${from_date}&to_date=${to_date}&user_id=${userId}`;
 
   const { data } = await axios.get(url);
 
   return data;
 };
 
-export const TableInfoEventsMixpanel = () => {
+export const TableInfoEventsMixpanel = ({ userId }) => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [fromDate, setFromDate] = useState("");
@@ -23,7 +23,7 @@ export const TableInfoEventsMixpanel = () => {
   const showToast = useToastContext();
 
   const handleFetchData = async () => {
-    if (!fromDate || !toDate) {
+    if (!fromDate || !toDate || !userId) {
       showToast("Please select both dates.", "error");
       //setError("Please select both dates.");
       return;
@@ -36,7 +36,7 @@ export const TableInfoEventsMixpanel = () => {
     }
 
     setLoading(true);
-    fetchAndParseMixpanelData(fromDate, toDate)
+    fetchAndParseMixpanelData(fromDate, toDate, userId)
       .then((result) => {
         setData(result);
         setLoading(false);
@@ -62,7 +62,7 @@ export const TableInfoEventsMixpanel = () => {
     setToDate(currentDate);
     setFromDate(currentDate);
     setLoading(true);
-    fetchAndParseMixpanelData(currentDate, currentDate)
+    fetchAndParseMixpanelData(currentDate, currentDate, userId)
       .then((result) => {
         setData(result);
         setLoading(false);

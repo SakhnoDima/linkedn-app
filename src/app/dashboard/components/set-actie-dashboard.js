@@ -23,7 +23,7 @@ const SetActiveDashboard = ({ setDashboard, dashboard }) => {
         <span
           className={dashboard === dashboards.upWork && activeLineAfterClass}
         >
-          Linkedin
+          UpWork
         </span>
       </Button>
       <Button
@@ -34,7 +34,7 @@ const SetActiveDashboard = ({ setDashboard, dashboard }) => {
         <span
           className={dashboard === dashboards.linkedin && activeLineAfterClass}
         >
-          UpWork
+          Linkedin
         </span>
       </Button>
     </div>
@@ -49,7 +49,9 @@ const ActiveDashboards = () => {
     <div>
       <SetActiveDashboard setDashboard={setDashboard} dashboard={dashboard} />
       <div>
-        {dashboard === dashboards.upWork && <TableInfoEventsMixpanel />}
+        {dashboard === dashboards.upWork && (
+          <TableInfoEventsMixpanel userId={session?.user.id} />
+        )}
         {dashboard === dashboards.linkedin && (
           <LinkedinTasksTable userId={session?.user.id} />
         )}
