@@ -3,14 +3,14 @@ import FormicInput from "../ui/formik-input";
 export const AddingTargetWardsBlock = () => {
   const filtersInputs = [
     {
-      labelText: "1. All of these words",
+      labelText: "All of these words",
       toolTipText: "Here you can add target wards and we will use all off them",
       fieldName: "searchWords.includeWords",
       fieldType: "text",
       placeholder: `Ex: (WP | developer) & (create*)`,
     },
     {
-      labelText: "2. None of these words",
+      labelText: "None of these words",
       toolTipText: "Here you can add exception words",
       fieldName: "searchWords.excludeWords",
       fieldType: "text",

@@ -21,7 +21,7 @@ export const ExperienceLevel = ({ values, setFieldValue }) => {
   return (
     <div className="mb-4">
       <div className="flex space-x-2">
-        <p className="mb-2">6. Experience level</p>
+        <p className="mb-2 text-lg">Experience level</p>
         <Tooltip text={`Here you can defined Experience level`} />
       </div>
       <div className="flex  flex-row gap-4 justify-around p-2">

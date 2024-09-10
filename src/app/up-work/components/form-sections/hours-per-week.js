@@ -11,7 +11,7 @@ export const HoursPerWeek = ({ values, setFieldValue }) => {
   return (
     <div>
       <div className="flex space-x-2">
-        <p className="mb-2">9. Hours per week</p>
+        <p className="mb-2 text-lg">Hours per week</p>
         <Tooltip text={`Hours per week duration`} />
       </div>
 

@@ -1,6 +1,5 @@
 import React from "react";
 import FormicInput from "../ui/formik-input";
-import FormikToggle from "../ui/formik-toggle";
 import { SetBiddingOptions } from "./set-time";
 
 export const ScannerInfo = ({ values, handleChange }) => {

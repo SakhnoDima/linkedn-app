@@ -119,7 +119,7 @@ const WeeklyInfo = ({ active, scanner }) => {
   return (
     <div className="mt-4">
       <div className="flex items-center space-x-2 mb-2">
-        <span>Scanner relevance</span>
+        <span className="text-lg">Scanner relevance</span>
         <div
           className="tooltip"
           data-tip={

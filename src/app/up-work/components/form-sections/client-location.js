@@ -2,7 +2,7 @@ import FormicInput from "../ui/formik-input";
 
 export const ClientLocation = () => {
   const locationData = {
-    labelText: "12. Clients Location",
+    labelText: "Clients Location",
     toolTipText: "Here you can add customer locations",
     fieldName: "searchFilters.clientLocation",
     fieldType: "text",

@@ -10,7 +10,7 @@ export const HireRate = ({ values, setFieldValue }) => {
   return (
     <div className="mb-4">
       <div className="flex space-x-2">
-        <p className="mb-2">15. Hire Rate</p>
+        <p className="mb-2 text-lg">Hire Rate</p>
         <Tooltip
           text={`Determine the minimum hiring rating. This indicates advanced leads with a good history`}
         />

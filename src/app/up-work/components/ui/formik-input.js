@@ -2,11 +2,11 @@ import { ErrorMessage, Field } from "formik";
 import React from "react";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 
-const FormicInput = ({ data }) => {
+const FormicInput = ({ data, index }) => {
   return (
     <label className="flex flex-col space-y-2  relative">
       <div className="flex items-center space-x-2">
-        <span>{data.labelText}</span>
+        <span className="text-lg">{data.labelText}</span>
         <div className="tooltip" data-tip={`${data.toolTipText}`}>
           <AiOutlineQuestionCircle className="hover:cursor-pointer" />
         </div>
