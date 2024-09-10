@@ -2,7 +2,7 @@ import { ErrorMessage, Field } from "formik";
 import React from "react";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 
-const FormicInput = ({ data, index }) => {
+const FormicInput = ({ data }) => {
   return (
     <label className="flex flex-col space-y-2  relative">
       <div className="flex items-center space-x-2">

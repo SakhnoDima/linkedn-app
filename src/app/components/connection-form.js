@@ -129,6 +129,13 @@ const ConnectionForm = ({ currentTarget, handler }) => {
 
   return (
     <>
+      <h2 className="text-3xl text-center mb-[8px] font-bold px-2">
+        Target Form
+      </h2>
+      <p className="text-center mb-[12px] px-2">
+        Here you can specify the filters you need for the target and send
+        requests.
+      </p>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}

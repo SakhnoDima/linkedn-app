@@ -5,6 +5,7 @@ import { useToastContext } from "../context/toast-context";
 import { useEffect, useState } from "react";
 import UserLinkedinFiltersItem from "./user-linkedin-filters-item";
 import TargetActionButton from "./target-action-button";
+import InvitationLetterBlock from "./invitation-letter-block";
 
 const UsersLinkedinFilters = () => {
   const { data: session } = useSession();
@@ -35,6 +36,7 @@ const UsersLinkedinFilters = () => {
   return (
     <div className="overflow-x-auto">
       <div className="flex gap-[16px] p-[16px]">
+        <InvitationLetterBlock />
         <TargetActionButton setFilters={setFilters} actions="add" />
         {currentTarget?.length === 1 && (
           <TargetActionButton
