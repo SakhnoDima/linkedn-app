@@ -12,7 +12,7 @@ export const ClientHistory = ({ values, setFieldValue }) => {
   return (
     <div className="mb-4">
       <div className="flex space-x-2">
-        <p className="mb-2">10. Client History</p>
+        <p className="mb-2 text-lg">Client History</p>
         <Tooltip text={`Define Client history`} />
       </div>
 

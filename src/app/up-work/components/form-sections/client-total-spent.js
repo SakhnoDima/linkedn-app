@@ -12,7 +12,7 @@ export const ClientTotalSpent = ({ values, setFieldValue }) => {
   return (
     <div className="mb-4">
       <div className="flex space-x-2">
-        <p className="mb-2">14. Client Total Spent</p>
+        <p className="mb-2 text-lg">Client Total Spent</p>
         <Tooltip text={`Choose min client total spent`} />
       </div>
 

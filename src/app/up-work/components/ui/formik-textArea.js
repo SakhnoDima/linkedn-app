@@ -6,7 +6,7 @@ const FormicTextArea = ({ data }) => {
   return (
     <label className="flex flex-col gap-2 relative">
       <div className="flex items-center space-x-2">
-        <span>{data.labelText}</span>
+        <span className="text-lg">{data.labelText}</span>
         <Tooltip text={`${data.toolTipText}`} />
       </div>
       <Field

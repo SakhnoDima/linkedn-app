@@ -6,7 +6,7 @@ import { FaGithub, FaLinkedin } from "react-icons/fa";
 export const CoverLetterOptions = () => {
   const coverLetterOptions = [
     {
-      labelText: "21. Cover Letter",
+      labelText: "Cover Letter",
       toolTipText:
         "This cover letter will be used in all your job applications.",
       fieldName: "coverLetterOptions.coverLetterTemplate",
@@ -16,7 +16,7 @@ export const CoverLetterOptions = () => {
       fieldClassName: "h-[300px]",
     },
     {
-      labelText: "22. Freelancer skills",
+      labelText: "Freelancer skills",
       toolTipText:
         "To add individuality to the letter, identify the freelancer's main skills.",
       fieldName: "coverLetterOptions.freelancerSkills",
@@ -28,7 +28,7 @@ export const CoverLetterOptions = () => {
   ];
   const freelancerLinkInputs = [
     {
-      labelText: "23. Freelancer Github Link",
+      labelText: "Freelancer Github Link",
       icon: (
         <FaGithub className="absolute top-[5px] left-1 w-[20px] h-[20px]" />
       ),
@@ -37,7 +37,7 @@ export const CoverLetterOptions = () => {
       placeholder: "Github",
     },
     {
-      labelText: "24. Freelancer Linkedin Link",
+      labelText: "Freelancer Linkedin Link",
       icon: (
         <FaLinkedin className="absolute top-[5px] left-1 w-[20px] h-[20px]" />
       ),
@@ -56,7 +56,7 @@ export const CoverLetterOptions = () => {
       {freelancerLinkInputs.map((option, index) => (
         <div key={index}>
           <div className="mb-2 flex items-center gap-2">
-            <p>{option.labelText}</p>
+            <p className="text-lg">{option.labelText}</p>
             <Tooltip text={option.toolTipText} />
           </div>
           <label className="flex gap-2 items-center relative">

@@ -32,7 +32,7 @@ export const JobType = ({ values, setFieldValue }) => {
   return (
     <div className="mb-4">
       <div className="flex space-x-2">
-        <p className="mb-2">7. Job type</p>
+        <p className="mb-2 text-lg">Job type</p>
         <Tooltip
           text={`Chose hourly or fixed job type and prefer average price`}
         />

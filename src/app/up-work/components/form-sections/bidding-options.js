@@ -1,16 +1,16 @@
 import FormicInput from "../ui/formik-input";
 
-export const BiddingOptions = () => {
+export const BiddingOptions = ({ account }) => {
   const biddingOptions = [
     {
-      labelText: "18. Add Team Name",
+      labelText: "Add Team Name",
       toolTipText: "Here you can choose available freelancers.",
       fieldName: "biddingOptions.team",
       fieldType: "text",
       placeholder: `Ex: My Team Name`,
     },
     {
-      labelText: "19. Freelancer Name",
+      labelText: "Freelancer Name",
       toolTipText:
         "Here you can select the freelancer from whom this offer came.",
       fieldName: "biddingOptions.freelancer",
@@ -18,7 +18,7 @@ export const BiddingOptions = () => {
       placeholder: `Ex: Name Surname`,
     },
     {
-      labelText: "20. Propose with a Specialized freelancer profile",
+      labelText: "Propose with a Specialized freelancer profile",
       toolTipText: "Here you can select a freelancer profile.",
       fieldName: "biddingOptions.profile",
       fieldType: "text",
@@ -26,10 +26,13 @@ export const BiddingOptions = () => {
     },
   ];
 
+  const filteredBiddingOptions =
+    account !== "agency-account" ? biddingOptions.slice(1) : biddingOptions;
+
   return (
     <div className="flex flex-col gap-[30px] mx-auto justify-center">
-      {biddingOptions.map((option, index) => (
-        <FormicInput key={index} data={option} />
+      {filteredBiddingOptions.map((option, index) => (
+        <FormicInput key={index} data={option} index={index} />
       ))}
     </div>
   );

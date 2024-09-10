@@ -6,7 +6,7 @@ export const ClientRating = ({ values, setFieldValue }) => {
   return (
     <div className="mb-4">
       <div className="flex space-x-2">
-        <p className="mb-2">13. Client Min Average Feedback</p>
+        <p className="mb-2 text-lg">Client Min Average Feedback</p>
         <Tooltip text={`Define Client min rating feedback`} />
       </div>
 

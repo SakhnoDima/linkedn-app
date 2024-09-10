@@ -341,17 +341,16 @@ const ScannersForm = ({ setScanners, scanner, actions }) => {
                 </div>
               </div>
 
-              {session?.user.accountStatus === "agency-account" && (
-                <div className="collapse collapse-arrow bg-base-200">
-                  <input type="radio" name="my-accordion-2" />
-                  <div className="collapse-title text-xl font-medium">
-                    Bidding Options
-                  </div>
-                  <div className="collapse-content px-[3rem]">
-                    <BiddingOptions />
-                  </div>
+              <div className="collapse collapse-arrow bg-base-200">
+                <input type="radio" name="my-accordion-2" />
+                <div className="collapse-title text-xl font-medium">
+                  Bidding Options
                 </div>
-              )}
+                <div className="collapse-content px-[3rem]">
+                  <BiddingOptions account={session?.user.accountStatus} />
+                </div>
+              </div>
+
               <div className="collapse collapse-arrow bg-base-200">
                 <input type="radio" name="my-accordion-2" />
                 <div className="collapse-title text-xl font-medium">

@@ -11,7 +11,7 @@ export const MinAvgHourlyRate = ({ values }) => {
   return (
     <div className="mb-4">
       <div className="flex space-x-2">
-        <p className="mb-2">16. Hourly rate paid</p>
+        <p className="mb-2 text-lg">Hourly rate paid</p>
         <Tooltip
           text={`Here you can determine client average hourly rate paid`}
         />
