@@ -1,17 +1,14 @@
 import React from "react";
 
 const formatTime = (unixTime, timeAgoString = null) => {
-  // Створюємо об'єкт Date з Unix-часу (в мілісекундах)
   const biddingDate = new Date(unixTime * 1000);
   const createdDate = new Date(unixTime * 1000);
 
-  // Якщо передано timeAgoString, обробляємо його
   if (timeAgoString) {
     const [_, amount, unit] = timeAgoString.match(/(\d+)\s(\w+)/);
 
     const timeToSubtract = parseInt(amount);
 
-    // В залежності від одиниць вимірювання, віднімаємо відповідний час
     switch (unit) {
       case "seconds":
       case "second":
@@ -31,7 +28,6 @@ const formatTime = (unixTime, timeAgoString = null) => {
     }
   }
 
-  // Отримуємо годину, хвилини та секунди
   const biddingHours = String(biddingDate.getHours()).padStart(2, "0");
   const biddingMinutes = String(biddingDate.getMinutes()).padStart(2, "0");
   const biddingSeconds = String(biddingDate.getSeconds()).padStart(2, "0");
@@ -40,7 +36,6 @@ const formatTime = (unixTime, timeAgoString = null) => {
   const createdMinutes = String(createdDate.getMinutes()).padStart(2, "0");
   const createdSeconds = String(createdDate.getSeconds()).padStart(2, "0");
 
-  // Повертаємо об'єкт з двома значеннями: форматованим часом та новим часом після вирахування
   return {
     formattedTime: `${biddingHours}:${biddingMinutes}:${biddingSeconds}`,
     modifiedTime: timeAgoString
