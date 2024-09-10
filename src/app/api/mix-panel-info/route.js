@@ -23,7 +23,7 @@ export async function GET(req) {
       console.log(response.data);
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-
+    console.log(response.data.split("\n"));
     const data = response.data
       .split("\n")
       .filter(Boolean)
@@ -34,6 +34,7 @@ export async function GET(req) {
           (elem.event === "REJECT BID" || elem.event === "SEND BID")
       );
 
+    console.log(data);
     return NextResponse.json(data);
   } catch (error) {
     return NextResponse.json(

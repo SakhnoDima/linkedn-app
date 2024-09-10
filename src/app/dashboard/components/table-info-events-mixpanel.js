@@ -5,9 +5,11 @@ import Button from "@/app/components/button";
 import Input from "@/app/components/input";
 import Loader from "@/app/components/loader";
 import { useToastContext } from "@/app/context/toast-context";
+import ItemsInfoEvents from "./items-info-events-mixpanel";
+import { EventChart } from "./event-chart";
 
 const fetchAndParseMixpanelData = async (from_date, to_date, userId) => {
-  const url = `/api/mix-panel-info?from_date=${from_date}&to_date=${to_date}&user_id=${userId}`;
+  const url = `/api/mix-panel-info?from_date=${from_date}T00:00:00&to_date=${to_date}T15:15:00&user_id=${userId}`;
 
   const { data } = await axios.get(url);
 
@@ -25,13 +27,11 @@ export const TableInfoEventsMixpanel = ({ userId }) => {
   const handleFetchData = async () => {
     if (!fromDate || !toDate || !userId) {
       showToast("Please select both dates.", "error");
-      //setError("Please select both dates.");
       return;
     }
 
     if (new Date(fromDate) > new Date(toDate)) {
       showToast("From date cannot be later than To date.", "error");
-      //setError("From date cannot be later than To date.");
       return;
     }
 
@@ -52,9 +52,11 @@ export const TableInfoEventsMixpanel = ({ userId }) => {
   useEffect(() => {
     const getCurrentDate = () => {
       const today = new Date();
+
       const year = today.getFullYear();
       const month = String(today.getMonth() + 1).padStart(2, "0");
       const day = String(today.getDate()).padStart(2, "0");
+      console.log(`${year}-${month}-${day}`);
       return `${year}-${month}-${day}`;
     };
 
@@ -110,31 +112,20 @@ export const TableInfoEventsMixpanel = ({ userId }) => {
       <div className="overflow-x-auto">
         <table className="table table-xs">
           <thead>
-            <tr>
+            <tr className="text-center">
               <th>Event</th>
-              <th>Link</th>
-              <th>user Id</th>
+              <th>Scanner</th>
               <th>Freelancer</th>
+              <th>Link</th>
+              <th>Bidding Time</th>
+              <th>Сreated Time</th>
               <th>Required Connects</th>
             </tr>
           </thead>
-          <tbody>
-            {data.map((item, index) => (
-              <tr key={index} className="">
-                <td>{item.event}</td>
-                <td>
-                  <a href={item.properties.targetLink}>
-                    {item.properties.targetLink}
-                  </a>
-                </td>
-                <td>{item.properties.$user_id}</td>
-                <td>{item.properties.freelancer}</td>
-                <td>{item.properties.requiredConnects}</td>
-              </tr>
-            ))}
-          </tbody>
+          <ItemsInfoEvents data={data} />
         </table>
       </div>
+      <EventChart data={data} />
     </div>
   );
 };
