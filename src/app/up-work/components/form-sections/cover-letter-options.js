@@ -30,7 +30,7 @@ export const CoverLetterOptions = () => {
     {
       labelText: "Freelancer Github Link",
       icon: (
-        <FaGithub className="absolute top-[5px] left-1 w-[20px] h-[20px]" />
+        <FaGithub className="absolute top-[7px] left-1 w-[20px] h-[20px]" />
       ),
       toolTipText: "Freelancer Github Link",
       name: "coverLetterOptions.additionalLinks.gitHub",
@@ -39,7 +39,7 @@ export const CoverLetterOptions = () => {
     {
       labelText: "Freelancer Linkedin Link",
       icon: (
-        <FaLinkedin className="absolute top-[5px] left-1 w-[20px] h-[20px]" />
+        <FaLinkedin className="absolute top-[7px] left-1 w-[20px] h-[20px]" />
       ),
       toolTipText: "Freelancer Linkedin Link",
       name: "coverLetterOptions.additionalLinks.linkedIn",
@@ -65,7 +65,8 @@ export const CoverLetterOptions = () => {
               name={option.name}
               type="text"
               placeholder={option.placeholder}
-              className="w-[100%] py-[4px] pl-[28px]"
+              className="w-[100%] py-[4px] pl-[28px] 
+              border border-gray-300 p-2 rounded focus:outline-none focus:border-main-blue"
             />
 
             <ErrorMessage

@@ -10,7 +10,7 @@ const FormicTextArea = ({ data }) => {
         <Tooltip text={`${data.toolTipText}`} />
       </div>
       <Field
-        className={` ${data.fieldClassName}`}
+        className={`border border-gray-300 p-2 rounded focus:outline-none focus:border-main-blue ${data.fieldClassName}`}
         name={`${data.fieldName}`}
         as={TextArea}
         placeholder={`${data.placeholder}`}
