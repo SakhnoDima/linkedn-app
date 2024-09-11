@@ -1,21 +1,22 @@
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
+import { getServerSession } from 'next-auth';
+import { redirect } from 'next/navigation';
 
-import { authOptions } from "../api/auth/[...nextauth]/route";
-import ActiveDashboards from "./components/set-actie-dashboard";
+import { authOptions } from '../api/auth/[...nextauth]/route';
+import ActiveDashboards from './components/set-actie-dashboard';
 
 const DashboardPage = async () => {
-  const session = await getServerSession(authOptions);
+    const session = await getServerSession(authOptions);
 
-  if (!session) {
-    redirect("/");
-  }
-  return (
-    <div>
-      <h2 className="font-bold text-3xl text-center mb-4">DashboardPage</h2>
-      <ActiveDashboards session={session} />
-    </div>
-  );
+    if (!session) {
+        redirect('/');
+    }
+
+    return (
+        <div>
+            <h2 className="font-bold text-3xl text-center mb-4">DashboardPage</h2>
+            <ActiveDashboards session={session} />
+        </div>
+    );
 };
 
 export default DashboardPage;
