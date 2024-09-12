@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import mongoose from "mongoose";
 
 import LinkedinLetters from "@/app/lib/linkedin-letters-model";
+import User from "@/app/lib/user-model";
 
 export const POST = async (req, res) => {
   const { invitationData, userId } = await req.json();
@@ -13,6 +14,13 @@ export const POST = async (req, res) => {
     );
   }
   try {
+    await User.findOneAndUpdate(
+      { _id: userId },
+      {
+        isGreetingMessage: true,
+      }
+    );
+
     const existingLetter = await LinkedinLetters.findOneAndUpdate(
       {
         userId,
@@ -23,7 +31,6 @@ export const POST = async (req, res) => {
       },
       { new: true, upsert: true, runValidators: true }
     );
-    //TODO зупиняємо таску
     if (!existingLetter) {
       const newLetter = await LinkedinLetters.create({
         ...invitationData,
@@ -80,9 +87,15 @@ export const GET = async (req, res) => {
 };
 
 export const DELETE = async (req, res) => {
-  const { letterId } = await req.json();
+  const { userId, letterId } = await req.json();
 
   try {
+    await User.findByIdAndUpdate(
+      { _id: userId },
+      {
+        isGreetingMessage: false,
+      }
+    );
     //TODO тут зупиняємо таску
     //TaskService.stopTask(userId, taskId);
 

@@ -1,4 +1,6 @@
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form } from "formik";
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import * as Yup from "yup";
 import axios from "axios";
 
@@ -7,10 +9,11 @@ import { useModalContext } from "../context/modal-context";
 import FormicInput from "../up-work/components/ui/formik-input";
 import FormicTextArea from "../up-work/components/ui/formik-textArea";
 import { useToastContext } from "../context/toast-context";
-import { useEffect, useState } from "react";
 
 const InvitationLetterForm = ({ userId, letterData, setLetterData }) => {
   const showToast = useToastContext();
+  const { data: session, update } = useSession();
+
   const { closeModal } = useModalContext();
   const initialValues = {
     letterText: letterData.letterText || "",
@@ -30,10 +33,15 @@ const InvitationLetterForm = ({ userId, letterData, setLetterData }) => {
         },
         data: {
           letterId: letterData._id,
+          userId,
         },
       })
       .then(({ data }) => {
         showToast(data.message, "success");
+        update({
+          ...session,
+          user: { ...session.user, isGreetingMessage: "update" },
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -56,6 +64,13 @@ const InvitationLetterForm = ({ userId, letterData, setLetterData }) => {
             })
             .then(({ data }) => {
               showToast(data.message, "success");
+              if (!session.user.isGreetingMessage) {
+                update({
+                  ...session,
+                  user: { ...session.user, isGreetingMessage: "update" },
+                });
+              }
+
               setLetterData(data.letter);
             })
             .catch((error) => {
@@ -98,41 +113,44 @@ const InvitationLetterForm = ({ userId, letterData, setLetterData }) => {
               placeholder: `Ex: CEO; Chief Executive`,
             }}
           />
-
-          <Button
-            initial={{ backgroundColor: "#4f46e5" }}
-            whileHover={{
-              scale: 1.1,
-              backgroundColor: "#3730a3",
-            }}
-            transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            type="submit"
-            className="mx-auto w-72 rounded-[10px] text-white p-2"
-            disabled={isSubmitting}
-          >
-            <p>Start</p>
-          </Button>
-          <Button
-            onClick={handleStopSendingInvitationLetter}
-            initial={{ backgroundColor: "#dc2626" }}
-            whileHover={{
-              scale: 1.1,
-              backgroundColor: "#991b1b",
-            }}
-            transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            type="button"
-            className="mx-auto w-72 rounded-[10px] text-white p-2"
-            disabled={isSubmitting}
-          >
-            <p>Stop</p>
-          </Button>
+          {!session.user.isGreetingMessage ? (
+            <Button
+              initial={{ backgroundColor: "#4f46e5" }}
+              whileHover={{
+                scale: 1.1,
+                backgroundColor: "#3730a3",
+              }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              type="submit"
+              className="mx-auto w-72 rounded-[10px] text-white p-2"
+              disabled={isSubmitting}
+            >
+              <p>Initialize</p>
+            </Button>
+          ) : (
+            <Button
+              onClick={handleStopSendingInvitationLetter}
+              initial={{ backgroundColor: "#dc2626" }}
+              whileHover={{
+                scale: 1.1,
+                backgroundColor: "#991b1b",
+              }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              type="button"
+              className="mx-auto w-72 rounded-[10px] text-white p-2 "
+              disabled={isSubmitting}
+            >
+              <p>Deactivate</p>
+            </Button>
+          )}
         </Form>
       )}
     </Formik>
   );
 };
 
-const InvitationLetterBlock = ({ userId }) => {
+const InvitationLetterBlock = () => {
+  const { data: session } = useSession();
   const [letter, setLetter] = useState({});
   const { openModal } = useModalContext();
 
@@ -140,19 +158,26 @@ const InvitationLetterBlock = ({ userId }) => {
     const getLetter = async () => {
       return await axios.get("api/invitation-letter", {
         params: {
-          userId,
+          userId: session?.user.id,
         },
       });
     };
-    getLetter().then((response) => setLetter(response.data));
-  }, [userId]);
+    if (session?.user.id) {
+      getLetter().then((response) => setLetter(response.data));
+    }
+  }, [session?.user.id]);
 
   const handleClick = () => {
     openModal(
       <div className="py-4 px-10">
         <h2 className="text-center text-2xl">Greeting option</h2>
+        {!session?.user.isGreetingMessage ? (
+          <p>Initialize this task to start sending messages</p>
+        ) : (
+          <p>Your task has started, click Deactivate to stop sending</p>
+        )}
         <InvitationLetterForm
-          userId={userId}
+          userId={session?.user.id}
           letterData={letter}
           setLetterData={setLetter}
         />

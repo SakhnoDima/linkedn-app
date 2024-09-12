@@ -25,6 +25,10 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  isGreetingMessage: {
+    type: Boolean,
+    default: false,
+  },
   chatId: {
     type: [String],
   },

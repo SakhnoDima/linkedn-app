@@ -36,7 +36,7 @@ const UsersLinkedinFilters = () => {
   return (
     <div className="overflow-x-auto">
       <div className="flex gap-[16px] p-[16px]">
-        <InvitationLetterBlock userId={session?.user.id} />
+        <InvitationLetterBlock />
         <TargetActionButton setFilters={setFilters} actions="add" />
         {currentTarget?.length === 1 && (
           <TargetActionButton

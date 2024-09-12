@@ -50,8 +50,10 @@ export const authOptions = {
         trigger === "update" &&
         session.user.isTelegramNotifications === "update"
       ) {
-        console.log("isTelegramNotifications set false");
         token.isTelegramNotifications = !token.isTelegramNotifications;
+      }
+      if (trigger === "update" && session.user.isGreetingMessage === "update") {
+        token.isGreetingMessage = !token.isGreetingMessage;
       }
 
       if (user) {
@@ -63,6 +65,7 @@ export const authOptions = {
           isUpWorkAuth: user.isUpWorkAuth,
           isTelegramNotifications: user.isTelegramNotifications,
           accountStatus: user.status,
+          isGreetingMessage: user.isGreetingMessage,
         };
       }
 
@@ -78,6 +81,7 @@ export const authOptions = {
           isUpWorkAuth: token.isUpWorkAuth,
           isTelegramNotifications: token.isTelegramNotifications,
           accountStatus: token.accountStatus,
+          isGreetingMessage: token.isGreetingMessage,
         },
       };
     },
