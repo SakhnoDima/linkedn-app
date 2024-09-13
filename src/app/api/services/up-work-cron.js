@@ -40,6 +40,7 @@ class CronUpWorkClass {
                 key: "upWork",
                 id: scannerData.userId,
                 taskId: scannerData._id,
+                chatId: user.chatId,
                 userEmail: user.email,
                 taskType: user.status,
                 scannerName: scannerData.scannerName,

@@ -76,6 +76,7 @@ class TaskServiceClass {
               {
                 id: data.userId,
                 taskId: id,
+                chatId: user.chatId,
                 levelOfTarget: 1,
                 searchTags: data.keyWords,
                 searchFilters,
