@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import Highcharts, { time } from 'highcharts';
+import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
 const timeIntervals = {
@@ -12,7 +12,7 @@ const timeIntervals = {
     '7d': 7 * 24 * 3600 * 1000,
 };
 
-export const EventChart = ({ data, onChangeChart }) => {
+export const EventChart = ({ data }) => {
     const [selectedInterval, setSelectedInterval] = useState('1h');
 
     const now = Date.now();
@@ -99,14 +99,7 @@ export const EventChart = ({ data, onChangeChart }) => {
         <div>
             <div>
                 <label htmlFor="time-interval">Select Time Interval: </label>
-                <select
-                    id="time-interval"
-                    value={selectedInterval}
-                    onChange={(e) => {
-                        onChangeChart(timeIntervals[e.target.value]);
-                        setSelectedInterval(e.target.value);
-                    }}
-                >
+                <select id="time-interval" value={selectedInterval} onChange={(e) => setSelectedInterval(e.target.value)}>
                     <option value="1h">1 Hour</option>
                     <option value="3h">3 Hours</option>
                     <option value="1d">1 Day</option>
