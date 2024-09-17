@@ -115,7 +115,12 @@ const LoginForm = () => {
               />
             </div>
           )}
-          <Button type="submit" className="btn-primary" disabled={isSubmitting}>
+          <Button
+            type="submit"
+            className="btn-primary"
+            disabled={isSubmitting}
+            onClick={() => window.fbq("track", "LogIn", options)}
+          >
             <p>{codeSent ? "Login" : "Send Code"}</p>
           </Button>
         </Form>
