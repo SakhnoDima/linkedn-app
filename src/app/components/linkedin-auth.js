@@ -11,7 +11,8 @@ const LinkedinAuth = () => {
   const [isCodeConfirm, setIsCodeConfirm] = useState(false);
 
   return (
-    !session?.user.isLinkedinAuth && (
+    !session?.user.isLinkedinAuth ||
+    (!session.user && (
       <div className="w-[500px] mt-[50px] mx-auto mb-[40px] flex flex-col items-center">
         <h2 className="text-xl mb-[16px]">
           To start work, please authorize your account first
@@ -19,7 +20,7 @@ const LinkedinAuth = () => {
         <LinkedinSignUpForm setIsCodeConfirm={setIsCodeConfirm} />
         {isCodeConfirm && <SaveCodeForm />}
       </div>
-    )
+    ))
   );
 };
 
