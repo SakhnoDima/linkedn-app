@@ -9,7 +9,7 @@ const LinkedinLettersSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ["invitation", "first-letter"],
+    enum: ["invitation", "first-letter", "job-proposal"],
     required: true,
   },
   letterText: {
@@ -17,6 +17,15 @@ const LinkedinLettersSchema = new mongoose.Schema({
     required: true,
   },
   includesWords: {
+    type: String,
+  },
+  targetWords: {
+    type: String,
+  },
+  location: {
+    type: String,
+  },
+  topic: {
     type: String,
   },
 });

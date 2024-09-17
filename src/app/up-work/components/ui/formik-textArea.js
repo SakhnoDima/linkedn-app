@@ -2,7 +2,7 @@ import { TextArea } from "@/app/components/text-area";
 import { Tooltip } from "@/app/components/tooltip";
 import { ErrorMessage, Field } from "formik";
 
-const FormicTextArea = ({ data }) => {
+const FormicTextArea = ({ data, onBlur, children }) => {
   return (
     <label className="flex flex-col gap-2 relative">
       <div className="flex items-center space-x-2">
@@ -14,12 +14,14 @@ const FormicTextArea = ({ data }) => {
         name={`${data.fieldName}`}
         as={TextArea}
         placeholder={`${data.placeholder}`}
+        onBlur={onBlur}
       />
       <ErrorMessage
         name={`${data.fieldName}`}
         component="div"
-        className="text-red-500 absolute top-[-4px] right-0"
+        className="text-red-500 absolute top-0 right-0"
       />
+      {children}
     </label>
   );
 };

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import UserLinkedinFiltersItem from "./user-linkedin-filters-item";
 import TargetActionButton from "./target-action-button";
 import InvitationLetterBlock from "./invitation-letter-block";
+import JobProposalLetterBlock from "./job-proposal-letter-block";
 
 const UsersLinkedinFilters = () => {
   const { data: session } = useSession();
@@ -35,25 +36,30 @@ const UsersLinkedinFilters = () => {
 
   return (
     <div className="overflow-x-auto">
-      <div className="flex gap-[16px] p-[16px]">
-        <InvitationLetterBlock />
-        <TargetActionButton setFilters={setFilters} actions="add" />
-        {currentTarget?.length === 1 && (
-          <TargetActionButton
-            setFilters={setFilters}
-            actions="edit"
-            currentTarget={currentTarget}
-            setCurrentTarget={setCurrentTarget}
-          />
-        )}
-        {currentTarget.length > 0 && (
-          <TargetActionButton
-            setFilters={setFilters}
-            actions="delete"
-            currentTarget={currentTarget}
-            setCurrentTarget={setCurrentTarget}
-          />
-        )}
+      <div className=" p-[16px] flex justify-between">
+        <div className="flex gap-[16px]">
+          <TargetActionButton setFilters={setFilters} actions="add" />
+          {currentTarget?.length === 1 && (
+            <TargetActionButton
+              setFilters={setFilters}
+              actions="edit"
+              currentTarget={currentTarget}
+              setCurrentTarget={setCurrentTarget}
+            />
+          )}
+          {currentTarget.length > 0 && (
+            <TargetActionButton
+              setFilters={setFilters}
+              actions="delete"
+              currentTarget={currentTarget}
+              setCurrentTarget={setCurrentTarget}
+            />
+          )}
+        </div>
+        <div className="flex gap-[16px]">
+          <JobProposalLetterBlock />
+          <InvitationLetterBlock />
+        </div>
       </div>
       <table className="table">
         <thead>
