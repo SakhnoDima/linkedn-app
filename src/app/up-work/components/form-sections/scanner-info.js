@@ -21,10 +21,10 @@ export const ScannerInfo = ({ values, handleChange }) => {
           <FormikToggle
             className="gap-2 justify-start mb-1"
             values={values.usOnly}
-            handleChange={handleChange}
+            handleChange={() => handleChange("usOnly", !values.usOnly)}
           >
-          {values.usOnly ? <span>TRUE</span> : <span>FALSE</span>}
-        </FormikToggle>
+            {values.usOnly ? <span>TRUE</span> : <span>FALSE</span>}
+          </FormikToggle>
         </div>
       </div>
     </>

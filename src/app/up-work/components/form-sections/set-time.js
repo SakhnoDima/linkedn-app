@@ -5,7 +5,6 @@ import FormikToggle from "../ui/formik-toggle";
 import { FormicInputNumber } from "../ui/formic-input-number";
 
 export const SetBiddingOptions = ({ values, handleChange }) => {
-  console.log(values.usOnly);
   return (
     <div className="mt-4">
       <div className="mb-[10px] items-center flex space-x-2">
@@ -19,7 +18,7 @@ export const SetBiddingOptions = ({ values, handleChange }) => {
         <FormikToggle
           className="flex items-center gap-2 mb-1 "
           values={values.autoBidding}
-          handleChange={handleChange}
+          handleChange={() => handleChange("autoBidding", !values.autoBidding)}
         >
           {values.autoBidding ? <span>ON</span> : <span>OFF</span>}
         </FormikToggle>
@@ -42,7 +41,6 @@ export const SetBiddingOptions = ({ values, handleChange }) => {
           <p>Hours</p>
         </FormicInputNumber>
       </div>
-
     </div>
   );
 };

@@ -273,7 +273,7 @@ const ScannersForm = ({ setScanners, scanner, actions }) => {
           resetForm();
         }}
       >
-        {({ isSubmitting, values, setFieldValue, handleChange }) => (
+        {({ isSubmitting, values, setFieldValue }) => (
           <Form className="flex flex-wrap flex-col space-y-4 p-4 pl-6 overflow-y-auto pt-[32px]  center gap-[30px] mx-auto justify-center items-center">
             <div className="flex flex-col  gap-[30px] mx-auto justify-center ">
               <div className="collapse collapse-arrow bg-base-200">
@@ -282,7 +282,7 @@ const ScannersForm = ({ setScanners, scanner, actions }) => {
                   Scanner
                 </div>
                 <div className="collapse-content px-[3rem]">
-                  <ScannerInfo values={values} handleChange={handleChange} />
+                  <ScannerInfo values={values} handleChange={setFieldValue} />
                   <WeeklyInfo
                     active={actions === "edit" ? true : false}
                     scanner={scanner}
