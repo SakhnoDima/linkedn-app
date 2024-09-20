@@ -23,6 +23,7 @@ const ScannersSchema = new mongoose.Schema({
     excludeWords: { type: String, default: "" },
   },
   searchFilters: {
+    usOnly: { type: Boolean, default: false },
     category: { type: String, default: "" },
     contractorTier: {
       1: { type: Boolean, default: false },

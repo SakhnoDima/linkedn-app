@@ -45,6 +45,7 @@ const validationSchema = Yup.object({
     timeZone: Yup.string(),
   }),
   autoBidding: Yup.boolean(),
+  usOnly: Yup.boolean(),
   searchWords: Yup.object().shape({
     includeWords: Yup.string().max(200, "Must be 200 symbols maximum"),
     excludeWords: Yup.string().max(200, "Must be 200 symbols maximum"),
@@ -120,6 +121,7 @@ const initialValues = {
     timeZone: moment.tz.guess() || null,
   },
   autoBidding: false,
+  usOnly: false,
   searchWords: {
     includeWords: "",
     excludeWords: "",
