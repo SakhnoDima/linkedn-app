@@ -6,15 +6,19 @@ import ScannersForm from "./scanner-form";
 import { ScannersList } from "./scanners-list";
 
 const UpWork = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [scanners, setScanners] = useState([]);
 
+  const isUpWorkAuth = session?.user?.isUpWorkAuth;
+  const loadingSession = status === "loading";
   return (
     <div className="flex flex-row">
       <div className=" flex-3/4 ">
-        {!session?.user.isUpWorkAuth && (
-          <UpWorkLogin session={session?.user.isUpWorkAuth} />
-        )}
+        {loadingSession
+          ? ""
+          : !isUpWorkAuth && (
+              <UpWorkLogin session={session?.user.isUpWorkAuth} />
+            )}
         <ScannersForm setScanners={setScanners} actions="save" />
       </div>
       <div className="border flex-1/4 ">

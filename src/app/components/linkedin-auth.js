@@ -6,13 +6,15 @@ import SaveCodeForm from "./save-user-cod";
 import { useSession } from "next-auth/react";
 
 const LinkedinAuth = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   const [isCodeConfirm, setIsCodeConfirm] = useState(false);
+  const loadingSession = status === "loading";
+  const isLinkedinAuth = session?.user.isLinkedinAuth;
 
   return (
-    !session?.user.isLinkedinAuth ||
-    (!session.user && (
+    loadingSession ||
+    (!isLinkedinAuth && (
       <div className="w-[500px] mt-[50px] mx-auto mb-[40px] flex flex-col items-center">
         <h2 className="text-xl mb-[16px]">
           To start work, please authorize your account first

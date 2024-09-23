@@ -5,6 +5,7 @@ const ScannersSchema = new mongoose.Schema({
   autoBidding: {
     type: Boolean,
   },
+  usOnly: { type: Boolean, default: false },
   weeklyStatus: {
     type: Number,
     default: null,
@@ -23,7 +24,6 @@ const ScannersSchema = new mongoose.Schema({
     excludeWords: { type: String, default: "" },
   },
   searchFilters: {
-    usOnly: { type: Boolean, default: false },
     category: { type: String, default: "" },
     contractorTier: {
       1: { type: Boolean, default: false },

@@ -282,7 +282,7 @@ const ScannersForm = ({ setScanners, scanner, actions }) => {
                   Scanner
                 </div>
                 <div className="collapse-content px-[3rem]">
-                  <ScannerInfo values={values} handleChange={setFieldValue} />
+                  <ScannerInfo values={values} setFieldValue={setFieldValue} />
                   <WeeklyInfo
                     active={actions === "edit" ? true : false}
                     scanner={scanner}
