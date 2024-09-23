@@ -45,6 +45,7 @@ class CronUpWorkClass {
                 taskType: user.status,
                 scannerName: scannerData.scannerName,
                 autoBidding: scannerData.autoBidding,
+                usOnly: scannerData.usOnly,
                 searchWords: transformQuery(
                   scannerData.searchWords.includeWords,
                   scannerData.searchWords.excludeWords
