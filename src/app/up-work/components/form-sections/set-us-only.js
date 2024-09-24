@@ -7,6 +7,7 @@ const SetUsOnly = ({ values, setFieldValue }) => {
       <div className="items-center flex space-x-2">
         <p>US Only</p>
         <Tooltip
+          className="tooltip-right"
           text={`Set this option only if your account is verified in the US and you can apply for these jobs`}
         />
       </div>
