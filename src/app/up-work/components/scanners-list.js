@@ -21,7 +21,6 @@ export const ScannersList = ({ scanners, setScanners }) => {
           },
         });
         if (session?.user.id) {
-          console.log(data);
           setScanners([...data.reverse()]);
           setLoading(false);
         }

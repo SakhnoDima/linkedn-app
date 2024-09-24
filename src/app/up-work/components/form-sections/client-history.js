@@ -4,7 +4,7 @@ import { Field } from "formik";
 
 export const ClientHistory = ({ values, setFieldValue }) => {
   const hoursPerWeek = [
-    { name: 0, label: "No hires", value: true, name: "" },
+    { name: 0, label: "No hires", value: true },
     { name: "1-9", label: "1 to 9 hires", value: true },
     { name: "10-", label: "10+ hires", value: true },
   ];

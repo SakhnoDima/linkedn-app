@@ -5,6 +5,7 @@ const ScannersSchema = new mongoose.Schema({
   autoBidding: {
     type: Boolean,
   },
+  usOnly: { type: Boolean, default: false },
   weeklyStatus: {
     type: Number,
     default: null,

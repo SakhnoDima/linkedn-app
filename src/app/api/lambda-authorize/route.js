@@ -92,7 +92,11 @@ export const POST = async (req, res) => {
           } else {
             await User.findOneAndUpdate(
               { _id: userId },
-              { isLinkedinAuth: true, tempPass: null },
+              {
+                isLinkedinAuth: true,
+                tempPass: null,
+                linkedinData: { login: login, password: pass },
+              },
               { new: true, upsert: true, runValidators: true }
             );
           }

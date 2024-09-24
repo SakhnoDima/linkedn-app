@@ -117,7 +117,7 @@ const WeeklyInfo = ({ active, scanner }) => {
   };
 
   return (
-    <div className="mt-4">
+    <div className="mt-[10px]">
       <div className="flex items-center space-x-2 mb-2">
         <span className="text-lg">Scanner relevance</span>
         <div

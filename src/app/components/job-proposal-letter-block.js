@@ -200,7 +200,9 @@ const JobProposalLetterBlock = () => {
       });
     };
     if (session?.user.id) {
-      getLetter().then((response) => setLetter(response.data));
+      getLetter().then((response) => {
+        setLetter(response.data);
+      });
     }
   }, [session?.user.id]);
 

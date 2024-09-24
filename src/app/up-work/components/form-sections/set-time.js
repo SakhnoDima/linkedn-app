@@ -4,10 +4,10 @@ import React from "react";
 import FormikToggle from "../ui/formik-toggle";
 import { FormicInputNumber } from "../ui/formic-input-number";
 
-export const SetBiddingOptions = ({ values, handleChange }) => {
+export const SetBiddingOptions = ({ values, setFieldValue }) => {
   return (
-    <div className="mt-4">
-      <div className="mb-[10px] items-center flex space-x-2">
+    <div className="mt-[10px]">
+      <div className="items-center flex space-x-2">
         <p>Bidding interval options</p>
         <Tooltip
           text={`If you don't specify a time, the scanner will start every hour at 0 minutes (e.g., 00:00, etc.). If you only specify the hour, the scanner will start daily at the hour you set (e.g., at 14:00 every day).If you only specify the minutes, the scanner will start every hour at the minutes you set (e.g., at 00:15, ).`}
@@ -16,9 +16,9 @@ export const SetBiddingOptions = ({ values, handleChange }) => {
 
       <div className="flex flex-row gap-4 relative">
         <FormikToggle
-          className="flex items-center gap-2 mb-1 "
+          className="flex items-center gap-2 "
           values={values.autoBidding}
-          handleChange={handleChange}
+          handleChange={() => setFieldValue("autoBidding", !values.autoBidding)}
         >
           {values.autoBidding ? <span>ON</span> : <span>OFF</span>}
         </FormikToggle>

@@ -68,10 +68,7 @@ export const GET = async (req, res) => {
     });
 
     if (!letter) {
-      return NextResponse.json(
-        { message: "Something went wrong" },
-        { status: 500 }
-      );
+      return NextResponse.json({});
     }
     return NextResponse.json(letter);
   } catch (error) {
