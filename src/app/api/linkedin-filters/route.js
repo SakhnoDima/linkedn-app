@@ -7,21 +7,13 @@ import User from "@/app/lib/user-model";
 
 export const POST = async (req, res) => {
   const { values, userId } = await req.json();
+
   try {
     const newFilter = await LinkedinFilters.create({
-      cronTime: values.cronTime,
-      autoBidding: values.autoBidding,
-      targetName: values.targetName,
       userId: new mongoose.Types.ObjectId(userId),
-      connections: values.connections,
-      keyWords: values.keyWords,
-      locations: values.locations,
-      title: values.title,
-      languages: values.languages,
-      industries: values.industries,
-      serviceCategories: values.serviceCategories,
-      status: values.status,
+      ...values,
     });
+    console.log(newFilter);
 
     if (newFilter.autoBidding) {
       try {
@@ -70,17 +62,7 @@ export const PUT = async (req, res) => {
         _id: fieldId,
       },
       {
-        cronTime: values.cronTime,
-        autoBidding: values.autoBidding,
-        targetName: values.targetName,
-        connections: values.connections,
-        keyWords: values.keyWords,
-        locations: values.locations,
-        title: values.title,
-        languages: values.languages,
-        industries: values.industries,
-        serviceCategories: values.serviceCategories,
-        status: values.status,
+        ...values,
       },
       { new: true }
     );

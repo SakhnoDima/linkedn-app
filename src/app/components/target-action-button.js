@@ -5,7 +5,7 @@ import TargetActions from "./target-actions";
 import axios from "axios";
 import { useToastContext } from "../context/toast-context";
 
-const buttonNames = {
+export const buttonNames = {
   add: "Add Targets",
   edit: "Edit Targets",
   delete: "Delete Targets",

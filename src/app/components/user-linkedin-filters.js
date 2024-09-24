@@ -63,9 +63,10 @@ const UsersLinkedinFilters = () => {
       </div>
       <table className="table">
         <thead>
-          <tr>
+          <tr className="text-center">
             <th></th>
             <th>Name</th>
+            <th>Event</th>
             <th>Connections</th>
             <th>Keywords</th>
             <th>Locations</th>
