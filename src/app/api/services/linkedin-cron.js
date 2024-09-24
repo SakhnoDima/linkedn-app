@@ -58,8 +58,6 @@ class TaskServiceClass {
       data.cronTime.hour,
       data.cronTime.timeZone
     );
-    console.log("time", time);
-
     console.log("time after", time);
 
     if (!this.userTasks.has(data.userId.toString())) {

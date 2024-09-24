@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import UserLinkedinFiltersItem from "./user-linkedin-filters-item";
 import TargetActionButton from "./target-action-button";
 import InvitationLetterBlock from "./invitation-letter-block";
-import JobProposalLetterBlock from "./job-proposal-letter-block";
 
 const UsersLinkedinFilters = () => {
   const { data: session } = useSession();
@@ -57,7 +56,6 @@ const UsersLinkedinFilters = () => {
           )}
         </div>
         <div className="flex gap-[16px]">
-          <JobProposalLetterBlock />
           <InvitationLetterBlock />
         </div>
       </div>
