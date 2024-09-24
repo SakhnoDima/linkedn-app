@@ -10,6 +10,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please provide a password"],
   },
+  linkedinData: {
+    login: { type: String },
+    password: { type: String },
+  },
   isLinkedinAuth: {
     type: Boolean,
     default: false,

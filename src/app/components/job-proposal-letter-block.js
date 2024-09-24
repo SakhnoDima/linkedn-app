@@ -201,7 +201,6 @@ const JobProposalLetterBlock = () => {
     };
     if (session?.user.id) {
       getLetter().then((response) => {
-        console.log(response.data);
         setLetter(response.data);
       });
     }
