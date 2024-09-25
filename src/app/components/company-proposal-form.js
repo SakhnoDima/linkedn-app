@@ -78,19 +78,18 @@ const validationSchema = Yup.object({
 export const JobLetterForm = ({ currentTarget, handler }) => {
   const { data: session } = useSession();
   const { closeModal } = useModalContext();
-
-  console.log(currentTarget.locations[0]);
+  console.log(currentTarget);
 
   const initialValues = {
     targetName: currentTarget.targetName || "",
     keyWords: currentTarget.keyWords || "",
-    locations: currentTarget.locations[0] || "",
+    locations: currentTarget.locations || "",
     letterText: currentTarget.letterText || "",
     topic: currentTarget.topic || "",
     autoBidding: currentTarget.autoBidding || false,
     cronTime: {
-      min: currentTarget.cronTime.min || null,
-      hour: currentTarget.cronTime.hour || null,
+      min: currentTarget?.cronTime?.min || null,
+      hour: currentTarget?.cronTime?.hour || null,
       timeZone: moment.tz.guess() || null,
     },
     connections: currentTarget.connections || "",
