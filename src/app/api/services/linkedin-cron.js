@@ -49,7 +49,7 @@ class TaskServiceClass {
     this.userTasks = new Map();
   }
 
-  startTask(id, data, user, searchFilters) {
+  startConnectionsTask(id, data, user, searchFilters) {
     console.log("Before start Init", this.userTasks);
     console.log("time before", data.cronTime.min, data.cronTime.hour);
 
@@ -158,6 +158,80 @@ class TaskServiceClass {
     }
   }
 
+  startCompaniesTask(id, data, user, searchFilters) {
+    console.log("Before start Init", this.userTasks);
+    console.log("time before", data.cronTime.min, data.cronTime.hour);
+
+    console.log("id", id);
+    console.log("data", data);
+    console.log("user", user);
+    console.log("searchFilters", searchFilters);
+
+    const time = timeCreator(
+      data.cronTime.min,
+      data.cronTime.hour,
+      data.cronTime.timeZone
+    );
+    console.log("time after", time);
+
+    if (!this.userTasks.has(data.userId.toString())) {
+      this.userTasks.set(data.userId.toString(), {});
+    }
+    const tasks = this.userTasks.get(data.userId.toString());
+
+    if (!tasks[id]) {
+      const task = cron.schedule(time, async () => {
+        try {
+          console.log("In cron !!");
+
+          console.log({
+            id: data.userId,
+            taskId: id,
+            chatId: user.chatId,
+            searchTags: data.keyWords,
+            searchFilters,
+            messageData: {
+              Topic: data.topic,
+              LetterText: data.letterText,
+            },
+            totalLettersPerDay: data.connections,
+            email: user.email,
+          });
+
+          //TODO add your URL to scrapper
+          // axios.post(
+          //   "https://",
+          //   {
+          //     id: data.userId,
+          // taskId: id,
+          // chatId: user.chatId,
+          // searchTags: data.keyWords,
+          // searchFilters,
+          // messageData: {
+          // Topic: data.topic,
+          // LetterText: data.letterText,
+          // },
+          // totalLettersPerDay: data.connections,
+          //email: user.email,
+          //   },
+          //   {
+          //     headers: {
+          //       "Content-Type": "application/json",
+          //     },
+          //   }
+          // );
+        } catch (error) {
+          console.log(error);
+        }
+      });
+      tasks[id] = task;
+      console.log("After start Init", this.userTasks);
+      console.log(`Cron task ${id} started`);
+    } else {
+      console.log(`Task ${id} is already running`);
+    }
+  }
+
   async stopTask(userId, taskId) {
     console.log(this.userTasks);
 
@@ -182,4 +256,4 @@ class TaskServiceClass {
   }
 }
 
-export const TaskService = new TaskServiceClass();
+export const LinkedinTaskService = new TaskServiceClass();

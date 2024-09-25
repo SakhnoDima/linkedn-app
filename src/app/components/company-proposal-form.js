@@ -78,12 +78,12 @@ const validationSchema = Yup.object({
 export const JobLetterForm = ({ currentTarget, handler }) => {
   const { data: session } = useSession();
   const { closeModal } = useModalContext();
-  console.log(currentTarget);
+  console.log(currentTarget?.locations);
 
   const initialValues = {
     targetName: currentTarget.targetName || "",
     keyWords: currentTarget.keyWords || "",
-    locations: currentTarget.locations || "",
+    locations: currentTarget ? currentTarget.locations[0] : "",
     letterText: currentTarget.letterText || "",
     topic: currentTarget.topic || "",
     autoBidding: currentTarget.autoBidding || false,

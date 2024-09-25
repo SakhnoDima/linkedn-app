@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import LinkedinFilters from "@/app/lib/linkedin-filters-model";
 import mongoose from "mongoose";
 import { compleatSearchFilters } from "../helpers";
-import { TaskService } from "../services/linkedin-cron";
+import { LinkedinTaskService } from "../services/linkedin-cron";
 import User from "@/app/lib/user-model";
 
 export const POST = async (req, res) => {
@@ -13,18 +13,23 @@ export const POST = async (req, res) => {
       userId: new mongoose.Types.ObjectId(userId),
       ...values,
     });
-    console.log(newFilter);
 
-    if (newFilter.autoBidding) {
-      try {
-        const user = await User.findById({ _id: userId });
+    if (newFilter.autoBidding && newFilter.event === "connects") {
+      const user = await User.findById({ _id: userId });
 
-        const searchFilters = await compleatSearchFilters(newFilter);
-
-        TaskService.startTask(newFilter._id, newFilter, user, searchFilters);
-      } catch (error) {
-        return NextResponse.json({ message: error.message }, { status: 500 });
-      }
+      const searchFilters = await compleatSearchFilters(newFilter);
+      console.log("Start task for connects in POST");
+      // LinkedinTaskService.startConnectionsTask(
+      //   newFilter._id,
+      //   newFilter,
+      //   user,
+      //   searchFilters
+      // );
+    } else if (
+      newFilter.autoBidding &&
+      newFilter.event === "companies invite"
+    ) {
+      console.log("Start task for company in POST");
     }
 
     return NextResponse.json(
@@ -68,23 +73,28 @@ export const PUT = async (req, res) => {
     );
 
     const user = await User.findById({ _id: updatedField.userId });
-    if (updatedField.autoBidding) {
-      try {
-        TaskService.stopTask(user._id.toString(), updatedField._id);
+    LinkedinTaskService.stopTask(user._id.toString(), updatedField._id);
 
-        const searchFilters = await compleatSearchFilters(updatedField);
-
-        TaskService.startTask(
-          updatedField._id,
-          updatedField,
-          user,
-          searchFilters
-        );
-      } catch (error) {
-        return NextResponse.json({ message: error.message }, { status: 500 });
-      }
-    } else {
-      TaskService.stopTask(user._id.toString(), updatedField._id);
+    const searchFilters = await compleatSearchFilters(updatedField);
+    if (updatedField.autoBidding && updatedField.event === "connects") {
+      console.log("Start task for connects in PUT");
+      // LinkedinTaskService.startConnectionsTask(
+      //   updatedField._id,
+      //   updatedField,
+      //   user,
+      //   searchFilters
+      // );
+    } else if (
+      updatedField.autoBidding &&
+      updatedField.event === "companies invite"
+    ) {
+      console.log("Start task for company in PUT");
+      LinkedinTaskService.startCompaniesTask(
+        updatedField._id,
+        updatedField,
+        user,
+        searchFilters
+      );
     }
 
     return NextResponse.json(
@@ -108,7 +118,7 @@ export const DELETE = async (req, res) => {
       ids.map(async (id) => {
         const targetFilters = await LinkedinFilters.findById({ _id: id });
         if (targetFilters.autoBidding) {
-          TaskService.stopTask(
+          LinkedinTaskService.stopTask(
             targetFilters.userId.toString(),
             targetFilters._id
           );

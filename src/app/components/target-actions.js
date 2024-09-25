@@ -79,7 +79,6 @@ const TargetActions = ({
     add: handleSave,
     edit: handleEdit,
   };
-  console.log(actions);
 
   return (
     <div className="min-w-[50vh]">
