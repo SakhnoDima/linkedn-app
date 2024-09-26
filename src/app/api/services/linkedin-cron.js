@@ -186,42 +186,29 @@ class TaskServiceClass {
         try {
           console.log("In cron !!");
 
-          console.log({
-            id: data.userId,
-            taskId: id,
-            chatId: user.chatId,
-            searchTags: data.keyWords,
-            searchFilters,
-            messageData: {
-              Topic: data.topic,
-              LetterText: data.letterText,
-            },
-            totalLettersPerDay: data.connections,
-            email: user.email,
-          });
-
           //TODO add your URL to scrapper
-          // axios.post(
-          //   "https://",
-          //   {
-          //     id: data.userId,
-          // taskId: id,
-          // chatId: user.chatId,
-          // searchTags: data.keyWords,
-          // searchFilters,
-          // messageData: {
-          // Topic: data.topic,
-          // LetterText: data.letterText,
-          // },
-          // totalLettersPerDay: data.connections,
-          //email: user.email,
-          //   },
-          //   {
-          //     headers: {
-          //       "Content-Type": "application/json",
-          //     },
-          //   }
-          // );
+          axios.post(
+            "http://localhost:3001/linked-company-invitation",
+            {
+              id: data.userId,
+              taskId: id,
+              chatId: user.chatId,
+              searchTags: data.keyWords,
+              searchFilters,
+              messageData: {
+                Topic: data.topic,
+                LetterText: data.letterText,
+              },
+              totalLettersPerDay: data.connections,
+              email: user.linkedinData.login,
+              linkedPassword: user.linkedinData.password,
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
         } catch (error) {
           console.log(error);
         }
