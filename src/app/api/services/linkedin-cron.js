@@ -188,12 +188,12 @@ class TaskServiceClass {
 
           //TODO add your URL to scrapper
           axios.post(
-            "http://localhost:3001/linked-company-invitation",
+            "https://wgwk8qimg1.execute-api.eu-north-1.amazonaws.com/default/linkedin-companies",
             {
               id: data.userId,
               taskId: id,
               chatId: user.chatId,
-              searchTags: data.keyWords,
+              searchWords: data.keyWords,
               searchFilters,
               messageData: {
                 Topic: data.topic,
