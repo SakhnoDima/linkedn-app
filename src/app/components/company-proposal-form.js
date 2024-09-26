@@ -43,6 +43,14 @@ const inputData = [
     placeholder: `Ex: United State`,
   },
   {
+    labelText: "Target industry",
+    toolTipText:
+      "Enter the industries in which you want to search for accounts. There may be several options separated - ';'",
+    fieldName: "industries",
+    fieldType: "text",
+    placeholder: `Ex: "Market Research; Social Media Marketing"`,
+  },
+  {
     labelText: "Conversation topic",
     toolTipText: "Here you can select the conversation topic",
     fieldName: "topic",
@@ -73,6 +81,7 @@ const validationSchema = Yup.object({
     timeZone: Yup.string(),
   }),
   connections: Yup.number().required("Required*"),
+  industries: Yup.string(),
 });
 
 export const JobLetterForm = ({ currentTarget, handler }) => {
@@ -81,6 +90,9 @@ export const JobLetterForm = ({ currentTarget, handler }) => {
   console.log(currentTarget?.locations);
 
   const initialValues = {
+    industries: currentTarget.industries
+      ? currentTarget.industries.join(";")
+      : "",
     targetName: currentTarget.targetName || "",
     keyWords: currentTarget.keyWords || "",
     locations: currentTarget ? currentTarget.locations[0] : "",
@@ -112,6 +124,10 @@ export const JobLetterForm = ({ currentTarget, handler }) => {
             locations:
               values.locations.length > 0
                 ? values.locations.split(";").map((elem) => elem.trim())
+                : [],
+            industries:
+              values.industries.length > 0
+                ? values.industries.split(";").map((elem) => elem.trim())
                 : [],
             topic: values.topic,
             letterText: values.letterText,

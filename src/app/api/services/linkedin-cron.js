@@ -65,6 +65,8 @@ class TaskServiceClass {
     }
     const tasks = this.userTasks.get(data.userId.toString());
 
+    console.log("searchTags", data.keyWords);
+
     if (!tasks[id]) {
       const task = cron.schedule(time, async () => {
         try {
@@ -73,14 +75,14 @@ class TaskServiceClass {
               "https://6ejajjistb.execute-api.eu-north-1.amazonaws.com/default/lambda-create-task",
               {
                 id: data.userId,
+                email: user.linkedinData.login,
+                linkedPassword: user.linkedinData.password,
                 taskId: id,
                 chatId: user.chatId,
                 levelOfTarget: 1,
                 searchTags: data.keyWords,
                 searchFilters,
                 totalLettersPerDay: data.connections,
-                invitationLetters: [""],
-                email: user.email,
               },
               {
                 headers: {

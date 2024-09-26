@@ -14,22 +14,28 @@ export const POST = async (req, res) => {
       ...values,
     });
 
-    if (newFilter.autoBidding && newFilter.event === "connects") {
-      const user = await User.findById({ _id: userId });
+    const user = await User.findById({ _id: userId });
+    const searchFilters = await compleatSearchFilters(newFilter);
 
-      const searchFilters = await compleatSearchFilters(newFilter);
+    if (newFilter.autoBidding && newFilter.event === "connects") {
       console.log("Start task for connects in POST");
-      // LinkedinTaskService.startConnectionsTask(
-      //   newFilter._id,
-      //   newFilter,
-      //   user,
-      //   searchFilters
-      // );
+      LinkedinTaskService.startConnectionsTask(
+        newFilter._id,
+        newFilter,
+        user,
+        searchFilters
+      );
     } else if (
       newFilter.autoBidding &&
       newFilter.event === "companies invite"
     ) {
       console.log("Start task for company in POST");
+      LinkedinTaskService.startCompaniesTask(
+        newFilter._id,
+        newFilter,
+        user,
+        searchFilters
+      );
     }
 
     return NextResponse.json(
@@ -78,12 +84,12 @@ export const PUT = async (req, res) => {
     const searchFilters = await compleatSearchFilters(updatedField);
     if (updatedField.autoBidding && updatedField.event === "connects") {
       console.log("Start task for connects in PUT");
-      // LinkedinTaskService.startConnectionsTask(
-      //   updatedField._id,
-      //   updatedField,
-      //   user,
-      //   searchFilters
-      // );
+      LinkedinTaskService.startConnectionsTask(
+        updatedField._id,
+        updatedField,
+        user,
+        searchFilters
+      );
     } else if (
       updatedField.autoBidding &&
       updatedField.event === "companies invite"
