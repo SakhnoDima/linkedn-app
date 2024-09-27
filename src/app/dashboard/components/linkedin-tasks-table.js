@@ -13,7 +13,7 @@ const LinkedinTasksTable = ({ userId }) => {
         if (!userId) {
           throw new Error("Not active session");
         }
-        const { data } = await axios.get("/api/linkedin-tasks", {
+        const { data } = await axios.get("/api/linkedin-tasks-result", {
           params: {
             userId,
           },
@@ -30,16 +30,15 @@ const LinkedinTasksTable = ({ userId }) => {
   }, [userId]);
 
   return (
-    <div className="overflow-x-auto">
-      <table className="table table-xs">
-        <thead>
-          <tr>
-            <th>Task Name</th>
-            <th>Search Tags</th>
-            <th>Planned Connections</th>
-            <th>Connections Sent</th>
-            <th>Total Clicks</th>
-            <th>Date</th>
+    <div className="relative overflow-x-auto shadow-md sm:rounded-lg max-h-[700px] overflow-y-auto">
+      <table className="w-full text-sm text-left rtl:text-right ">
+        <thead className="sticky top-0 text-xs uppercase bg-gray-200 ">
+          <tr className="text-lg">
+            <th className="px-6 py-3">Task Name</th>
+            <th className="px-6 py-3">Search Tags</th>
+            <th className="px-6 py-3">Planned Connections</th>
+            <th className="px-6 py-3">Connections Sent</th>
+            <th className="px-6 py-3">Date</th>
           </tr>
         </thead>
         <tbody>

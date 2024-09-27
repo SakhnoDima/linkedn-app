@@ -19,7 +19,7 @@ const Page = ({ params }) => {
           return;
         }
 
-        const { data } = await axios.get("/api/linkedin-task", {
+        const { data } = await axios.get("/api/linkedin-task-result", {
           params: {
             userId,
           },

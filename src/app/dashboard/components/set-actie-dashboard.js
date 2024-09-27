@@ -37,7 +37,7 @@ const SetActiveDashboard = ({ setDashboard, dashboard }) => {
 };
 
 const ActiveDashboards = ({ session }) => {
-  const [dashboard, setDashboard] = useState(dashboards.upWork);
+  const [dashboard, setDashboard] = useState(dashboards.linkedin);
 
   return (
     <div>
