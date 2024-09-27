@@ -140,63 +140,70 @@ export const JobLetterForm = ({ currentTarget, handler }) => {
     >
       {({ isSubmitting, values, handleChange }) => (
         <Form className="flex flex-col space-y-4 p-4 overflow-y-auto">
-          {inputData.map((data, index) => (
-            <FormicInput
-              key={index}
-              data={data}
-              tooltipOptions="tooltip-right"
-            />
-          ))}
-
-          <FormicTextArea
-            data={{
-              labelText: "Compose message",
-              toolTipText:
-                "Add you proposal message not longer then 750 symbols",
-              fieldName: "letterText",
-              fieldType: "text",
-              placeholder: `Ex: Hi My name is Bob,
+          <div className="flex flex-row  gap-[30px] mx-auto mb-8  w-min">
+            <div className="flex flex-col justify-between gap-2 min-w-[500px]">
+              {inputData.map((data, index) => (
+                <FormicInput
+                  key={index}
+                  data={data}
+                  tooltipOptions="tooltip-right"
+                />
+              ))}
+            </div>
+            <div className="flex flex-col gap-2">
+              <FormicTextArea
+                data={{
+                  labelText: "Compose message",
+                  toolTipText:
+                    "Add you proposal message not longer then 750 symbols",
+                  fieldName: "letterText",
+                  fieldType: "text",
+                  placeholder: `Ex: Hi My name is Bob,
                We specialize in crafting converting UI/UX design solutions. Are you open to connecting?
 `,
-              fieldClassName: "h-[300px]",
-            }}
-          ></FormicTextArea>
+                  fieldClassName: "h-[400px]",
+                }}
+              ></FormicTextArea>
 
-          <div>
-            <div className="flex space-x-2 items-center mb-2">
-              <p className="text-lg">Start time options</p>
-              <Tooltip
-                text={`If you don't specify a time, the scanner will start every hour at 0 minutes (e.g., 00:00, etc.). If you only specify the hour, the scanner will start daily at the hour you set (e.g., at 14:00 every day).If you only specify the minutes, the scanner will start every hour at the minutes you set (e.g., at 00:15, ).`}
-              />
-            </div>
+              <div>
+                <div className="flex space-x-2 items-center mb-2">
+                  <p className="text-lg">Start time options</p>
+                  <Tooltip
+                    text={`If you don't specify a time, the scanner will start every hour at 0 minutes (e.g., 00:00, etc.). If you only specify the hour, the scanner will start daily at the hour you set (e.g., at 14:00 every day).If you only specify the minutes, the scanner will start every hour at the minutes you set (e.g., at 00:15, ).`}
+                  />
+                </div>
 
-            <div className="flex justify-around flex-row gap-4 py-4 ">
-              <FormikToggle
-                className="flex gap-2"
-                values={values.autoBidding}
-                handleChange={handleChange}
-              >
-                {values.autoBidding ? <span>ON</span> : <span>OFF</span>}
-              </FormikToggle>
+                <div className="flex items-center justify-around flex-row gap-4 px-2 bg-indigo-50  border-2 rounded-[5px]">
+                  <FormikToggle
+                    className="flex gap-2"
+                    values={values.autoBidding}
+                    handleChange={handleChange}
+                  >
+                    <div className="w-[30px]">
+                      {values.autoBidding ? <span>ON</span> : <span>OFF</span>}
+                    </div>
+                  </FormikToggle>
 
-              <FormicInputNumber
-                name="cronTime.min"
-                placeholder="Minutes"
-                value={values.cronTime.min}
-                errorClassName="left-0 top-[-18px]"
-              >
-                <p>Minutes</p>
-              </FormicInputNumber>
+                  <FormicInputNumber
+                    name="cronTime.min"
+                    placeholder="Minutes"
+                    value={values.cronTime.min}
+                    errorClassName="left-0 top-[-18px]"
+                  >
+                    <p>Minutes</p>
+                  </FormicInputNumber>
 
-              <FormicInputNumber
-                key="time-options-hour"
-                name="cronTime.hour"
-                placeholder="Hours"
-                value={values.cronTime.hour}
-                errorClassName="left-0 top-[-18px]"
-              >
-                <p>Hours</p>
-              </FormicInputNumber>
+                  <FormicInputNumber
+                    key="time-options-hour"
+                    name="cronTime.hour"
+                    placeholder="Hours"
+                    value={values.cronTime.hour}
+                    errorClassName="left-0 top-[-18px]"
+                  >
+                    <p>Hours</p>
+                  </FormicInputNumber>
+                </div>
+              </div>
             </div>
           </div>
           <Button

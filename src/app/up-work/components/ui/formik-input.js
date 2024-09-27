@@ -4,7 +4,7 @@ import { AiOutlineQuestionCircle } from "react-icons/ai";
 
 const FormicInput = ({ data, tooltipOptions }) => {
   return (
-    <label className="flex flex-col space-y-2  relative">
+    <label className="w-full flex flex-col space-y-2  relative">
       <div className="flex items-center space-x-2">
         <span className="text-lg">{data.labelText}</span>
         <div

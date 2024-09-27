@@ -108,7 +108,7 @@ const TargetActions = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <p className="text-center font-medium">
+            <p className="text-center text-xl font-medium">
               Here you can specify filters and messages to be used in your
               request.
             </p>
@@ -125,7 +125,7 @@ const TargetActions = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <p className="text-center font-medium">
+            <p className="text-center text-xl font-medium">
               Here you can specify the filters you need for the target and send
               requests.
             </p>

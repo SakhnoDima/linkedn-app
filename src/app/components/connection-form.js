@@ -16,17 +16,18 @@ import FormikToggle from "../up-work/components/ui/formik-toggle";
 import { FormicInputNumber } from "../up-work/components/ui/formic-input-number";
 import { Tooltip } from "./tooltip";
 import { events } from "./target-actions";
+import FormicInput from "../up-work/components/ui/formik-input";
 
 const filtersInputs = [
   {
-    labelText: "1. Specify a name for this filter",
+    labelText: "Specify a name for this filter",
     toolTipText: "Write the name that best fits this target filter.",
     fieldName: "targetName",
     fieldType: "text",
     placeholder: `Ex: "SEO target"`,
   },
   {
-    labelText: "2. Number of connections to be sent",
+    labelText: "Number of connections to be sent",
     toolTipText:
       "Write how many connections you want to send. We recommend a value between 10 and 20.",
     fieldName: "connections",
@@ -34,14 +35,14 @@ const filtersInputs = [
     placeholder: `Ex: "20"`,
   },
   {
-    labelText: "3. Search tags",
+    labelText: "Search tags",
     toolTipText: "General tags by which accounts will be searched.",
     fieldName: "keyWords",
     fieldType: "text",
     placeholder: `Ex: "SEO"`,
   },
   {
-    labelText: "4. Account title",
+    labelText: "Account title",
     toolTipText:
       "Enter the title of the accounts you want to see in your connections.",
     fieldName: "title",
@@ -49,7 +50,7 @@ const filtersInputs = [
     placeholder: `Ex: "CEO"`,
   },
   {
-    labelText: "5. Target locations",
+    labelText: "Target locations",
     toolTipText:
       "Enter the locations in which you want to search for accounts. There may be several options separated - ';'",
     fieldName: "locations",
@@ -57,7 +58,7 @@ const filtersInputs = [
     placeholder: `Ex: "Germany; USA"`,
   },
   {
-    labelText: "6. Target service categories",
+    labelText: "Target service categories",
     toolTipText:
       "Enter the service categories in which you want to search for accounts. There may be several options separated - ';'",
     fieldName: "serviceCategories",
@@ -65,7 +66,7 @@ const filtersInputs = [
     placeholder: `Ex: "Marketing Services; Technology, Information and Internet"`,
   },
   {
-    labelText: "7. Target industry",
+    labelText: "Target industry",
     toolTipText:
       "Enter the industries in which you want to search for accounts. There may be several options separated - ';'",
     fieldName: "industries",
@@ -169,131 +170,112 @@ const ConnectionForm = ({ currentTarget, handler }) => {
     >
       {({ isSubmitting, values, handleChange }) => (
         <Form className="flex flex-col space-y-4 p-4  overflow-y-auto ">
-          <div className="flex flex-col center gap-[30px] mx-auto mb-8 justify-center items-center w-min">
-            {filtersInputs.map((data, index) => (
-              <>
-                <label
-                  key={index}
-                  className="w-[100%] text-lg flex flex-col space-y-2 relative"
-                >
-                  <div className="flex items-center space-x-2">
-                    <span>{data.labelText}</span>
-                    {index <= 2 && <span className="text-red-500">*</span>}
-
-                    <div
-                      className="tooltip tooltip-bottom"
-                      data-tip={`${data.toolTipText}`}
-                    >
-                      <AiOutlineQuestionCircle className="hover:cursor-pointer" />
-                    </div>
+          <div className="flex flex-row  gap-[30px] mx-auto mb-8  w-min">
+            <div className="flex flex-col gap-2">
+              {filtersInputs.slice(0, 4).map((data, index) => (
+                <FormicInput key={index} data={data} />
+              ))}
+              <label
+                key="language"
+                className="w-[100%] text-lg flex flex-col space-y-2 relative"
+              >
+                <div className="flex items-center space-x-2">
+                  <span className="text-lg">Add profile language</span>
+                  <div
+                    className="tooltip"
+                    data-tip="Select preferred user profile language"
+                  >
+                    <AiOutlineQuestionCircle className="hover:cursor-pointer" />
                   </div>
-                  <Field
-                    name={`${data.fieldName}`}
-                    type={`${data.fieldType}`}
-                    placeholder={`${data.placeholder}`}
-                    as={Input}
-                    className="w-[100%]"
-                  />
-                  <ErrorMessage
-                    name={`${data.fieldName}`}
-                    component="div"
-                    className="text-red-500 absolute top-[-4px] right-0"
-                  />
-                </label>
-                {index === 3 && (
-                  <p key="additional-info">
-                    It is also possible to add several values in fields 5-7,
-                    necessarily separating them with a semicolon (";")
-                  </p>
-                )}
-              </>
-            ))}
-            <label
-              key="language"
-              className="w-[100%] text-lg flex flex-col space-y-2 relative"
-            >
-              <div className="flex items-center space-x-2">
-                <span className="text-lg">8. Add profile language</span>
-                <div
-                  className="tooltip"
-                  data-tip="Select preferred user profile language"
-                >
-                  <AiOutlineQuestionCircle className="hover:cursor-pointer" />
                 </div>
-              </div>
-              <Field
-                name="languages"
-                component={({ field, form, ...props }) => (
-                  <div className="flex space-x-4 bg-indigo-50 p-2 border-2 rounded-[5px]">
-                    {languageOptions.map((option) => (
-                      <div key={option.value} className="flex items-center">
-                        <input
-                          type="checkbox"
-                          id={option.value}
-                          {...field}
-                          {...props}
-                          value={option.value}
-                          checked={field.value.includes(option.value)}
-                          onChange={() => {
-                            if (field.value.includes(option.value)) {
-                              const nextValue = field.value.filter(
-                                (value) => value !== option.value
-                              );
-                              form.setFieldValue(field.name, nextValue);
-                            } else {
-                              const nextValue = [...field.value, option.value];
-                              form.setFieldValue(field.name, nextValue);
-                            }
-                          }}
-                          className="mr-2"
-                        />
-                        <label htmlFor={option.value}>{option.label}</label>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              />
-              <ErrorMessage
-                name="languages"
-                component="div"
-                className="text-red-500"
-              />
-            </label>
-            <div key="time">
-              <div className="flex space-x-2 items-center mb-2">
-                <p className="text-lg">9. Start time options</p>
-                <Tooltip
-                  text={`If you don't specify a time, the scanner will start every hour at 0 minutes (e.g., 00:00, etc.). If you only specify the hour, the scanner will start daily at the hour you set (e.g., at 14:00 every day).If you only specify the minutes, the scanner will start every hour at the minutes you set (e.g., at 00:15, ).`}
+                <Field
+                  name="languages"
+                  component={({ field, form, ...props }) => (
+                    <div className="flex space-x-4 bg-indigo-50 h-[50px] px-2 border-2 rounded-[5px]">
+                      {languageOptions.map((option) => (
+                        <div key={option.value} className="flex items-center">
+                          <input
+                            type="checkbox"
+                            id={option.value}
+                            {...field}
+                            {...props}
+                            value={option.value}
+                            checked={field.value.includes(option.value)}
+                            onChange={() => {
+                              if (field.value.includes(option.value)) {
+                                const nextValue = field.value.filter(
+                                  (value) => value !== option.value
+                                );
+                                form.setFieldValue(field.name, nextValue);
+                              } else {
+                                const nextValue = [
+                                  ...field.value,
+                                  option.value,
+                                ];
+                                form.setFieldValue(field.name, nextValue);
+                              }
+                            }}
+                            className="mr-2"
+                          />
+                          <label htmlFor={option.value}>{option.label}</label>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 />
-              </div>
+                <ErrorMessage
+                  name="languages"
+                  component="div"
+                  className="text-red-500"
+                />
+              </label>
+            </div>
+            <div className="flex flex-col justify-between gap-2">
+              {filtersInputs.slice(4).map((data, index) => (
+                <FormicInput key={index} data={data} />
+              ))}
+              <p className="text-m">
+                The fields below can take several values, separate them with -
+                ";"
+              </p>
+              <div>
+                <div className="flex space-x-2 items-center mb-2">
+                  <p className="text-lg">Start time options</p>
+                  <Tooltip
+                    text={`If you don't specify a time, the scanner will start every hour at 0 minutes (e.g., 00:00, etc.). If you only specify the hour, the scanner will start daily at the hour you set (e.g., at 14:00 every day).If you only specify the minutes, the scanner will start every hour at the minutes you set (e.g., at 00:15, ).`}
+                  />
+                </div>
 
-              <div className="flex justify-around flex-row gap-4 py-4 ">
-                <FormikToggle
-                  className="flex gap-2"
-                  values={values.autoBidding}
-                  handleChange={handleChange}
-                >
-                  {values.autoBidding ? <span>ON</span> : <span>OFF</span>}
-                </FormikToggle>
+                <div className="flex items-center justify-around flex-row gap-4 px-2 bg-indigo-50 h-[50px] border-2 rounded-[5px]">
+                  <FormikToggle
+                    className="gap-2"
+                    values={values.autoBidding}
+                    handleChange={handleChange}
+                  >
+                    <div className="w-[30px]">
+                      {values.autoBidding ? <span>ON</span> : <span>OFF</span>}
+                    </div>
+                  </FormikToggle>
 
-                <FormicInputNumber
-                  name="cronTime.min"
-                  placeholder="Minutes"
-                  value={values.cronTime.min}
-                  errorClassName="left-0 top-[-18px]"
-                >
-                  <p>Minutes</p>
-                </FormicInputNumber>
+                  <FormicInputNumber
+                    name="cronTime.min"
+                    placeholder="Minutes"
+                    value={values.cronTime.min}
+                    errorClassName="left-0 top-[-18px]"
+                  >
+                    <p>Minutes</p>
+                  </FormicInputNumber>
 
-                <FormicInputNumber
-                  key="time-options-hour"
-                  name="cronTime.hour"
-                  placeholder="Hours"
-                  value={values.cronTime.hour}
-                  errorClassName="left-0 top-[-18px]"
-                >
-                  <p>Hours</p>
-                </FormicInputNumber>
+                  <FormicInputNumber
+                    key="time-options-hour"
+                    name="cronTime.hour"
+                    placeholder="Hours"
+                    value={values.cronTime.hour}
+                    errorClassName="left-0 top-[-18px]"
+                  >
+                    <p>Hours</p>
+                  </FormicInputNumber>
+                </div>
               </div>
             </div>
           </div>
