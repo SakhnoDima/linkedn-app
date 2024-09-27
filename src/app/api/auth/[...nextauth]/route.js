@@ -55,12 +55,6 @@ export const authOptions = {
       if (trigger === "update" && session.user.isGreetingMessage === "update") {
         token.isGreetingMessage = !token.isGreetingMessage;
       }
-      if (
-        trigger === "update" &&
-        session.user.jobProposalMessage === "update"
-      ) {
-        token.jobProposalMessage = !token.jobProposalMessage;
-      }
 
       if (user) {
         return {
@@ -72,7 +66,6 @@ export const authOptions = {
           isTelegramNotifications: user.isTelegramNotifications,
           accountStatus: user.status,
           isGreetingMessage: user.isGreetingMessage,
-          jobProposalMessage: user.jobProposalMessage,
         };
       }
 
@@ -89,7 +82,6 @@ export const authOptions = {
           isTelegramNotifications: token.isTelegramNotifications,
           accountStatus: token.accountStatus,
           isGreetingMessage: token.isGreetingMessage,
-          jobProposalMessage: token.jobProposalMessage,
         },
       };
     },
