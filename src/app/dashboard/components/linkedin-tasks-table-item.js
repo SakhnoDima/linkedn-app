@@ -2,6 +2,12 @@ import { useRouter } from "next/navigation";
 
 const LinkedinTasksTableItem = ({ task }) => {
   const router = useRouter();
+
+  const taskTypes = {
+    "send-companies-messages": "COMPANIES",
+    "send-connections": "CONNECTIONS",
+  };
+
   return (
     <tr
       className="bg-white border-b hover:bg-gray-100 hover:cursor-pointer"
@@ -9,10 +15,10 @@ const LinkedinTasksTableItem = ({ task }) => {
         router.push(`/dashboard/${task._id}`);
       }}
     >
-      <td className="px-6 py-4 text-xl text-gray-900 whitespace-nowrap ">
+      <td className="px-6 py-4 text-xl text-gray-900 whitespace-nowrap text-center">
         {task.taskName}
       </td>
-      <td className="px-6 py-4 ">{task.taskType}</td>
+      <td className="px-6 py-4 ">{taskTypes[task.taskType]}</td>
       <td className="px-6 py-4 text-base">{task.searchTags}</td>
       <td className="px-6 py-4 text-base">{task.totalLettersPerDay}</td>
       <td className="px-6 py-4 ">{task.totalInvitationSent}</td>

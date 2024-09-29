@@ -1,13 +1,13 @@
-import Loader from "./loader";
+import Loader from "../loader";
 
 export const TableComponent = ({ headerItems, children, loading }) => {
   return (
-    <div className="relative overflow-x-auto shadow-md sm:rounded-lg max-h-[700px] overflow-y-auto">
+    <div className="relative overflow-x-auto shadow-md sm:rounded-lg overflow-y-auto">
       <table className="w-full text-sm text-left rtl:text-right ">
         <thead className="sticky top-0 text-xs uppercase bg-gray-200 ">
           <tr className="text-lg">
             {headerItems.map((item, index) => (
-              <th key={index} className="px-6 py-3">
+              <th key={index} className="px-6 py-3 text-center">
                 {item}
               </th>
             ))}

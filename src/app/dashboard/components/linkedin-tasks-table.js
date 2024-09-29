@@ -3,7 +3,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import LinkedinTasksTableItem from "./linkedin-tasks-table-item";
-import { TableComponent } from "@/app/components/table-component";
+import { TableComponent } from "@/app/components/Tables/table-component";
 
 const LinkedinTasksTable = ({ userId }) => {
   const [tasks, setTasks] = useState([]);

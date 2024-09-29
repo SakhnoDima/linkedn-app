@@ -5,6 +5,8 @@ import { compleatSearchFilters } from "../helpers";
 import { LinkedinTaskService } from "../services/linkedin-cron";
 import User from "@/app/lib/user-model";
 
+const PAGE_LIMIT = 10;
+
 export const POST = async (req, res) => {
   const { values, userId } = await req.json();
 
@@ -50,16 +52,28 @@ export const POST = async (req, res) => {
 export const GET = async (req, res) => {
   const { searchParams } = new URL(req.nextUrl);
   const userId = searchParams.get("userId");
+  const page = searchParams.get("page");
 
   try {
-    const filters = await LinkedinFilters.find({ userId: userId });
+    const totalCount = await LinkedinFilters.countDocuments({ userId: userId });
+
+    console.log("Total", totalCount);
+
+    const filters = await LinkedinFilters.find({ userId: userId })
+      .limit(PAGE_LIMIT * 1)
+      .skip((page - 1) * PAGE_LIMIT)
+      .exec();
+
     if (!filters) {
       return NextResponse.json(
         { message: "Something went wrong try letter" },
         { status: 500 }
       );
     }
-    return NextResponse.json(filters);
+    return NextResponse.json({
+      filters,
+      totalPages: Math.ceil(totalCount / PAGE_LIMIT),
+    });
   } catch (error) {
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
