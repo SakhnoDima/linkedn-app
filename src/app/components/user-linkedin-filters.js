@@ -6,12 +6,27 @@ import { useEffect, useState } from "react";
 import UserLinkedinFiltersItem from "./user-linkedin-filters-item";
 import TargetActionButton from "./target-action-button";
 import InvitationLetterBlock from "./invitation-letter-block";
+import { TableComponent } from "./table-component";
 
 const UsersLinkedinFilters = () => {
   const { data: session } = useSession();
   const showToast = useToastContext();
   const [filters, setFilters] = useState([]);
   const [currentTarget, setCurrentTarget] = useState([]);
+
+  const headerLinkedinScannersItems = [
+    "",
+    "Name",
+    "Event",
+    "Connections",
+    "Keywords",
+    "Locations",
+    "Title",
+    "Industry",
+    "Language",
+    "Categories",
+    "Status",
+  ];
 
   useEffect(() => {
     const fetchLinkedinFilters = async () => {
@@ -59,38 +74,15 @@ const UsersLinkedinFilters = () => {
           <InvitationLetterBlock />
         </div>
       </div>
-      <table className="table">
-        <thead>
-          <tr className="text-center">
-            <th></th>
-            <th>Name</th>
-            <th>Event</th>
-            <th>Connections</th>
-            <th>Keywords</th>
-            <th>Locations</th>
-            <th>Title</th>
-            <th>Industry</th>
-            <th>Language</th>
-            <th>Categories</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filters.length > 0 ? (
-            filters.map((data) => (
-              <UserLinkedinFiltersItem
-                key={data._id}
-                data={data}
-                setCurrentTarget={setCurrentTarget}
-              />
-            ))
-          ) : (
-            <tr>
-              <td colSpan="10">No data available</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+      <TableComponent headerItems={headerLinkedinScannersItems}>
+        {filters.map((data) => (
+          <UserLinkedinFiltersItem
+            key={data._id}
+            data={data}
+            setCurrentTarget={setCurrentTarget}
+          />
+        ))}
+      </TableComponent>
     </div>
   );
 };

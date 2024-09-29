@@ -12,6 +12,7 @@ const LinkedinTasksTableItem = ({ task }) => {
       <td className="px-6 py-4 text-xl text-gray-900 whitespace-nowrap ">
         {task.taskName}
       </td>
+      <td className="px-6 py-4 ">{task.taskType}</td>
       <td className="px-6 py-4 text-base">{task.searchTags}</td>
       <td className="px-6 py-4 text-base">{task.totalLettersPerDay}</td>
       <td className="px-6 py-4 ">{task.totalInvitationSent}</td>

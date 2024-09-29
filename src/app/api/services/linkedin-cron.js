@@ -4,6 +4,7 @@ import LinkedinFilters from "@/app/lib/linkedin-filters-model";
 import axios from "axios";
 import LinkedinCompletedTasks from "@/app/lib/linkedin-tasks-model";
 import { timeCreator } from "../helpers";
+import { EVENTS } from "./constants";
 
 async function checkTaskStatus(taskId) {
   let isLinkedinAuth = false;
@@ -83,6 +84,9 @@ class TaskServiceClass {
                 searchTags: data.keyWords,
                 searchFilters,
                 totalLettersPerDay: data.connections,
+                taskPlatform: EVENTS.linkedin.name,
+                taskType: EVENTS.linkedin.taskType.sendConnections,
+                targetName: data.targetName,
               },
               {
                 headers: {
@@ -104,7 +108,8 @@ class TaskServiceClass {
                   }
 
                   LinkedinCompletedTasks.create({
-                    taskName: data.targetName,
+                    taskType: EVENTS.linkedin.taskType.sendConnections,
+                    taskName: res.targetName,
                     userId: user._id,
                     targetTaskId: data._id,
                     date: new Date().toISOString().split("T")[0],
@@ -187,28 +192,85 @@ class TaskServiceClass {
           console.log("In cron !!");
 
           //TODO add your URL to scrapper
-          axios.post(
-            "https://wgwk8qimg1.execute-api.eu-north-1.amazonaws.com/default/linkedin-companies",
-            {
-              id: data.userId,
-              taskId: id,
-              chatId: user.chatId,
-              searchWords: data.keyWords,
-              searchFilters,
-              messageData: {
-                Topic: data.topic,
-                LetterText: data.letterText,
+          axios
+            .post(
+              "https://6ejajjistb.execute-api.eu-north-1.amazonaws.com/default/lambda-create-task",
+              {
+                id: data.userId,
+                taskId: id,
+                chatId: user.chatId,
+                searchWords: data.keyWords,
+                searchFilters,
+                messageData: {
+                  Topic: data.topic,
+                  LetterText: data.letterText,
+                },
+                totalLettersPerDay: data.connections,
+                email: user.linkedinData.login,
+                linkedPassword: user.linkedinData.password,
+                taskPlatform: EVENTS.linkedin.name,
+                taskType: EVENTS.linkedin.taskType.companiesMessages,
+                targetName: data.targetName,
               },
-              totalLettersPerDay: data.connections,
-              email: user.linkedinData.login,
-              linkedPassword: user.linkedinData.password,
-            },
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            )
+            .then((createTaskResponse) => {
+              const taskId = createTaskResponse.data.taskId;
+              console.log("Task started with ID:", taskId);
+              checkTaskStatus(taskId)
+                .then((res) => {
+                  console.log("res", res);
+
+                  errorList.removeError(user._id.toHexString());
+
+                  if (res.error) {
+                    errorList.addError(user._id.toHexString(), res.error);
+                  }
+
+                  LinkedinCompletedTasks.create({
+                    taskType: EVENTS.linkedin.taskType.companiesMessages,
+                    taskName: res.targetName,
+                    userId: user._id,
+                    targetTaskId: data._id,
+                    date: new Date().toISOString().split("T")[0],
+                    error: res.error,
+                    levelOfTarget: res.levelOfTarget,
+                    totalLettersPerDay: res.totalLettersPerDay,
+                    totalInvitationSent: res.totalMessages,
+                    searchTags: res.searchWords,
+                    invitedCompanies: res.companyData,
+                    searchFilters: {
+                      Locations: Array.isArray(res.searchFilters?.Locations)
+                        ? [...res.searchFilters.Locations]
+                        : [],
+                      "Profile language": Array.isArray(
+                        res.searchFilters?.["Profile language"]
+                      )
+                        ? [...res.searchFilters["Profile language"]]
+                        : [],
+                      Keywords: res.searchFilters?.Keywords || "",
+                      Industry: Array.isArray(res.searchFilters?.Industry)
+                        ? [...res.searchFilters.Industry]
+                        : [],
+                    },
+                  });
+                })
+                .catch((err) => {
+                  console.log(err);
+                  console.log("in catch after check task status");
+                  LinkedinFilters.findByIdAndUpdate(
+                    { _id: data._id },
+                    {
+                      status: false,
+                    },
+                    { new: true }
+                  );
+                });
+            });
         } catch (error) {
           console.log(error);
         }

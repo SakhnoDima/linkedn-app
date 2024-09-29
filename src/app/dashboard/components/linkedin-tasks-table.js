@@ -3,9 +3,20 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import LinkedinTasksTableItem from "./linkedin-tasks-table-item";
+import { TableComponent } from "@/app/components/table-component";
 
 const LinkedinTasksTable = ({ userId }) => {
   const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const linkedinDashboardHeaderItems = [
+    "Task Name",
+    "Task Type",
+    "Search Tags",
+    "Planned Connections",
+    "Connections Sent",
+    "Date",
+  ];
 
   useEffect(() => {
     const getUserLinkedinTasks = async (userId) => {
@@ -13,6 +24,7 @@ const LinkedinTasksTable = ({ userId }) => {
         if (!userId) {
           throw new Error("Not active session");
         }
+        setLoading(true);
         const { data } = await axios.get("/api/linkedin-tasks-result", {
           params: {
             userId,
@@ -22,7 +34,8 @@ const LinkedinTasksTable = ({ userId }) => {
         console.log(data.results);
       } catch (error) {
         console.log(error);
-        return;
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -30,24 +43,16 @@ const LinkedinTasksTable = ({ userId }) => {
   }, [userId]);
 
   return (
-    <div className="relative overflow-x-auto shadow-md sm:rounded-lg max-h-[700px] overflow-y-auto">
-      <table className="w-full text-sm text-left rtl:text-right ">
-        <thead className="sticky top-0 text-xs uppercase bg-gray-200 ">
-          <tr className="text-lg">
-            <th className="px-6 py-3">Task Name</th>
-            <th className="px-6 py-3">Search Tags</th>
-            <th className="px-6 py-3">Planned Connections</th>
-            <th className="px-6 py-3">Connections Sent</th>
-            <th className="px-6 py-3">Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          {tasks.map((data) => (
-            <LinkedinTasksTableItem task={data} key={data._id} />
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <>
+      <TableComponent
+        loading={loading}
+        headerItems={linkedinDashboardHeaderItems}
+      >
+        {tasks.map((data) => (
+          <LinkedinTasksTableItem task={data} key={data._id} />
+        ))}
+      </TableComponent>
+    </>
   );
 };
 
