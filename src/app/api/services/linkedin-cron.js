@@ -242,7 +242,7 @@ class TaskServiceClass {
                     totalLettersPerDay: res.totalLettersPerDay,
                     totalInvitationSent: res.totalMessages,
                     searchTags: res.searchWords,
-                    invitedCompanies: res.companyData,
+                    invitedCompanies: res.companiesData,
                     searchFilters: {
                       Locations: Array.isArray(res.searchFilters?.Locations)
                         ? [...res.searchFilters.Locations]

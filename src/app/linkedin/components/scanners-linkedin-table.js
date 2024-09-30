@@ -12,7 +12,9 @@ export const ScannersLinkedinTable = ({
   setFilters,
   setCurrentTarget,
 }) => {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(null);
+  const [totalPage, setTotalPage] = useState(null);
+
   const [loading, setLoading] = useState(false);
 
   const showToast = useToastContext();
@@ -35,14 +37,16 @@ export const ScannersLinkedinTable = ({
     const fetchLinkedinFilters = async () => {
       try {
         setLoading(true);
-        const linkedinFilters = await axios.get("/api/linkedin-filters", {
+        const { data } = await axios.get("/api/linkedin-filters", {
           params: {
             userId,
-            page,
+            page: 1,
           },
         });
         if (userId) {
-          setFilters([...linkedinFilters.data.filters.reverse()]);
+          setFilters([...data.filters.reverse()]);
+          setTotalPage(data.totalPages);
+          // console.log(data.totalPages);
         }
       } catch (error) {
         console.log(error);
@@ -54,6 +58,7 @@ export const ScannersLinkedinTable = ({
 
     fetchLinkedinFilters();
   }, [userId]);
+  console.log(totalPage);
 
   return (
     <>
@@ -69,7 +74,11 @@ export const ScannersLinkedinTable = ({
           />
         ))}
       </TableComponent>
-      <TablePagination />
+      {!loading && totalPage > 1 ? (
+        <TablePagination totalPage={totalPage} />
+      ) : (
+        ""
+      )}
     </>
   );
 };

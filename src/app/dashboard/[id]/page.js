@@ -24,6 +24,7 @@ const Page = ({ params }) => {
             userId,
           },
         });
+        console.log(data.results);
 
         seFilter(data.results);
       } catch (error) {
