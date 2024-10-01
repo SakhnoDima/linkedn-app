@@ -5,7 +5,7 @@ import { compleatSearchFilters } from "../helpers";
 import { LinkedinTaskService } from "../services/linkedin-cron";
 import User from "@/app/lib/user-model";
 
-const PAGE_LIMIT = 10;
+export const PAGE_LIMIT = 10;
 
 export const POST = async (req, res) => {
   const { values, userId } = await req.json();
@@ -56,8 +56,6 @@ export const GET = async (req, res) => {
 
   try {
     const totalCount = await LinkedinFilters.countDocuments({ userId: userId });
-
-    console.log("Total", totalCount);
 
     const filters = await LinkedinFilters.find({ userId: userId })
       .sort({ _id: -1 })

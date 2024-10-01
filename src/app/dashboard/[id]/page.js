@@ -40,7 +40,7 @@ const Page = ({ params }) => {
 
   return (
     <div>
-      <GoBack href="/dashboard">
+      <GoBack>
         Go back <RiArrowGoBackFill />
       </GoBack>
 

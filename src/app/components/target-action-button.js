@@ -43,9 +43,10 @@ const TargetActionButton = ({
         },
       });
       setCurrentTarget([]);
-      setFilters((prev) =>
-        prev.filter((element) => !arrayForDeleted.includes(element._id))
-      );
+      // setFilters((prev) =>
+      //   prev.filter((element) => !arrayForDeleted.includes(element._id))
+      // );
+      window.location.reload();
       showToast("Filter removed successfully", "success");
     } catch (error) {
       console.log(error);
