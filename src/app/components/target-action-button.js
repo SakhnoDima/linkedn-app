@@ -5,7 +5,7 @@ import TargetActions from "./target-actions";
 import axios from "axios";
 import { useToastContext } from "../context/toast-context";
 
-const buttonNames = {
+export const buttonNames = {
   add: "Add Targets",
   edit: "Edit Targets",
   delete: "Delete Targets",
@@ -43,9 +43,10 @@ const TargetActionButton = ({
         },
       });
       setCurrentTarget([]);
-      setFilters((prev) =>
-        prev.filter((element) => !arrayForDeleted.includes(element._id))
-      );
+      // setFilters((prev) =>
+      //   prev.filter((element) => !arrayForDeleted.includes(element._id))
+      // );
+      window.location.reload();
       showToast("Filter removed successfully", "success");
     } catch (error) {
       console.log(error);

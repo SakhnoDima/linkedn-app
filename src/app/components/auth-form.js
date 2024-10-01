@@ -66,6 +66,9 @@ const AthForm = () => {
 
       if (!response?.error) {
         router.push("/linkedin");
+        console.log("Login");
+
+        window.fbq("trackCustom", "LogIn");
         router.refresh();
       }
     } catch (error) {

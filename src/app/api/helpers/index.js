@@ -52,8 +52,6 @@ export const timeCreator = (minutes, hours, timeZone) => {
 };
 
 const getUTC0Time = (hour, minute, timeZone) => {
-  console.log("timeZone", timeZone);
-
   let localTime = moment.tz(
     { hour: hour === "*" ? 0 : hour, minute: minute === "*" ? 0 : minute },
     timeZone

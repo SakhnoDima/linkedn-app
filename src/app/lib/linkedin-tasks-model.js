@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import dbConnect from "./moongose-connect";
+import { EVENTS } from "../api/services/constants";
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -12,7 +13,37 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+const invitedCompanies = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  link: {
+    type: String,
+    required: true,
+  },
+  likedPosts: {
+    type: Number,
+  },
+  follow: {
+    type: Boolean,
+  },
+  messageSent: {
+    type: Boolean,
+  },
+});
+
 const LinkedinCompletedTasksSchema = new mongoose.Schema({
+  taskType: {
+    type: String,
+    enum: [
+      EVENTS.linkedin.taskType.companiesMessages,
+      EVENTS.linkedin.taskType.sendConnections,
+    ],
+  },
+  invitedCompanies: {
+    type: [invitedCompanies],
+  },
   targetTaskId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "LinkedinFilters",

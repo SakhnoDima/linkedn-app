@@ -33,10 +33,6 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  jobProposalMessage: {
-    type: Boolean,
-    default: false,
-  },
   chatId: {
     type: [String],
   },

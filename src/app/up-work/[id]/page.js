@@ -86,7 +86,7 @@ const Page = ({ params }) => {
   };
   return (
     <div>
-      <GoBack href="/up-work">
+      <GoBack>
         Go back <RiArrowGoBackFill />
       </GoBack>
       {loading ? (

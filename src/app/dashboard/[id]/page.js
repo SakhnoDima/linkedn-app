@@ -19,11 +19,12 @@ const Page = ({ params }) => {
           return;
         }
 
-        const { data } = await axios.get("/api/linkedin-task", {
+        const { data } = await axios.get("/api/linkedin-task-result", {
           params: {
             userId,
           },
         });
+        console.log(data.results);
 
         seFilter(data.results);
       } catch (error) {
@@ -39,7 +40,7 @@ const Page = ({ params }) => {
 
   return (
     <div>
-      <GoBack href="/dashboard">
+      <GoBack>
         Go back <RiArrowGoBackFill />
       </GoBack>
 
@@ -57,22 +58,48 @@ const Page = ({ params }) => {
           <p>
             Search Tags: <span>{filter.searchTags}</span>
           </p>
-          <p>Total clicks licks: {filter.totalClicks}</p>
-          <p>Planed Connections: {filter.totalInvitationSent}</p>
-          <p>Sended Connections: {filter.totalLettersPerDay}</p>
-          <p>Connected Users:</p>
-          <ul className="ml-[8px]">
-            {filter.userNames.map((name, index) => (
-              <li key={index}>
-                <Link
-                  className="underline hover:text-blue-600"
-                  href={name?.url}
-                >
-                  {name.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <p>Planed Connections: {filter.totalLettersPerDay}</p>
+          <p>Sended Connections: {filter.totalInvitationSent}</p>
+          {filter.taskType === "send-connections" && (
+            <>
+              <p>Connected Users:</p>
+              <ul className="ml-[8px]">
+                {filter.userNames.map((name, index) => (
+                  <li key={index}>
+                    <Link
+                      className="underline hover:text-blue-600"
+                      href={name?.url}
+                    >
+                      {name.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+          {filter.taskType === "send-companies-messages" && (
+            <>
+              <p>Connected companies:</p>
+              <ul className="ml-[8px]">
+                {filter.invitedCompanies.map((company, index) => (
+                  <li key={index}>
+                    <Link
+                      className="underline hover:text-blue-600"
+                      href={company?.link}
+                    >
+                      {company.name}
+                    </Link>
+                    <p>
+                      Linked posts:
+                      <span className="ml-1">
+                        {company.likedPosts ? company.likedPosts : "0"}
+                      </span>
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
           {filter.error && <p>{filter.error}</p>}
         </div>
       )}

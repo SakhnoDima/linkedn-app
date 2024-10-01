@@ -4,6 +4,7 @@ import LinkedinFilters from "@/app/lib/linkedin-filters-model";
 import axios from "axios";
 import LinkedinCompletedTasks from "@/app/lib/linkedin-tasks-model";
 import { timeCreator } from "../helpers";
+import { EVENTS } from "./constants";
 
 async function checkTaskStatus(taskId) {
   let isLinkedinAuth = false;
@@ -49,7 +50,7 @@ class TaskServiceClass {
     this.userTasks = new Map();
   }
 
-  startTask(id, data, user, searchFilters) {
+  startConnectionsTask(id, data, user, searchFilters) {
     console.log("Before start Init", this.userTasks);
     console.log("time before", data.cronTime.min, data.cronTime.hour);
 
@@ -58,14 +59,14 @@ class TaskServiceClass {
       data.cronTime.hour,
       data.cronTime.timeZone
     );
-    console.log("time", time);
-
     console.log("time after", time);
 
     if (!this.userTasks.has(data.userId.toString())) {
       this.userTasks.set(data.userId.toString(), {});
     }
     const tasks = this.userTasks.get(data.userId.toString());
+
+    console.log("searchTags", data.keyWords);
 
     if (!tasks[id]) {
       const task = cron.schedule(time, async () => {
@@ -75,14 +76,17 @@ class TaskServiceClass {
               "https://6ejajjistb.execute-api.eu-north-1.amazonaws.com/default/lambda-create-task",
               {
                 id: data.userId,
+                email: user.linkedinData.login,
+                linkedPassword: user.linkedinData.password,
                 taskId: id,
                 chatId: user.chatId,
                 levelOfTarget: 1,
                 searchTags: data.keyWords,
                 searchFilters,
                 totalLettersPerDay: data.connections,
-                invitationLetters: [""],
-                email: user.email,
+                taskPlatform: EVENTS.linkedin.name,
+                taskType: EVENTS.linkedin.taskType.sendConnections,
+                targetName: data.targetName,
               },
               {
                 headers: {
@@ -104,7 +108,8 @@ class TaskServiceClass {
                   }
 
                   LinkedinCompletedTasks.create({
-                    taskName: data.targetName,
+                    taskType: EVENTS.linkedin.taskType.sendConnections,
+                    taskName: res.targetName,
                     userId: user._id,
                     targetTaskId: data._id,
                     date: new Date().toISOString().split("T")[0],
@@ -160,6 +165,124 @@ class TaskServiceClass {
     }
   }
 
+  startCompaniesTask(id, data, user, searchFilters) {
+    console.log("Before start Init", this.userTasks);
+    console.log("time before", data.cronTime.min, data.cronTime.hour);
+
+    console.log("id", id);
+    console.log("data", data);
+    console.log("user", user);
+    console.log("searchFilters", searchFilters);
+
+    const time = timeCreator(
+      data.cronTime.min,
+      data.cronTime.hour,
+      data.cronTime.timeZone
+    );
+    console.log("time after", time);
+
+    if (!this.userTasks.has(data.userId.toString())) {
+      this.userTasks.set(data.userId.toString(), {});
+    }
+    const tasks = this.userTasks.get(data.userId.toString());
+
+    if (!tasks[id]) {
+      const task = cron.schedule(time, async () => {
+        try {
+          console.log("In cron !!");
+
+          //TODO add your URL to scrapper
+          axios
+            .post(
+              "https://6ejajjistb.execute-api.eu-north-1.amazonaws.com/default/lambda-create-task",
+              {
+                id: data.userId,
+                taskId: id,
+                chatId: user.chatId,
+                searchWords: data.keyWords,
+                searchFilters,
+                messageData: {
+                  Topic: data.topic,
+                  LetterText: data.letterText,
+                },
+                totalLettersPerDay: data.connections,
+                email: user.linkedinData.login,
+                linkedPassword: user.linkedinData.password,
+                taskPlatform: EVENTS.linkedin.name,
+                taskType: EVENTS.linkedin.taskType.companiesMessages,
+                targetName: data.targetName,
+              },
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            )
+            .then((createTaskResponse) => {
+              const taskId = createTaskResponse.data.taskId;
+              console.log("Task started with ID:", taskId);
+              checkTaskStatus(taskId)
+                .then((res) => {
+                  console.log("res", res);
+
+                  errorList.removeError(user._id.toHexString());
+
+                  if (res.error) {
+                    errorList.addError(user._id.toHexString(), res.error);
+                  }
+
+                  LinkedinCompletedTasks.create({
+                    taskType: EVENTS.linkedin.taskType.companiesMessages,
+                    taskName: res.targetName,
+                    userId: user._id,
+                    targetTaskId: data._id,
+                    date: new Date().toISOString().split("T")[0],
+                    error: res.error,
+                    levelOfTarget: res.levelOfTarget,
+                    totalLettersPerDay: res.totalLettersPerDay,
+                    totalInvitationSent: res.totalMessages,
+                    searchTags: res.searchWords,
+                    invitedCompanies: res.companiesData,
+                    searchFilters: {
+                      Locations: Array.isArray(res.searchFilters?.Locations)
+                        ? [...res.searchFilters.Locations]
+                        : [],
+                      "Profile language": Array.isArray(
+                        res.searchFilters?.["Profile language"]
+                      )
+                        ? [...res.searchFilters["Profile language"]]
+                        : [],
+                      Keywords: res.searchFilters?.Keywords || "",
+                      Industry: Array.isArray(res.searchFilters?.Industry)
+                        ? [...res.searchFilters.Industry]
+                        : [],
+                    },
+                  });
+                })
+                .catch((err) => {
+                  console.log(err);
+                  console.log("in catch after check task status");
+                  LinkedinFilters.findByIdAndUpdate(
+                    { _id: data._id },
+                    {
+                      status: false,
+                    },
+                    { new: true }
+                  );
+                });
+            });
+        } catch (error) {
+          console.log(error);
+        }
+      });
+      tasks[id] = task;
+      console.log("After start Init", this.userTasks);
+      console.log(`Cron task ${id} started`);
+    } else {
+      console.log(`Task ${id} is already running`);
+    }
+  }
+
   async stopTask(userId, taskId) {
     console.log(this.userTasks);
 
@@ -184,4 +307,4 @@ class TaskServiceClass {
   }
 }
 
-export const TaskService = new TaskServiceClass();
+export const LinkedinTaskService = new TaskServiceClass();

@@ -1,7 +1,25 @@
 import mongoose from "mongoose";
 import dbConnect from "./moongose-connect";
 
+const events = {
+  connects: "connects",
+  companies: "companies invite",
+};
+
 const LinkedinFiltersSchema = new mongoose.Schema({
+  topic: {
+    type: String,
+    default: "",
+  },
+  letterText: {
+    type: String,
+    default: "",
+  },
+  event: {
+    type: String,
+    enum: [events.connects, events.companies],
+    default: events.connects,
+  },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "users_collection",

@@ -1,49 +1,54 @@
-"use client";
-
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import LinkedinTasksTableItem from "./linkedin-tasks-table-item";
 import { TableComponent } from "@/app/components/Tables/table-component";
-import { TablePagination } from "@/app/components/Tables/table-pagination";
 import { useToastContext } from "@/app/context/toast-context";
+import UserLinkedinFiltersItem from "@/app/components/user-linkedin-filters-item";
+import { TablePagination } from "@/app/components/Tables/table-pagination";
 
-const LinkedinTasksTable = ({ userId }) => {
+export const ScannersLinkedinTable = ({
+  userId,
+  filters,
+  setFilters,
+  setCurrentTarget,
+}) => {
   const searchParams = useSearchParams();
-  const [tasks, setTasks] = useState([]);
+
   const [page, setPage] = useState(+searchParams.get("page") || 1);
   const [totalPage, setTotalPage] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const showToast = useToastContext();
 
-  const linkedinDashboardHeaderItems = [
-    "Task Name",
-    "Task Type",
-    "Search Tags",
-    "Planned Connections",
-    "Connections Sent",
-    "Date",
+  const headerLinkedinScannersItems = [
+    "",
+    "Name",
+    "Event",
+    "Connections",
+    "Keywords",
+    "Locations",
+    "Title",
+    "Industry",
+    "Language",
+    "Categories",
+    "Status",
   ];
 
   useEffect(() => {
-    const getUserLinkedinTasks = async (userId) => {
+    const fetchLinkedinFilters = async () => {
       try {
-        if (!userId) {
-          throw new Error("Not active session");
-        }
         setLoading(true);
 
-        const { data } = await axios.get("/api/linkedin-tasks-result", {
+        const { data } = await axios.get("/api/linkedin-filters", {
           params: {
             userId,
             page,
           },
         });
-        console.log(data.totalPages);
-
-        setTasks([...data.results]);
-        setTotalPage(data.totalPages);
+        if (userId) {
+          setFilters([...data.filters]);
+          setTotalPage(data.totalPages);
+        }
       } catch (error) {
         console.log(error);
         showToast(error.response?.data.message, "error");
@@ -52,17 +57,22 @@ const LinkedinTasksTable = ({ userId }) => {
       }
     };
 
-    getUserLinkedinTasks(userId);
+    fetchLinkedinFilters();
   }, [userId, page]);
+  console.log(totalPage);
 
   return (
     <>
       <TableComponent
         loading={loading}
-        headerItems={linkedinDashboardHeaderItems}
+        headerItems={headerLinkedinScannersItems}
       >
-        {tasks.map((data) => (
-          <LinkedinTasksTableItem task={data} key={data._id} />
+        {filters.map((data) => (
+          <UserLinkedinFiltersItem
+            key={data._id}
+            data={data}
+            setCurrentTarget={setCurrentTarget}
+          />
         ))}
       </TableComponent>
       {!loading && totalPage > 1 ? (
@@ -77,5 +87,3 @@ const LinkedinTasksTable = ({ userId }) => {
     </>
   );
 };
-
-export default LinkedinTasksTable;
