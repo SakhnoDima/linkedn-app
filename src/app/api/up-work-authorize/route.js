@@ -107,7 +107,9 @@ export const POST = async (req, res) => {
           email: login,
           password: pass,
           secret: secret,
-          key: "upWork",
+          taskPlatform: "upwork",
+          taskType: "authorization",
+          usOnly: true,
         },
         {
           headers: {

@@ -42,7 +42,9 @@ class CronUpWorkClass {
                 taskId: scannerData._id,
                 chatId: user.chatId,
                 userEmail: user.email,
-                taskType: user.status,
+                accountType: user.status, // 'freelancer-account' or 'weekly-result' or 'agency-account'
+                taskPlatform: "upwork",
+                taskType:  "send-proposals",
                 scannerName: scannerData.scannerName,
                 autoBidding: scannerData.autoBidding,
                 usOnly: scannerData.usOnly,
