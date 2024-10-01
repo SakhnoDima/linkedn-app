@@ -60,6 +60,7 @@ export const GET = async (req, res) => {
     console.log("Total", totalCount);
 
     const filters = await LinkedinFilters.find({ userId: userId })
+      .sort({ _id: -1 })
       .limit(PAGE_LIMIT * 1)
       .skip((page - 1) * PAGE_LIMIT)
       .exec();
