@@ -104,6 +104,7 @@ export const POST = async (req, res) => {
         "https://6ejajjistb.execute-api.eu-north-1.amazonaws.com/default/lambda-create-task",
         {
           id: userId,
+          taskId: userId,
           email: login,
           password: pass,
           secret: secret,
