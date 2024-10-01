@@ -44,7 +44,7 @@ class CronUpWorkClass {
                 userEmail: user.email,
                 accountType: user.status, // 'freelancer-account' or 'weekly-result' or 'agency-account'
                 taskPlatform: "upwork",
-                taskType:  "send-proposals",
+                taskType: "send-proposals",
                 scannerName: scannerData.scannerName,
                 autoBidding: scannerData.autoBidding,
                 usOnly: scannerData.usOnly,
@@ -59,13 +59,13 @@ class CronUpWorkClass {
                       ? scannerData.searchFilters.category
                           .split(" | ")
                           .map((item) => item.trim())
-                      : null,
+                      : [],
                   clientLocation:
                     scannerData.searchFilters.clientLocation.length > 0
                       ? scannerData.searchFilters.clientLocation
                           .split(" | ")
                           .map((item) => item.trim())
-                      : null,
+                      : [],
                 },
                 clientParameters: scannerData.clientParameters,
                 biddingOptions: scannerData.biddingOptions,
