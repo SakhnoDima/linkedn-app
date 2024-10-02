@@ -296,8 +296,7 @@ class TaskServiceClass {
     const tasks = this.userTasks.get(user._id.toString());
 
     if (!tasks[id]) {
-      // "0 */4 * * *"
-      const task = cron.schedule("49 16 * * *", async () => {
+      const task = cron.schedule("0 */4 * * *", async () => {
         try {
           console.log("In cron !!");
 
@@ -328,7 +327,6 @@ class TaskServiceClass {
                   console.log("res", res);
 
                   //! errorList.removeError(user._id.toHexString());
-
                   //! if (res.error) {
                   //!   errorList.addError(user._id.toHexString(), res.error);
                   //!}

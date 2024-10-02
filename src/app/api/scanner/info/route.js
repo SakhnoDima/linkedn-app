@@ -28,11 +28,13 @@ export const GET = async (req, res) => {
       .post(
         "https://6ejajjistb.execute-api.eu-north-1.amazonaws.com/default/lambda-create-task",
         {
+          accountUsOnly: true,
           usOnly: scannerData.usOnly,
           taskPlatform: EVENTS.upWork.name,
           taskType: EVENTS.upWork.taskType.weeklyResult,
           id: scannerData.userId,
           taskId: scannerData._id,
+          chatId: [],
           userEmail: user.email,
           scannerName: scannerData.scannerName,
           autoBidding: scannerData.autoBidding,
@@ -96,6 +98,8 @@ async function checkTaskStatus(taskId, scannerId) {
         console.log("Task completed:", statusResponse.data.result);
         const response = JSON.parse(statusResponse.data.result);
         console.log("Res in check status f", response);
+        console.log(response.error);
+
         if (response.error) {
           console.log("Error", response.error);
           errorList.addError(taskId, response.error);

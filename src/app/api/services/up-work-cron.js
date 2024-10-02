@@ -3,6 +3,7 @@ import { errorList } from "./errors";
 import axios from "axios";
 import { timeCreator, transformQuery } from "../helpers";
 import User from "@/app/lib/user-model";
+import { EVENTS } from "./constants";
 
 const TelegramBot = require("node-telegram-bot-api");
 const token = process.env.TELEGRAM_BOT_TOKEN;
@@ -42,6 +43,7 @@ class CronUpWorkClass {
                 taskId: scannerData._id,
                 chatId: user.chatId,
                 userEmail: user.email,
+
                 accountType: user.status, // 'freelancer-account' or 'agency-account' or 'weekly-result'
                 taskPlatform: "upwork",
                 taskType: "send-proposals",
