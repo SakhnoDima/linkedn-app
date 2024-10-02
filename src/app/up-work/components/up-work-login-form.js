@@ -11,6 +11,7 @@ import Input from "@/app/components/input";
 import Loader from "@/app/components/loader";
 import { useSession } from "next-auth/react";
 import Radio from "@/app/components/radio";
+import Checkbox from "@/app/components/checkbox";
 
 const filtersInputsUpWork = [
   {
@@ -55,16 +56,19 @@ const UpWorkLoginForm = ({
     pass: "",
     secret: "",
     status: null,
+    usOnly: false,
   };
   const validationSchema = Yup.object({
     login: Yup.string().required("Login is required"),
     pass: Yup.string().required("Password is required"),
     secret: Yup.string().required("Secret is required"),
     status: Yup.string().required("Chose type of account"),
+    usOnly: Yup.bool().default(false),
   });
 
   const handleSubmit = async (values) => {
     setIsSubmitting(true);
+
     try {
       const { data } = await axios.post(
         "/api/up-work-authorize",
@@ -74,6 +78,7 @@ const UpWorkLoginForm = ({
           secret: values.secret,
           status: values.status,
           userId: userId,
+          usOnly: values.usOnly,
         },
         {
           headers: {
@@ -173,7 +178,30 @@ const UpWorkLoginForm = ({
               className="text-red-500 absolute top-[-15px] right-[0] text-sm"
             />
           </div>
+          {values.status === "freelancer-account" && (
+            <div className="flex gap-6 relative">
+              <label
+                htmlFor="usOnly"
+                className="flex gap-2 items-center hover:cursor-pointer"
+              >
+                <Field
+                  id="usOnly"
+                  name="usOnly"
+                  type="checkbox"
+                  checked={values.usOnly}
+                  onChange={() => setFieldValue("usOnly", !values.usOnly)}
+                  as={Checkbox}
+                />
+                <p>Set if your account uses USOnly parameter</p>
+              </label>
 
+              <ErrorMessage
+                name="usOnly"
+                component="div"
+                className="text-red-500 absolute top-[-15px] right-[0] text-sm"
+              />
+            </div>
+          )}
           <Button
             type="submit"
             className="btn-primary min-w-[180px]"

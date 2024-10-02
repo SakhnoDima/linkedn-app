@@ -10,6 +10,7 @@ import { RiArrowGoBackFill } from "react-icons/ri";
 import ScannersForm from "../components/scanner-form";
 import { ScannersList } from "../components/scanners-list";
 import Button from "@/app/components/button";
+import Loader from "@/app/components/loader";
 
 const Page = ({ params }) => {
   const { id } = params;
@@ -90,33 +91,15 @@ const Page = ({ params }) => {
         Go back <RiArrowGoBackFill />
       </GoBack>
       {loading ? (
-        <p>Loading</p>
+        <div className="flex justify-center gap-4">
+          Loading
+          <Loader />
+        </div>
       ) : (
         <>
           <ScannersForm scanner={scanner} actions="edit" />
         </>
       )}
-      <Button
-        onClick={handBotInit}
-        type="submit"
-        className="mx-auto w-[50px] bg-indigo-600 hover:bg-indigo-800 rounded-[10px] text-white p-2"
-      >
-        <p>Login</p>
-      </Button>
-      <Button
-        onClick={handBotInit}
-        type="submit"
-        className="mx-auto w-[50px] bg-indigo-600 hover:bg-indigo-800 rounded-[10px] text-white p-2"
-      >
-        <p>Start</p>
-      </Button>
-      <Button
-        onClick={handInfo}
-        type="submit"
-        className="mx-auto w-[50px] bg-indigo-600 hover:bg-indigo-800 rounded-[10px] text-white p-2"
-      >
-        <p>Info</p>
-      </Button>
     </div>
   );
 };

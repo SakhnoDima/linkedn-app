@@ -3,6 +3,7 @@ import Scanners from "@/app/lib/up-work-scanners";
 import axios from "axios";
 import { transformQuery } from "../../helpers";
 import User from "@/app/lib/user-model";
+import { EVENTS } from "../../services/constants";
 
 export const GET = async (req, res) => {
   const { searchParams } = new URL(req.nextUrl);
@@ -23,16 +24,17 @@ export const GET = async (req, res) => {
   const user = await User.findById({ _id: scannerData.userId });
 
   try {
-    // TODO Тут ми робимо запит на лямду який повторить пошук вакансій за попередній тиждень та поверне кількість
-
     await axios
       .post(
         "https://6ejajjistb.execute-api.eu-north-1.amazonaws.com/default/lambda-create-task",
         {
-          key: "upWork",
-          taskType: "weekly-result",
+          accountUsOnly: true,
+          usOnly: scannerData.usOnly,
+          taskPlatform: EVENTS.upWork.name,
+          taskType: EVENTS.upWork.taskType.weeklyResult,
           id: scannerData.userId,
           taskId: scannerData._id,
+          chatId: [],
           userEmail: user.email,
           scannerName: scannerData.scannerName,
           autoBidding: scannerData.autoBidding,
@@ -64,7 +66,11 @@ export const GET = async (req, res) => {
         const taskId = createTaskResponse.data.taskId;
         console.log("Task started with ID:", taskId);
         checkTaskStatus(taskId, scannerId);
+      })
+      .catch(({ response }) => {
+        throw new Error(response.data.error);
       });
+
     return NextResponse.json({ message: "Ok" });
   } catch (error) {
     return NextResponse.json({ message: error.message }, { status: 500 });
@@ -92,6 +98,8 @@ async function checkTaskStatus(taskId, scannerId) {
         console.log("Task completed:", statusResponse.data.result);
         const response = JSON.parse(statusResponse.data.result);
         console.log("Res in check status f", response);
+        console.log(response.error);
+
         if (response.error) {
           console.log("Error", response.error);
           errorList.addError(taskId, response.error);

@@ -17,7 +17,6 @@ const removeFromLocalStorage = (id) => {
   ids = ids.filter((item) => item !== id);
   localStorage.setItem("weekly-info", JSON.stringify(ids));
 };
-
 const isIdInLocalStorage = (id) => {
   let ids = JSON.parse(localStorage.getItem("weekly-info")) || [];
   return ids.includes(id);

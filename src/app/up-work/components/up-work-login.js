@@ -13,7 +13,7 @@ const UpWorkLogin = ({ isAuth }) => {
     return;
   }
   return (
-    <div>
+    <div className="mb-4">
       <h2 className="text-center text-3xl mb-4">Upwork Authorization</h2>
       <UpWorkLoginForm
         setIsUpWorkAut={setIsUpWorkAut}
