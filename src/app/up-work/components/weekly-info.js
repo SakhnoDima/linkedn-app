@@ -1,6 +1,7 @@
 "use client";
 import Button from "@/app/components/button";
 import Loader from "@/app/components/loader";
+import { useToastContext } from "@/app/context/toast-context";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
@@ -27,7 +28,7 @@ const WeeklyInfo = ({ active, scanner }) => {
     active ? scanner.weeklyStatus : null
   );
   const [loading, setLoading] = useState(false);
-
+  const showToast = useToastContext();
   useEffect(() => {
     let interval;
     if (active) {
@@ -79,40 +80,58 @@ const WeeklyInfo = ({ active, scanner }) => {
   const handleGetWeeklyResults = async (scanner) => {
     setLoading(true);
 
-    addToLocalStorage(scanner._id);
-    await axios.get("/api/scanner/info", {
-      params: {
-        taskId: scanner._id,
-      },
-    });
+    await axios
+      .get("/api/scanner/info", {
+        params: {
+          taskId: scanner._id,
+        },
+      })
+      .then((res) => {
+        console.log("Initial request successful:", res.data);
+        addToLocalStorage(scanner._id);
+        const interval = setInterval(async () => {
+          try {
+            const response = await axios.get("/api/scanner/status", {
+              params: {
+                taskId: scanner._id,
+              },
+            });
 
-    const interval = setInterval(async () => {
-      try {
-        const response = await axios.get("/api/scanner/status", {
-          params: {
-            taskId: scanner._id,
-          },
-        });
+            if (response.data.error) {
+              console.log(response.data.error);
+              showToast("Server error, try agin letter", "error");
+              clearInterval(interval);
+              setLoading(false);
+              removeFromLocalStorage(scanner._id);
+            } else if (
+              response.data.weeklyStatus === 0 ||
+              response.data.weeklyStatus ||
+              response.data.error
+            ) {
+              console.log(
+                `Status is ${response.data.weeklyStatus}, stopping checks`
+              );
 
-        if (response.data.weeklyStatus === 0 || response.data.weeklyStatus) {
-          console.log(
-            `Status is ${response.data.weeklyStatus}, stopping checks`
-          );
-
-          clearInterval(interval);
-          setLoading(false);
-          setAvailableVacancies(response.data.weeklyStatus);
-          removeFromLocalStorage(scanner._id);
-        } else {
-          console.log(`From LS Status is false. Waiting result...`);
-        }
-      } catch (error) {
-        clearInterval(interval);
+              clearInterval(interval);
+              setLoading(false);
+              setAvailableVacancies(response.data.weeklyStatus);
+              removeFromLocalStorage(scanner._id);
+            } else {
+              console.log(`From LS Status is false. Waiting result...`);
+            }
+          } catch (error) {
+            clearInterval(interval);
+            setLoading(false);
+            removeFromLocalStorage(scanner._id);
+            console.log(error);
+            showToast("", "error");
+          }
+        }, 10000);
+      })
+      .catch(({ response }) => {
         setLoading(false);
-        removeFromLocalStorage(scanner._id);
-        console.error("Error checking connection status:", error);
-      }
-    }, 10000);
+        showToast(response.data.message || "Server error", "error");
+      });
   };
 
   return (
