@@ -274,7 +274,7 @@ const ScannersForm = ({ setScanners, scanner, actions }) => {
         }}
       >
         {({ isSubmitting, values, setFieldValue }) => (
-          <Form className="flex flex-wrap flex-col space-y-4 p-4 pl-6 overflow-y-auto pt-[32px]  center gap-[30px] mx-auto justify-center items-center">
+          <Form className="flex flex-wrap flex-col space-y-4  overflow-y-auto   center gap-[30px] mx-auto justify-center items-center">
             <div className="flex flex-col  gap-[30px] mx-auto justify-center ">
               <div className="collapse collapse-arrow bg-base-200">
                 <input type="radio" name="my-accordion-2" defaultChecked />

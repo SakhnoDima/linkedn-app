@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 
 import LinkedinLetters from "@/app/lib/linkedin-letters-model";
 import User from "@/app/lib/user-model";
+import { LinkedinTaskService } from "../services/linkedin-cron";
 
 export const POST = async (req, res) => {
   const { invitationData, userId } = await req.json();
@@ -14,7 +15,7 @@ export const POST = async (req, res) => {
     );
   }
   try {
-    await User.findOneAndUpdate(
+    const user = await User.findOneAndUpdate(
       { _id: userId },
       {
         isGreetingMessage: true,
@@ -50,7 +51,11 @@ export const POST = async (req, res) => {
       );
     }
     //TODO запускаємо таску
-
+    LinkedinTaskService.invitationLettersTask(
+      existingLetter._id,
+      invitationData,
+      user
+    );
     return NextResponse.json(
       {
         message: "Invitation letter event was started successful",
@@ -93,8 +98,8 @@ export const DELETE = async (req, res) => {
         isGreetingMessage: false,
       }
     );
-    //TODO тут зупиняємо таску
-    //TaskService.stopTask(userId, taskId);
+
+    LinkedinTaskService.stopTask(userId, letterId);
 
     return NextResponse.json(
       { message: "Letter sender is stopped" },

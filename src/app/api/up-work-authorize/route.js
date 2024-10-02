@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
 import User from "@/app/lib/user-model";
+import { EVENTS } from "../services/constants";
 
 export class ErrorList {
   constructor() {
@@ -89,7 +90,7 @@ async function checkTaskStatus(taskId, status) {
 }
 
 export const POST = async (req, res) => {
-  const { login, pass, userId, secret, status } = await req.json();
+  const { login, pass, userId, secret, status, usOnly } = await req.json();
 
   if (!login || !pass || !userId || !status) {
     return NextResponse.json(
@@ -97,7 +98,7 @@ export const POST = async (req, res) => {
       { status: 400 }
     );
   }
-  console.log({ login, pass, userId, secret, status });
+
   try {
     axios
       .post(
@@ -107,10 +108,10 @@ export const POST = async (req, res) => {
           taskId: userId,
           email: login,
           password: pass,
-          secret: secret,
-          taskPlatform: "upwork",
-          taskType: "authorization",
-          usOnly: true,
+          secret,
+          taskPlatform: EVENTS.upWork.name,
+          taskType: EVENTS.upWork.taskType.authorization,
+          usOnly,
         },
         {
           headers: {

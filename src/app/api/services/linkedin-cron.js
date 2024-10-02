@@ -283,8 +283,82 @@ class TaskServiceClass {
     }
   }
 
+  invitationLettersTask(id, data, user) {
+    console.log("Before start Init", this.userTasks);
+
+    console.log("id", id.toString());
+    console.log("data", data);
+    console.log("user", user._id.toString());
+
+    if (!this.userTasks.has(user._id.toString())) {
+      this.userTasks.set(user._id.toString(), {});
+    }
+    const tasks = this.userTasks.get(user._id.toString());
+
+    if (!tasks[id]) {
+      // "0 */4 * * *"
+      const task = cron.schedule("49 16 * * *", async () => {
+        try {
+          console.log("In cron !!");
+
+          //TODO add your URL to scrapper
+          axios
+            .post(
+              "https://6ejajjistb.execute-api.eu-north-1.amazonaws.com/default/lambda-create-task",
+              {
+                id: user._id,
+                taskId: id,
+                taskPlatform: EVENTS.linkedin.name,
+                taskType: EVENTS.linkedin.taskType.connectionsMessage,
+                linkedPassword: user.linkedinData.password,
+                searchWords: data.includesWords,
+                message: data.letterText,
+              },
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            )
+            .then((createTaskResponse) => {
+              const taskId = createTaskResponse.data.taskId;
+              console.log("Task started with ID:", taskId);
+              checkTaskStatus(taskId)
+                .then((res) => {
+                  console.log("res", res);
+
+                  //! errorList.removeError(user._id.toHexString());
+
+                  //! if (res.error) {
+                  //!   errorList.addError(user._id.toHexString(), res.error);
+                  //!}
+                })
+                .catch((err) => {
+                  console.log(err);
+                  console.log("in catch after check task status");
+                  LinkedinFilters.findByIdAndUpdate(
+                    { _id: data._id },
+                    {
+                      status: false,
+                    },
+                    { new: true }
+                  );
+                });
+            });
+        } catch (error) {
+          console.log(error);
+        }
+      });
+      tasks[id] = task;
+      console.log("After start Init", this.userTasks);
+      console.log(`Cron task ${id} started`);
+    } else {
+      console.log(`Task ${id} is already running`);
+    }
+  }
+
   async stopTask(userId, taskId) {
-    console.log(this.userTasks);
+    console.log(taskId);
 
     if (this.userTasks.has(userId)) {
       const tasks = this.userTasks.get(userId);
