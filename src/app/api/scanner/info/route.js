@@ -11,7 +11,7 @@ export const GET = async (req, res) => {
 
   const scannerData = await Scanners.findOneAndUpdate(
     { _id: scannerId },
-    { weeklyStatus: null },
+    { weeklyStatus: null, error: "" },
     { new: true }
   );
 
@@ -28,7 +28,7 @@ export const GET = async (req, res) => {
       .post(
         "https://6ejajjistb.execute-api.eu-north-1.amazonaws.com/default/lambda-create-task",
         {
-          accountUsOnly: true,
+          accountUsOnly: user.accountUsOnly,
           usOnly: scannerData.usOnly,
           taskPlatform: EVENTS.upWork.name,
           taskType: EVENTS.upWork.taskType.weeklyResult,
@@ -68,6 +68,8 @@ export const GET = async (req, res) => {
         checkTaskStatus(taskId, scannerId);
       })
       .catch(({ response }) => {
+        console.log(response.data.error);
+
         throw new Error(response.data.error);
       });
 
@@ -102,18 +104,21 @@ async function checkTaskStatus(taskId, scannerId) {
 
         if (response.error) {
           console.log("Error", response.error);
-          errorList.addError(taskId, response.error);
           clearInterval(interval);
+          await Scanners.findOneAndUpdate(
+            { _id: scannerId },
+            { error: response.error },
+            { new: true }
+          );
+          isAuth = false;
         } else {
-          const newScanner = await Scanners.findOneAndUpdate(
+          await Scanners.findOneAndUpdate(
             { _id: scannerId },
             { weeklyStatus: response.totalJobs },
             { new: true }
           );
-          console.log("id", scannerId);
-          console.log("Scanner", newScanner);
 
-          isAuth = response.isUpWorkAuth;
+          isAuth = false;
         }
 
         clearInterval(interval);
@@ -122,7 +127,6 @@ async function checkTaskStatus(taskId, scannerId) {
       }
     } catch (error) {
       console.error("Error checking task status:", error);
-      isAuth = false; //!  перевірити!
     }
   }, 10000);
 

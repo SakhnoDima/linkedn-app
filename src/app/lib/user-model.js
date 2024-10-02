@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 import dbConnect from "./moongose-connect";
 
 const UserSchema = new mongoose.Schema({
+  accountUsOnly: {
+    type: Boolean,
+    default: false,
+  },
   email: {
     type: String,
     required: [true, "Please provide a email"],

@@ -31,7 +31,7 @@ export class ErrorList {
 }
 const errorList = new ErrorList();
 
-async function checkTaskStatus(taskId, status) {
+async function checkTaskStatus(taskId, status, usOnly) {
   let isAuth = false;
 
   const interval = setInterval(async () => {
@@ -63,6 +63,7 @@ async function checkTaskStatus(taskId, status) {
             {
               isUpWorkAuth: true,
               status: status,
+              accountUsOnly: usOnly,
             },
             { new: true }
           );
@@ -128,7 +129,7 @@ export const POST = async (req, res) => {
           const taskId = createTaskResponse.data.taskId;
           errorList.removeError(userId, userId);
 
-          checkTaskStatus(taskId, status);
+          checkTaskStatus(taskId, status, usOnly);
         }
       });
 

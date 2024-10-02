@@ -2,6 +2,9 @@ import mongoose from "mongoose";
 import dbConnect from "./moongose-connect";
 
 const ScannersSchema = new mongoose.Schema({
+  error: {
+    includeWords: { type: String, default: "" },
+  },
   autoBidding: {
     type: Boolean,
   },

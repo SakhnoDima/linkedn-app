@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import Scanners from "@/app/lib/up-work-scanners";
+import { error } from "console";
 
 export const GET = async (req, res) => {
   const { searchParams } = new URL(req.nextUrl);
@@ -14,6 +15,9 @@ export const GET = async (req, res) => {
         { message: "Scanner did`nt find" },
         { status: 500 }
       );
+    }
+    if (scannerData.error) {
+      return NextResponse.json({ message: scannerData.error }, { status: 500 });
     }
 
     return NextResponse.json({ weeklyStatus: scannerData.weeklyStatus });
