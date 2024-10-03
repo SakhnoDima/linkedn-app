@@ -100,7 +100,6 @@ async function checkTaskStatus(taskId, scannerId) {
         console.log("Task completed:", statusResponse.data.result);
         const response = JSON.parse(statusResponse.data.result);
         console.log("Res in check status f", response);
-        console.log(response.error);
 
         if (response.error) {
           console.log("Error", response.error);

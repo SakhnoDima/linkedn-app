@@ -119,12 +119,12 @@ const WeeklyInfo = ({ active, scanner }) => {
             } else {
               console.log(`From LS Status is false. Waiting result...`);
             }
-          } catch (error) {
+          } catch ({ response }) {
             clearInterval(interval);
             setLoading(false);
             removeFromLocalStorage(scanner._id);
-            console.log(error);
-            showToast("", "error");
+            console.log(response.data.message);
+            showToast(response.data.message, "error");
           }
         }, 10000);
       })
