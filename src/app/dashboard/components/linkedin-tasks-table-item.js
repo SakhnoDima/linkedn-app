@@ -18,11 +18,15 @@ const LinkedinTasksTableItem = ({ task }) => {
       <td className="px-6 py-4 text-xl text-gray-900 whitespace-nowrap text-center">
         {task.taskName}
       </td>
-      <td className="px-6 py-4 ">{taskTypes[task.taskType]}</td>
-      <td className="px-6 py-4 text-base">{task.searchTags}</td>
-      <td className="px-6 py-4 text-base">{task.totalLettersPerDay}</td>
-      <td className="px-6 py-4 ">{task.totalInvitationSent}</td>
-      <td className="px-6 py-4 text-base">
+      <td className="px-6 py-4 text-center">{taskTypes[task.taskType]}</td>
+      <td className="px-6 py-4 text-base text-center">{task.searchTags}</td>
+      <td className="px-6 py-4 text-base text-center">
+        {task.totalLettersPerDay}
+      </td>
+      <td className="px-6 py-4 text-base text-center">
+        {task.totalInvitationSent}
+      </td>
+      <td className="px-6 py-4 text-base text-center">
         {new Date(task.date).toISOString().split("T")[0]}
       </td>
     </tr>
