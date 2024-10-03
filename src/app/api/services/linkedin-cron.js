@@ -307,6 +307,7 @@ class TaskServiceClass {
               {
                 id: user._id,
                 taskId: id,
+                email: user.linkedinData.login,
                 taskPlatform: EVENTS.linkedin.name,
                 taskType: EVENTS.linkedin.taskType.connectionsMessage,
                 linkedPassword: user.linkedinData.password,
