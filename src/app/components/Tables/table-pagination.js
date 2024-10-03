@@ -1,15 +1,15 @@
 "use client";
 import React from "react";
-import { useRouter } from "next/navigation";
+
+import { useAddQueryParams } from "@/app/hooks/useAddQueryParams";
 
 export const TablePagination = ({ totalPage, currentPage, setCurrentPage }) => {
-  const router = useRouter();
+  const addQueryParams = useAddQueryParams();
 
   const handlePageChange = (page, index) => {
     setCurrentPage(index + 1);
 
-    // Update the URL with the new page value
-    router.push(`?page=${index + 1}`);
+    addQueryParams({ page: index + 1 });
   };
 
   return (

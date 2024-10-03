@@ -44,44 +44,45 @@ const formatTime = (unixTime, timeAgoString = null) => {
   };
 };
 
-const ItemsInfoEvents = ({ data }) => {
-  return (
-    <tbody>
-      {data.map((item, index) => {
-        const { formattedTime, modifiedTime } = formatTime(
-          item.properties.time,
-          item.properties.publishedDate
-        );
-        return (
-          <tr key={index} className="text-center">
-            <td>{item.event}</td>
-            <td>{item.properties.scanName}</td>
-            <td>{item.properties.freelancer}</td>
-            <td>
-              {item.properties.targetLink ? (
-                <a
-                  className="underline hover:cursor-pointer hover:text-main-blue"
-                  href={item.properties.targetLink}
-                >
-                  View job posting
-                </a>
-              ) : (
-                "-"
-              )}
-            </td>
-
-            <td>{formattedTime}</td>
-            <td>{modifiedTime ? modifiedTime : "-"}</td>
-            <td>
-              {item.properties.requiredConnects
-                ? item.properties.requiredConnects
-                : "-"}
-            </td>
-          </tr>
-        );
-      })}
-    </tbody>
-  );
+const UpWorkTasksTableItem = ({ data }) => {
+  return data.map((item, index) => {
+    const { formattedTime, modifiedTime } = formatTime(
+      item.properties.time,
+      item.properties.publishedDate
+    );
+    return (
+      <tr key={index} className="bg-white border-b ">
+        <td className="px-6 py-4 text-xl text-gray-900 whitespace-nowrap text-center">
+          {item.event}
+        </td>
+        <td className="px-6 py-4 text-xl text-gray-900 whitespace-nowrap text-center">
+          {item.properties.scanName}
+        </td>
+        <td className="px-6 py-4 text-center">{item.properties.freelancer}</td>
+        <td className="px-6 py-4 text-center">
+          {item.properties.targetLink ? (
+            <a
+              className="underline hover:cursor-pointer hover:text-main-blue"
+              href={item.properties.targetLink}
+            >
+              View job posting
+            </a>
+          ) : (
+            "-"
+          )}
+        </td>
+        <td className="px-6 py-4 text-center">{formattedTime}</td>
+        <td className="px-6 py-4 text-center">
+          {modifiedTime ? modifiedTime : "-"}
+        </td>
+        <td className="px-6 py-4 text-center">
+          {item.properties.requiredConnects
+            ? item.properties.requiredConnects
+            : "-"}
+        </td>
+      </tr>
+    );
+  });
 };
 
-export default ItemsInfoEvents;
+export default UpWorkTasksTableItem;

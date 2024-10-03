@@ -1,19 +1,18 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
 const timeIntervals = {
   "1h": 3600 * 1000,
-  "3h": 3 * 3600 * 1000,
   "1d": 24 * 3600 * 1000,
-  "3d": 3 * 24 * 3600 * 1000,
-  "7d": 7 * 24 * 3600 * 1000,
 };
 
 export const EventChart = ({ data }) => {
   const [selectedInterval, setSelectedInterval] = useState("1h");
+  const [sendBidData, setSendBidData] = useState("1h");
+  const [rejectBidData, setRejectBidData] = useState("1h");
 
   const groupDataByInterval = (events, interval) => {
     const groupedEvents = {};
@@ -21,9 +20,11 @@ export const EventChart = ({ data }) => {
     events.forEach((event) => {
       const roundedTime =
         Math.floor((event.properties.time * 1000) / interval) * interval;
+
       if (!groupedEvents[roundedTime]) {
         groupedEvents[roundedTime] = { "SEND BID": 0, "REJECT BID": 0 };
       }
+
       groupedEvents[roundedTime][event.event] += 1;
     });
 
@@ -41,13 +42,20 @@ export const EventChart = ({ data }) => {
       });
     });
 
-    return { sendBidData, rejectBidData };
+    return {
+      sendBidData: sendBidData.sort((a, b) => a.x - b.x),
+      rejectBidData: rejectBidData.sort((a, b) => a.x - b.x),
+    };
   };
 
-  const { sendBidData, rejectBidData } = groupDataByInterval(
-    data,
-    timeIntervals[selectedInterval]
-  );
+  useEffect(() => {
+    const { sendBidData, rejectBidData } = groupDataByInterval(
+      data,
+      timeIntervals[selectedInterval]
+    );
+    setSendBidData(sendBidData);
+    setRejectBidData(rejectBidData);
+  }, [data, selectedInterval]);
 
   const options = {
     chart: {
@@ -107,10 +115,7 @@ export const EventChart = ({ data }) => {
           onChange={(e) => setSelectedInterval(e.target.value)}
         >
           <option value="1h">1 Hour</option>
-          <option value="3h">3 Hours</option>
           <option value="1d">1 Day</option>
-          <option value="3d">3 Days</option>
-          <option value="7d">7 Days</option>
         </select>
       </div>
       <HighchartsReact highcharts={Highcharts} options={options} />
