@@ -1,4 +1,5 @@
 import React from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 const formatTime = (unixTime, timeAgoString = null) => {
   const biddingDate = new Date(unixTime * 1000);
@@ -45,44 +46,57 @@ const formatTime = (unixTime, timeAgoString = null) => {
 };
 
 const UpWorkTasksTableItem = ({ data }) => {
-  return data.map((item, index) => {
-    const { formattedTime, modifiedTime } = formatTime(
-      item.properties.time,
-      item.properties.publishedDate
-    );
-    return (
-      <tr key={index} className="bg-white border-b ">
-        <td className="px-6 py-4 text-xl text-gray-900 whitespace-nowrap text-center">
-          {item.event}
-        </td>
-        <td className="px-6 py-4 text-xl text-gray-900 whitespace-nowrap text-center">
-          {item.properties.scanName}
-        </td>
-        <td className="px-6 py-4 text-center">{item.properties.freelancer}</td>
-        <td className="px-6 py-4 text-center">
-          {item.properties.targetLink ? (
-            <a
-              className="underline hover:cursor-pointer hover:text-main-blue"
-              href={item.properties.targetLink}
-            >
-              View job posting
-            </a>
-          ) : (
-            "-"
-          )}
-        </td>
-        <td className="px-6 py-4 text-center">{formattedTime}</td>
-        <td className="px-6 py-4 text-center">
-          {modifiedTime ? modifiedTime : "-"}
-        </td>
-        <td className="px-6 py-4 text-center">
-          {item.properties.requiredConnects
-            ? item.properties.requiredConnects
-            : "-"}
-        </td>
-      </tr>
-    );
-  });
+  return (
+    <AnimatePresence mode="wait">
+      {data.map((item, index) => {
+        const { formattedTime, modifiedTime } = formatTime(
+          item.properties.time,
+          item.properties.publishedDate
+        );
+        return (
+          <motion.tr
+            key={item.properties.mp_processing_time_ms}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ delay: index * 0.2 }}
+            className="bg-white border-b "
+          >
+            <td className="px-6 py-4 text-xl text-gray-900 whitespace-nowrap text-center">
+              {item.event}
+            </td>
+            <td className="px-6 py-4 text-xl text-gray-900 whitespace-nowrap text-center">
+              {item.properties.scanName}
+            </td>
+            <td className="px-6 py-4 text-center">
+              {item.properties.freelancer}
+            </td>
+            <td className="px-6 py-4 text-center">
+              {item.properties.targetLink ? (
+                <a
+                  className="underline hover:cursor-pointer hover:text-main-blue"
+                  href={item.properties.targetLink}
+                >
+                  View job posting
+                </a>
+              ) : (
+                "-"
+              )}
+            </td>
+            <td className="px-6 py-4 text-center">{formattedTime}</td>
+            <td className="px-6 py-4 text-center">
+              {modifiedTime ? modifiedTime : "-"}
+            </td>
+            <td className="px-6 py-4 text-center">
+              {item.properties.requiredConnects
+                ? item.properties.requiredConnects
+                : "-"}
+            </td>
+          </motion.tr>
+        );
+      })}
+    </AnimatePresence>
+  );
 };
 
 export default UpWorkTasksTableItem;

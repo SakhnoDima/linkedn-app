@@ -1,9 +1,8 @@
 "use client";
 import { TableComponent } from "@/app/components/Tables/table-component";
-import React, { useState } from "react";
+
 import UpWorkTasksTableItem from "./items-info-events-mixpanel";
 
-import { IoIosArrowDropdown, IoIosArrowDropup } from "react-icons/io";
 import { TablePagination } from "@/app/components/Tables/table-pagination";
 
 const upWorkDashboardHeaderItems = [
@@ -21,37 +20,24 @@ export const UpWorkTasksTable = ({
   totalPage,
   currentPage,
   setCurrentPage,
+  loading,
 }) => {
-  const [showTable, setShowTable] = useState(false);
   return (
     <div className="relative">
-      <button
-        className="absolute top-[11px] left-[11px] z-50 hover:cursor-pointer hover:text-main-blue"
-        onClick={() => setShowTable(!showTable)}
-      >
-        {showTable ? (
-          <IoIosArrowDropdown className="w-[30px] h-[30px]" />
-        ) : (
-          <IoIosArrowDropup className="w-[30px] h-[30px]" />
-        )}
-      </button>
-
       <TableComponent
-        loading={false}
-        showChildren={showTable}
+        loading={loading}
         headerItems={upWorkDashboardHeaderItems}
         noResult={data.length === 0}
       >
-        {showTable && <UpWorkTasksTableItem data={data} />}
+        <UpWorkTasksTableItem data={data} />
       </TableComponent>
-      {showTable && (
-        <TablePagination
-          totalPage={totalPage}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          pageParamName="page-up-work"
-        />
-      )}
+
+      <TablePagination
+        totalPage={totalPage}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        pageParamName="page-up-work"
+      />
     </div>
   );
 };

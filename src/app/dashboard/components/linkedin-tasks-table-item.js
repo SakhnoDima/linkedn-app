@@ -1,4 +1,5 @@
 import { useRouter } from "next/navigation";
+import { AnimatePresence, motion } from "framer-motion";
 
 const LinkedinTasksTableItem = ({ task }) => {
   const router = useRouter();
