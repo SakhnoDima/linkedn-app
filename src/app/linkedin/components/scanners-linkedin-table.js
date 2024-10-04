@@ -80,6 +80,7 @@ export const ScannersLinkedinTable = ({
           totalPage={totalPage}
           currentPage={page}
           setCurrentPage={setPage}
+          pageParamName="page"
         />
       ) : (
         ""

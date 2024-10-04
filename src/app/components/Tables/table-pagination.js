@@ -3,13 +3,18 @@ import React from "react";
 
 import { useAddQueryParams } from "@/app/hooks/useAddQueryParams";
 
-export const TablePagination = ({ totalPage, currentPage, setCurrentPage }) => {
+export const TablePagination = ({
+  totalPage,
+  currentPage,
+  setCurrentPage,
+  pageParamName,
+}) => {
   const addQueryParams = useAddQueryParams();
 
-  const handlePageChange = (page, index) => {
-    setCurrentPage(index + 1);
+  const handlePageChange = (index) => {
+    setCurrentPage(index);
 
-    addQueryParams({ page: index + 1 });
+    addQueryParams({ [pageParamName]: index });
   };
 
   return (
@@ -23,7 +28,7 @@ export const TablePagination = ({ totalPage, currentPage, setCurrentPage }) => {
             name="options"
             aria-label={index + 1}
             checked={index + 1 === currentPage}
-            onChange={() => handlePageChange(index + 1, index)}
+            onChange={() => handlePageChange(index + 1)}
           />
         ))}
       </div>

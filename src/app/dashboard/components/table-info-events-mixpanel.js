@@ -29,7 +29,7 @@ export const TableInfoEventsMixpanel = ({ userId }) => {
   const [data, setData] = useState([]);
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
-  const [page, setPage] = useState(searchParams.get("page") || 1);
+  const [page, setPage] = useState(searchParams.get("page-up-work") || 1);
   const [totalPage, setTotalPage] = useState(null);
 
   const showToast = useToastContext();

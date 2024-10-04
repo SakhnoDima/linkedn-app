@@ -49,6 +49,7 @@ export const UpWorkTasksTable = ({
           totalPage={totalPage}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
+          pageParamName="page-up-work"
         />
       )}
     </div>
