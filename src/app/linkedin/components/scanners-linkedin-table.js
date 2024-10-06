@@ -1,4 +1,5 @@
 import axios from "axios";
+import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { TableComponent } from "@/app/components/Tables/table-component";
@@ -67,10 +68,11 @@ export const ScannersLinkedinTable = ({
         loading={loading}
         headerItems={headerLinkedinScannersItems}
       >
-        {filters.map((data) => (
+        {filters.map((item, index) => (
           <UserLinkedinFiltersItem
-            key={data._id}
-            data={data}
+            index={index}
+            key={item._id}
+            data={item}
             setCurrentTarget={setCurrentTarget}
           />
         ))}

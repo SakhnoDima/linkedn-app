@@ -61,9 +61,7 @@ const LinkedinTasksTable = ({ userId }) => {
         loading={loading}
         headerItems={linkedinDashboardHeaderItems}
       >
-        {tasks.map((data) => (
-          <LinkedinTasksTableItem task={data} key={data._id} />
-        ))}
+        <LinkedinTasksTableItem data={tasks} />
       </TableComponent>
       {!loading && totalPage > 1 ? (
         <TablePagination

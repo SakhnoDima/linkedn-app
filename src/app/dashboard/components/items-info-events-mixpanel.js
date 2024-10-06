@@ -58,7 +58,7 @@ const UpWorkTasksTableItem = ({ data }) => {
             key={item.properties.mp_processing_time_ms}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            //exit={{ opacity: 0 }}
             transition={{ delay: index * 0.2 }}
             className="bg-white border-b "
           >
