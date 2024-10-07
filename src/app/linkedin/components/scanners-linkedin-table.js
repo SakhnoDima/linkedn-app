@@ -29,9 +29,6 @@ export const ScannersLinkedinTable = ({
     "Keywords",
     "Locations",
     "Title",
-    "Industry",
-    "Language",
-    "Categories",
     "Status",
   ];
 
