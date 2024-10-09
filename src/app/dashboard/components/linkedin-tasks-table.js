@@ -11,7 +11,7 @@ import { useToastContext } from "@/app/context/toast-context";
 const LinkedinTasksTable = ({ userId }) => {
   const searchParams = useSearchParams();
   const [tasks, setTasks] = useState([]);
-  const [page, setPage] = useState(+searchParams.get("page") || 1);
+  const [page, setPage] = useState(+searchParams.get("page-linked") || 1);
   const [totalPage, setTotalPage] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -61,15 +61,14 @@ const LinkedinTasksTable = ({ userId }) => {
         loading={loading}
         headerItems={linkedinDashboardHeaderItems}
       >
-        {tasks.map((data) => (
-          <LinkedinTasksTableItem task={data} key={data._id} />
-        ))}
+        <LinkedinTasksTableItem data={tasks} />
       </TableComponent>
       {!loading && totalPage > 1 ? (
         <TablePagination
           totalPage={totalPage}
           currentPage={page}
           setCurrentPage={setPage}
+          pageParamName="page-linked"
         />
       ) : (
         ""

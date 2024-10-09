@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import User from "@/app/lib/user-model";
 import axios from "axios";
 import { errorList } from "../services/errors";
+import { EVENTS } from "../services/constants";
 
 export const maxDuration = 60;
 export const dynamic = "force-dynamic";
@@ -70,8 +71,8 @@ export const POST = async (req, res) => {
         {
           id: userId,
           taskId: userId,
-          taskPlatform: "linkedin",
-          taskType: "authorization",
+          taskPlatform: EVENTS.linkedin.name,
+          taskType: EVENTS.linkedin.taskType.authorization,
           email: login,
           password: pass,
         },
@@ -131,7 +132,7 @@ export const GET = async (req, res) => {
 
     if (isError) {
       console.log(isError);
-      return NextResponse.json({ message: isError.message });
+      return NextResponse.json({ message: isError.message }, { status: 500 });
     }
 
     return NextResponse.json(

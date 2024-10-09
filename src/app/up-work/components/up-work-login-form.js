@@ -1,9 +1,10 @@
 "use client";
 
 import axios from "axios";
-
+import { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { IoEyeOff, IoEye } from "react-icons/io5";
 
 import { useToastContext } from "@/app/context/toast-context";
 import Button from "@/app/components/button";
@@ -49,6 +50,7 @@ const UpWorkLoginForm = ({
   userId,
 }) => {
   const { data: session, update } = useSession();
+  const [showPass, setShowPass] = useState(true);
   const showToast = useToastContext();
 
   const initialValues = {
@@ -141,7 +143,13 @@ const UpWorkLoginForm = ({
             <div key={index} className="flex flex-col gap-2 relative">
               <Field
                 name={item.fieldName}
-                type={item.fieldType}
+                type={
+                  item.fieldName === "pass"
+                    ? showPass
+                      ? "password"
+                      : "text"
+                    : item.fieldType
+                }
                 placeholder={item.placeholder}
                 as={Input}
                 className="input-bordered w-[400px]"
@@ -151,6 +159,19 @@ const UpWorkLoginForm = ({
                 component="div"
                 className="text-red-500 absolute top-[-15px] right-0 text-sm"
               />
+              {item.fieldName === "pass" && (
+                <button
+                  type="button"
+                  className="absolute right-2 top-[2px] min-h-[39px] h-[39px] rounded"
+                  onClick={() => setShowPass(!showPass)}
+                >
+                  {showPass ? (
+                    <IoEyeOff className="w-[28px] h-[28px] fill-gray-300" />
+                  ) : (
+                    <IoEye className="w-[28px] h-[28px]" />
+                  )}
+                </button>
+              )}
             </div>
           ))}
           <div className="flex gap-6 relative">

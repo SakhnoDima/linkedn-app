@@ -24,12 +24,14 @@ export const GET = async (req, res) => {
   const user = await User.findById({ _id: scannerData.userId });
 
   try {
+    console.log(user);
+
     await axios
       .post(
         "https://6ejajjistb.execute-api.eu-north-1.amazonaws.com/default/lambda-create-task",
         {
-          accountUsOnly: user.accountUsOnly,
-          usOnly: scannerData.usOnly,
+          accountType: user.status,
+          usOnly: user.accountUsOnly,
           taskPlatform: EVENTS.upWork.name,
           taskType: EVENTS.upWork.taskType.weeklyResult,
           id: scannerData.userId,
@@ -43,6 +45,7 @@ export const GET = async (req, res) => {
             scannerData.searchWords.excludeWords
           ),
           searchFilters: {
+            usOnly: scannerData.usOnly,
             ...scannerData.searchFilters,
             category:
               scannerData.searchFilters.category.length > 0
@@ -100,7 +103,6 @@ async function checkTaskStatus(taskId, scannerId) {
         console.log("Task completed:", statusResponse.data.result);
         const response = JSON.parse(statusResponse.data.result);
         console.log("Res in check status f", response);
-        console.log(response.error);
 
         if (response.error) {
           console.log("Error", response.error);

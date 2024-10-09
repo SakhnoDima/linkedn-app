@@ -1,31 +1,51 @@
 "use client";
 import React from "react";
-import { useRouter } from "next/navigation";
 
-export const TablePagination = ({ totalPage, currentPage, setCurrentPage }) => {
-  const router = useRouter();
+import { useAddQueryParams } from "@/app/hooks/useAddQueryParams";
 
-  const handlePageChange = (page, index) => {
-    setCurrentPage(index + 1);
+export const TablePagination = ({
+  totalPage,
+  currentPage,
+  setCurrentPage,
+  pageParamName,
+}) => {
+  const addQueryParams = useAddQueryParams();
 
-    // Update the URL with the new page value
-    router.push(`?page=${index + 1}`);
+  const handlePageChange = (action) => {
+    switch (action) {
+      case "increase":
+        addQueryParams({ [pageParamName]: currentPage + 1 });
+        setCurrentPage((prev) => prev + 1);
+        break;
+      case "decrees":
+        setCurrentPage((prev) => prev - 1);
+        addQueryParams({ [pageParamName]: currentPage - 1 });
+        break;
+      default:
+        break;
+    }
   };
 
   return (
     <div className="mt-8 flex justify-end">
       <div className="join">
-        {Array.from({ length: totalPage }, (_, index) => (
-          <input
-            key={index} // Make sure each input has a unique key
-            className="join-item btn btn-square checked:bg-main-blue"
-            type="radio"
-            name="options"
-            aria-label={index + 1}
-            checked={index + 1 === currentPage}
-            onChange={() => handlePageChange(index + 1, index)}
-          />
-        ))}
+        <button
+          disabled={currentPage === 1}
+          className="join-item btn hover:text-main-blue"
+          onClick={() => handlePageChange("decrees")}
+        >
+          «
+        </button>
+        <div className="join-item btn hover:cursor-auto hover:bg-gray-100">
+          Page {currentPage}
+        </div>
+        <button
+          disabled={currentPage === totalPage}
+          className="join-item btn"
+          onClick={() => handlePageChange("increase")}
+        >
+          »
+        </button>
       </div>
     </div>
   );

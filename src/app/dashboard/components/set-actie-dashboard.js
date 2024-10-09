@@ -19,7 +19,9 @@ const SetActiveDashboard = ({ setDashboard, dashboard }) => {
         className="btn-sm"
         onClick={() => setDashboard(dashboards.upWork)}
       >
-        <span className={dashboard === dashboards.upWork && activeLineBtn}>
+        <span
+          className={`${dashboard === dashboards.upWork ? activeLineBtn : ""}`}
+        >
           UpWork
         </span>
       </Button>
@@ -28,7 +30,11 @@ const SetActiveDashboard = ({ setDashboard, dashboard }) => {
         className="btn-sm"
         onClick={() => setDashboard(dashboards.linkedin)}
       >
-        <span className={dashboard === dashboards.linkedin && activeLineBtn}>
+        <span
+          className={`${
+            dashboard === dashboards.linkedin ? activeLineBtn : ""
+          }`}
+        >
           Linkedin
         </span>
       </Button>

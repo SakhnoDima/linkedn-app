@@ -5,6 +5,7 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { IoEyeOff, IoEye } from "react-icons/io5";
 
 import { useToastContext } from "../context/toast-context";
 import Input from "./input";
@@ -14,6 +15,7 @@ import Loader from "./loader";
 const LinkedinSignUpForm = ({ setIsCodeConfirm }) => {
   const [loading, setLoading] = useState(false);
   const showToast = useToastContext();
+  const [showPass, setShowPass] = useState(true);
   const { data: session, update } = useSession();
 
   const initialValues = {
@@ -66,6 +68,7 @@ const LinkedinSignUpForm = ({ setIsCodeConfirm }) => {
           }
         } catch (error) {
           clearInterval(interval);
+          setIsCodeConfirm(false);
           setLoading(false);
           console.error("Error checking connection status:", error);
           showToast(error?.response.data.message || "Server error", "error");
@@ -101,19 +104,30 @@ const LinkedinSignUpForm = ({ setIsCodeConfirm }) => {
               className="text-red-500"
             />
           </div>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 relative">
             <Field
               name="pass"
-              type="password"
+              type={showPass ? "password" : "text"}
               placeholder="Linkedin Password"
               as={Input}
-              className="input-bordere w-[400px]"
+              className="input-bordered w-[400px]"
             />
             <ErrorMessage
               name="pass"
               component="div"
               className="text-red-500"
             />
+            <button
+              type="button"
+              className="absolute right-2 top-[2px] min-h-[39px] h-[39px] rounded"
+              onClick={() => setShowPass(!showPass)}
+            >
+              {showPass ? (
+                <IoEyeOff className="w-[28px] h-[28px] fill-gray-300" />
+              ) : (
+                <IoEye className="w-[28px] h-[28px]" />
+              )}
+            </button>
           </div>
 
           <Button

@@ -45,12 +45,13 @@ const validationSchema = Yup.object({
     timeZone: Yup.string(),
   }),
   autoBidding: Yup.boolean(),
-  usOnly: Yup.boolean(),
+
   searchWords: Yup.object().shape({
     includeWords: Yup.string().max(200, "Must be 200 symbols maximum"),
     excludeWords: Yup.string().max(200, "Must be 200 symbols maximum"),
   }),
   searchFilters: Yup.object({
+    usOnly: Yup.boolean(),
     category: Yup.string(),
     contractorTier: Yup.object().shape({
       1: Yup.boolean(),
@@ -121,12 +122,13 @@ const initialValues = {
     timeZone: moment.tz.guess() || null,
   },
   autoBidding: false,
-  usOnly: false,
+
   searchWords: {
     includeWords: "",
     excludeWords: "",
   },
   searchFilters: {
+    usOnly: false,
     category: "",
     contractorTier: {
       1: false,
@@ -218,6 +220,8 @@ const ScannersForm = ({ setScanners, scanner, actions }) => {
   const editScanner = async (scannerData, scannerId) => {
     try {
       const data = { ...scannerData };
+      console.log(data);
+
       data.cronTime.timeZone = moment.tz.guess();
 
       const response = await axios.put(
@@ -274,7 +278,7 @@ const ScannersForm = ({ setScanners, scanner, actions }) => {
         }}
       >
         {({ isSubmitting, values, setFieldValue }) => (
-          <Form className="flex flex-wrap flex-col space-y-4  overflow-y-auto   center gap-[30px] mx-auto justify-center items-center">
+          <Form className="py-[50px] flex flex-wrap flex-col space-y-4  overflow-y-auto   center gap-[30px] mx-auto justify-center items-center">
             <div className="flex flex-col  gap-[30px] mx-auto justify-center ">
               <div className="collapse collapse-arrow bg-base-200">
                 <input type="radio" name="my-accordion-2" defaultChecked />

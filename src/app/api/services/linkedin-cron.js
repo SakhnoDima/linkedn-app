@@ -294,9 +294,9 @@ class TaskServiceClass {
       this.userTasks.set(user._id.toString(), {});
     }
     const tasks = this.userTasks.get(user._id.toString());
-
+    //"0 */4 * * *"
     if (!tasks[id]) {
-      const task = cron.schedule("0 */4 * * *", async () => {
+      const task = cron.schedule("0 */2 * * *", async () => {
         try {
           console.log("In cron !!");
 
