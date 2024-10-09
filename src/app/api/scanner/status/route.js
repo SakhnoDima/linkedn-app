@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import Scanners from "@/app/lib/up-work-scanners";
-import { error } from "console";
 
 export const GET = async (req, res) => {
   const { searchParams } = new URL(req.url);
@@ -15,7 +14,7 @@ export const GET = async (req, res) => {
       );
     }
 
-    if (scannerData.error) {
+    if (scannerData.error.length > 0) {
       console.log("Error in scanner status", scannerData.error);
       return NextResponse.json(
         { message: "Server error, try again letter " },

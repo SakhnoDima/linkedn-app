@@ -44,17 +44,18 @@ class CronUpWorkClass {
                 chatId: user.chatId,
                 userEmail: user.email,
 
-                accountType: user.status, // 'freelancer-account' or 'agency-account' or 'weekly-result'
-                taskPlatform: "upwork",
-                taskType: "send-proposals",
+                accountType: user.status, // 'freelancer-account' or 'agency-account'
+                taskPlatform: EVENTS.upWork.name,
+                taskType: EVENTS.upWork.taskType.sendProposals,
                 scannerName: scannerData.scannerName,
                 autoBidding: scannerData.autoBidding,
-                usOnly: scannerData.usOnly,
+                usOnly: user.accountUsOnly,
                 searchWords: transformQuery(
                   scannerData.searchWords.includeWords,
                   scannerData.searchWords.excludeWords
                 ),
                 searchFilters: {
+                  usOnly: scannerData.usOnly,
                   ...scannerData.searchFilters,
                   category:
                     scannerData.searchFilters.category.length > 0

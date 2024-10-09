@@ -13,10 +13,12 @@ const SetUsOnly = ({ values, setFieldValue }) => {
       </div>
       <FormikToggle
         className="w-[120px] gap-2 justify-start mb-1"
-        values={values.usOnly}
-        handleChange={() => setFieldValue("usOnly", !values.usOnly)}
+        values={values.searchFilters.usOnly}
+        handleChange={() =>
+          setFieldValue("searchFilters.usOnly", !values.searchFilters.usOnly)
+        }
       >
-        {values.usOnly ? <span>TRUE</span> : <span>FALSE</span>}
+        {values.searchFilters.usOnly ? <span>TRUE</span> : <span>FALSE</span>}
       </FormikToggle>
     </div>
   );

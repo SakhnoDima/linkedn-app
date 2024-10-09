@@ -53,6 +53,7 @@ export const GET = async (req, res) => {
 
 export const PUT = async (req, res) => {
   const { scannerData, scannerId } = await req.json();
+  console.log(scannerData);
 
   try {
     const updatedScanner = await Scanners.findByIdAndUpdate(
