@@ -98,8 +98,8 @@ class CronUpWorkClass {
     }
     const tasks = this.userTasks.get(userId);
 
-    if (!tasks[userId]) { //*\15
-      const task = cron.schedule("06 * * * *", async () => {
+    if (!tasks[userId]) {
+      const task = cron.schedule("*/15 * * * *", async () => {
         try {
           console.log("START");
 
