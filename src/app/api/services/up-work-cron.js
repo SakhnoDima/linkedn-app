@@ -43,7 +43,6 @@ class CronUpWorkClass {
                 taskId: scannerData._id,
                 chatId: user.chatId,
                 userEmail: user.email,
-
                 accountType: user.status, // 'freelancer-account' or 'agency-account'
                 taskPlatform: EVENTS.upWork.name,
                 taskType: EVENTS.upWork.taskType.sendProposals,
@@ -99,19 +98,23 @@ class CronUpWorkClass {
     }
     const tasks = this.userTasks.get(userId);
 
-    if (!tasks[userId]) {
-      const task = cron.schedule("*/15 * * * *", async () => {
+    if (!tasks[userId]) { //*\15
+      const task = cron.schedule("06 * * * *", async () => {
         try {
           console.log("START");
 
           const user = await User.findOne({ _id: userId });
 
           await axios.post(
-            "https://5zfmj0shmi.execute-api.eu-north-1.amazonaws.com/default/upwork-get-info",
+            "https://6ejajjistb.execute-api.eu-north-1.amazonaws.com/default/lambda-create-task",
             {
               id: userId,
+              taskId: userId,
               chatId: user.chatId,
-              taskType: user.status,
+              taskPlatform: EVENTS.upWork.name,
+              taskType: EVENTS.upWork.taskType.getInfo,
+              accountType: user.status,
+              usOnly: user.accountUsOnly,
             }
           );
         } catch (error) {
