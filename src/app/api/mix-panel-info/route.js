@@ -20,7 +20,6 @@ export async function GET(req) {
     const response = await axios.get(url, { headers });
 
     if (!response.status === 200) {
-      console.log(response.data);
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     console.log(response.data.split("\n"));
