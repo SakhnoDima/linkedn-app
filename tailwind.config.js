@@ -6,6 +6,9 @@ module.exports = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    fontFamily: {
+      'poppins': 'Poppins, sans-serif',
+    },
     extend: {
       colors: {
         "main-blue": "#3b82f6", // Доданий колір
