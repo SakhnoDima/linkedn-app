@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { FaHome, FaLinkedin, FaDonate } from "react-icons/fa";
 import { FaSquareUpwork } from "react-icons/fa6";
 import { MdDashboard } from "react-icons/md";
+import { motion } from "framer-motion";
 
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -13,7 +14,7 @@ const NavBar = () => {
   const pathname = usePathname();
   const { data: session } = useSession();
 
-  const iconSize = "w-[25px] h-[25px]";
+  const iconSize = "w-[25px] h-[25px] shrink-0";
   const privatePages = [
     {
       icon: <FaSquareUpwork className={iconSize} />,
@@ -36,20 +37,23 @@ const NavBar = () => {
       href: "/donations",
     },
   ];
-  console.log(isOpen);
 
   return (
     <nav className="flex w-[200px]">
-      <aside className="flex flex-col ">
+      <motion.aside
+        animate={{ width: isOpen ? "200px" : "60px" }}
+        className="flex flex-col "
+      >
         <Link
           onMouseEnter={() => setIsOpen(true)}
           onMouseLeave={() => setIsOpen(false)}
-          className={`btn btn-ghost flex flex-row text-xl flex-nowrap justify-start pr-0  ${
+          className={`btn btn-ghost flex flex-row text-xl flex-nowrap justify-start  ${
             pathname === "/" ? "text-blue-500" : ""
           }`}
           href="/"
         >
           <FaHome className={iconSize} />
+
           {isOpen && <span>Home</span>}
         </Link>
         {!!session && (
@@ -59,7 +63,7 @@ const NavBar = () => {
                 onMouseEnter={() => setIsOpen(true)}
                 onMouseLeave={() => setIsOpen(false)}
                 key={index}
-                className={`btn btn-ghost flex flex-row text-xl flex-nowrap justify-start pr-0 ${
+                className={`btn btn-ghost flex flex-row text-xl flex-nowrap justify-start ${
                   pathname === page.href ? "text-blue-500" : ""
                 }`}
                 href={page.href}
@@ -70,7 +74,7 @@ const NavBar = () => {
             ))}
           </>
         )}
-      </aside>
+      </motion.aside>
     </nav>
   );
 };
