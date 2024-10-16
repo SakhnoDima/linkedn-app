@@ -1,4 +1,5 @@
 import { Inter } from "next/font/google";
+
 import "./globals.css";
 import Script from "next/script";
 
@@ -25,9 +26,7 @@ export default async function RootLayout({ children }) {
             <ToastContextProvider>
               <Header />
               <main className="flex">
-                <nav className="w-[200px]">
-                  <NavBar />
-                </nav>
+                <NavBar />
                 <div className="flex-1 w-full p-[50px]">{children}</div>
               </main>
               <Modal />

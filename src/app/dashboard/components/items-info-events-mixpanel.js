@@ -4,8 +4,13 @@ import { AnimatePresence, motion } from "framer-motion";
 const formatTime = (unixTime, timeAgoString = null) => {
   const biddingDate = new Date(unixTime * 1000);
   const createdDate = new Date(unixTime * 1000);
+  console.log(timeAgoString);
 
-  if (timeAgoString) {
+  if (
+    timeAgoString &&
+    timeAgoString !== null &&
+    timeAgoString.match(/(\d+)\s(\w+)/)
+  ) {
     const [_, amount, unit] = timeAgoString.match(/(\d+)\s(\w+)/);
 
     const timeToSubtract = parseInt(amount);
