@@ -12,13 +12,15 @@ export const ClientRating = ({ values, setFieldValue }) => {
 
       <div className="flex justify-center">
         <div className="rating">
-          {[1, 2, 3, 4, 5].map((value) => (
+          {[0, 1, 2, 3, 4, 5].map((value) => (
             <Field
               key={value}
               type="radio"
               name={`rating-1`}
               value={value}
-              className="mask mask-star h-[28px] w-[28px]"
+              className={`mask mask-star h-[28px] w-[28px] ${
+                value === 0 ? "hidden" : ""
+              }`}
               checked={values.clientParameters.minAvgFeedback === value}
               onChange={() =>
                 setFieldValue("clientParameters.minAvgFeedback", value)

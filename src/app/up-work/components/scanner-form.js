@@ -169,7 +169,7 @@ const initialValues = {
     },
   },
   clientParameters: {
-    minAvgFeedback: 3,
+    minAvgFeedback: 0,
     minTotalSpent: null,
     minHireRate: null,
     minAvgHourlyRatePaid: null,
