@@ -71,7 +71,7 @@ class CronUpWorkClass {
                 },
                 clientParameters: scannerData.clientParameters,
                 biddingOptions: scannerData.biddingOptions,
-                coverLetterOptions: scannerData.biddingOptions,
+                coverLetterOptions: scannerData.coverLetterOptions,
               }
             )
             .then((createTaskResponse) => {
